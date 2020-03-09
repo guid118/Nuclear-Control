@@ -1,18 +1,22 @@
 buildscript {
-  repositories {
-    maven { url = "https://repo1.maven.org/maven2/" }
-    maven {
-      name = "forge"
-        url = "https://files.minecraftforge.net/maven"
+    repositories {
+        mavenCentral()
+                maven {
+            name = "MavenRepo"
+            url = "https://repo.maven.apache.org/maven2"
+        }
+        maven {
+            name = "forge"
+            url = "https://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
-    maven {
-      name = "sonatype"
-        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
-  }
-  dependencies {
-    classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-  }
 }
 
 apply plugin: 'forge'
@@ -35,27 +39,32 @@ repositories {
         name = "chickenbones" 
         url = "http://chickenbones.net/maven/" 
 	}
+
 	maven {
-        name "ProfMobius"
-        url "http://mobiusstrip.eu/maven"
-    }
+		name "OC"
+		url "http://maven.cil.li/"
+	}
+}
+
+configurations {
+    provided
+    embedded
+    compile.extendsFrom provided, embedded
+    mods
+
 }
 
 dependencies {
 	compile ic2Version
+	provided fileTree(dir: 'lib/', include:'*.jar')
 	compile codeChickenCoreVersion
 	compile notEnoughItemsVersion
 	compile codeChickenLibVersion
-	compile argoVersion
-	compile wailaVersion
-	compile files(openCVersion)
-    compile files(rcVersion)
 	compile files(aeVersion)
 	compile files(cofhCoreVersion)
 	compile files(brVersion)  
 	compile files(mekVersion)
 	compile files(buildcraftVersion)
-    compile files(gregtechVersion)
 }
 
 
