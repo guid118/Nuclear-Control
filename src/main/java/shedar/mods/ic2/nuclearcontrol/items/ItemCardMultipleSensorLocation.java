@@ -308,23 +308,23 @@ public class ItemCardMultipleSensorLocation extends ItemCardBase implements IRem
 	}
 
 	public List<PanelSetting> getSettingsListCounter() {
-		List<PanelSetting> result = new ArrayList<PanelSetting>(3);
-		result.add(new PanelSetting(LangHelper.translate("msg.nc.cbInfoPanelEnergyCurrent"), 
+		List<PanelSetting> result = new ArrayList<PanelSetting>(1);
+		result.add(new PanelSetting(LangHelper.translate("1"),
 				DISPLAY_ENERGY, CARD_TYPE_COUNTER));
 		return result;
 	}
 
 	public List<PanelSetting> getSettingsListLiquid() {
-		List<PanelSetting> result = new ArrayList<PanelSetting>(3);
-		result.add(new PanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidName"), 
+		List<PanelSetting> result = new ArrayList<PanelSetting>(5);
+		result.add(new PanelSetting(LangHelper.translate("1"),
 				DISPLAY_LIQUID_NAME, CARD_TYPE_LIQUID));
-		result.add(new PanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidAmount"), 
+		result.add(new PanelSetting(LangHelper.translate("2"),
 				DISPLAY_LIQUID_AMOUNT, CARD_TYPE_LIQUID));
-		result.add(new PanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidFree"),
+		result.add(new PanelSetting(LangHelper.translate("3"),
 				DISPLAY_LIQUID_FREE, CARD_TYPE_LIQUID));
-		result.add(new PanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidCapacity"),
+		result.add(new PanelSetting(LangHelper.translate("4"),
 				DISPLAY_LIQUID_CAPACITY, CARD_TYPE_LIQUID));
-		result.add(new PanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidPercentage"),
+		result.add(new PanelSetting(LangHelper.translate("5"),
 				DISPLAY_LIQUID_PERCENTAGE, CARD_TYPE_LIQUID));
 		return result;
 	}

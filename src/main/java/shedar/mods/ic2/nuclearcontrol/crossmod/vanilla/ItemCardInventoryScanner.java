@@ -84,8 +84,8 @@ public class ItemCardInventoryScanner extends ItemCardBase{
     @Override
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>();
-        result.add(new PanelSetting(LangHelper.translate("msg.nc.Vanilla.Name"), DISPLAY_NAME, getCardType()));
-        result.add(new PanelSetting(LangHelper.translate("msg.nc.Vanilla.StorageLVL"), DISPLAY_TOTAL, getCardType()));
+        result.add(new PanelSetting(LangHelper.translate("1"), DISPLAY_NAME, getCardType()));
+        result.add(new PanelSetting(LangHelper.translate("2"), DISPLAY_TOTAL, getCardType()));
         return result;
     }
 }
