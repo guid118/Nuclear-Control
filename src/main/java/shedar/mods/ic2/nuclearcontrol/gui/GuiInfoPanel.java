@@ -180,14 +180,29 @@ public class GuiInfoPanel extends GuiContainer {
 			}
 			int hy = fontRendererObj.FONT_HEIGHT + 1;
 			int y=1;
+			int x = guiLeft+24;
 
 			if (settingsList != null)
+
 				for (PanelSetting panelSetting : settingsList) {
-					if (y<=4) {
-						buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 32, guiTop + 40 + hy * y, panelSetting, container.panel, slot, fontRendererObj));
-					} else if (y>=5 && y<=8) {
-						buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 50, guiTop + 40 - 4*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					if (y<=6) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 4,   guiTop + 32 + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=7 && y<=12) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 22,  guiTop + 32 - 6*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=13 && y<=18) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 44,  guiTop + 32 - 12*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=19 && y<=24) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 68,  guiTop + 32 - 18*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=25 && y<=32) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 92,  guiTop + 32 - 24*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=31 && y<=38) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 114, guiTop + 32 - 32*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=37 && y<=44) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 136, guiTop + 32 - 38*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 158, guiTop + 32 - 44*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
 					}
+
 					y++;
 				}
 			if (!modified) {
@@ -210,7 +225,7 @@ public class GuiInfoPanel extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRendererObj.drawString(name,(xSize - fontRendererObj.getStringWidth(name)) / 2, 6, 0x404040);
-		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, (ySize - 96) + 2, 0x404040);
+		//fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, (ySize - 96) + 2, 0x404040);
 		if (textboxTitle != null)
 			textboxTitle.drawTextBox();
 	}
