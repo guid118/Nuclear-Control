@@ -222,20 +222,20 @@ public class ItemCardReactorSensorLocation extends ItemCardBase implements
 	public List<PanelSetting> getSettingsList() {
 		List<PanelSetting> result = new ArrayList<PanelSetting>(6);
 		result.add(new PanelSetting(LangHelper
-				.translate("msg.nc.cbInfoPanelOnOff"), DISPLAY_ONOFF, CARD_TYPE));
+				.translate("1"), DISPLAY_ONOFF, CARD_TYPE));
 		result.add(new PanelSetting(LangHelper
-				.translate("msg.nc.cbInfoPanelHeat"), DISPLAY_HEAT, CARD_TYPE));
+				.translate("2"), DISPLAY_HEAT, CARD_TYPE));
 		result.add(new PanelSetting(LangHelper
-				.translate("msg.nc.cbInfoPanelMaxHeat"), DISPLAY_MAXHEAT,
+				.translate("3"), DISPLAY_MAXHEAT,
 				CARD_TYPE));
 		result.add(new PanelSetting(LangHelper
-				.translate("msg.nc.cbInfoPanelMelting"), DISPLAY_MELTING,
+				.translate("4"), DISPLAY_MELTING,
 				CARD_TYPE));
 		result.add(new PanelSetting(LangHelper
-				.translate("msg.nc.cbInfoPanelOutput"), DISPLAY_OUTPUT,
+				.translate("5"), DISPLAY_OUTPUT,
 				CARD_TYPE));
 		result.add(new PanelSetting(LangHelper
-				.translate("msg.nc.cbInfoPanelTimeRemaining"), DISPLAY_TIME,
+				.translate("6"), DISPLAY_TIME,
 				CARD_TYPE));
 		return result;
 	}

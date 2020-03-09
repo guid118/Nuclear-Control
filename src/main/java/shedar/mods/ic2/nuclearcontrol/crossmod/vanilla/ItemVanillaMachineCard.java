@@ -270,11 +270,11 @@ public class ItemVanillaMachineCard extends ItemCardBase{
     @Override
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>();
-        result.add(new PanelSetting(LangHelper.translate("msg.nc.Vanilla.dispBrew"), DISPLAY_BREWING, getCardType()));
-        result.add(new PanelSetting(LangHelper.translate("msg.nc.Vanilla.dispBrewTime"), DISPLAY_TIME, getCardType()));
-        result.add(new PanelSetting(StringUtils.getFormattedKey("msg.nc.Vanilla.dispBrewUse", 1), DISPLAY_SLOT_1, getCardType()));
-        result.add(new PanelSetting(StringUtils.getFormattedKey("msg.nc.Vanilla.dispBrewUse", 2), DISPLAY_SLOT_2, getCardType()));
-        result.add(new PanelSetting(StringUtils.getFormattedKey("msg.nc.Vanilla.dispBrewUse", 3), DISPLAY_SLOT_3, getCardType()));
+        result.add(new PanelSetting(LangHelper.translate("1"), DISPLAY_BREWING, getCardType()));
+        result.add(new PanelSetting(LangHelper.translate("2"), DISPLAY_TIME, getCardType()));
+        result.add(new PanelSetting(StringUtils.getFormattedKey("3", 1), DISPLAY_SLOT_1, getCardType()));
+        result.add(new PanelSetting(StringUtils.getFormattedKey("4", 2), DISPLAY_SLOT_2, getCardType()));
+        result.add(new PanelSetting(StringUtils.getFormattedKey("5", 3), DISPLAY_SLOT_3, getCardType()));
         return result;
     }
 }

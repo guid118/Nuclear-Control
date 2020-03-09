@@ -129,16 +129,16 @@ public class ItemCardEnergySensorLocation extends ItemCardBase implements IRemot
 	public List<PanelSetting> getSettingsList() {
 		List<PanelSetting> result = new ArrayList<PanelSetting>(3);
 		result.add(new PanelSetting(LangHelper
-				.translate("msg.nc.cbInfoPanelEnergyCurrent"), DISPLAY_ENERGY,
+				.translate("1"), DISPLAY_ENERGY,
 				CARD_TYPE));
 		result.add(new PanelSetting(LangHelper
-				.translate("msg.nc.cbInfoPanelEnergyStorage"), DISPLAY_STORAGE,
+				.translate("2"), DISPLAY_STORAGE,
 				CARD_TYPE));
 		result.add(new PanelSetting(LangHelper
-				.translate("msg.nc.cbInfoPanelEnergyFree"), DISPLAY_FREE,
+				.translate("3"), DISPLAY_FREE,
 				CARD_TYPE));
 		result.add(new PanelSetting(LangHelper
-				.translate("msg.nc.cbInfoPanelEnergyPercentage"),
+				.translate("4"),
 				DISPLAY_PERCENTAGE, CARD_TYPE));
 		return result;
 	}

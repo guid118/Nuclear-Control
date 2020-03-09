@@ -175,10 +175,10 @@ public class ItemCardAppeng extends ItemCardEnergySensorLocation {
     @Override
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>(4);
-        result.add(new PanelSetting(LangHelper.translate("msg.nc.InfoPanelAE.Bytes"), DISPLAY_BYTES, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("msg.nc.InfoPanelAE.Items"), DISPLAY_ITEMS, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("msg.nc.InfoPanelAE.CraftItem"), DISPLAY_CRAFTER, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("msg.nc.InfoPanelAE.CraftStack"), DISPLAY_CRAFTSTACK, CARD_TYPE));
+        result.add(new PanelSetting(LangHelper.translate("1"), DISPLAY_BYTES, CARD_TYPE));
+        result.add(new PanelSetting(LangHelper.translate("2"), DISPLAY_ITEMS, CARD_TYPE));
+        result.add(new PanelSetting(LangHelper.translate("3"), DISPLAY_CRAFTER, CARD_TYPE));
+        result.add(new PanelSetting(LangHelper.translate("4"), DISPLAY_CRAFTSTACK, CARD_TYPE));
         return result;
     }
 }
