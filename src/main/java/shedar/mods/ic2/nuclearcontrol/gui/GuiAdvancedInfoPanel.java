@@ -112,13 +112,30 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel{
 			{
 				settingsList = source.getSettingsList();
 			}
+            int hy = fontRendererObj.FONT_HEIGHT + 1;
+            int y=1;
 
-			if (settingsList != null)
-				for (PanelSetting panelSetting : settingsList)
-				{
-					buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 32, guiTop + 60 + h*row, panelSetting, container.panel, slot, fontRendererObj));
-					row++;
-				}
+            if (settingsList != null)
+                for (PanelSetting panelSetting : settingsList) {
+                    if (y<=4) {
+                        buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 32, guiTop + 60 + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+                    } else if (y>=5 && y<=8) {
+                        buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 50, guiTop + 60 - 4*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+                    } else if (y>=9 && y<=12) {
+                        buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 50, guiTop + 60 - 4*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+                    } else if (y>=13 && y<=16) {
+                        buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 50, guiTop + 60 - 4*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+                    } else if (y>=17 && y<=20) {
+                        buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 50, guiTop + 60 - 4*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+                    } else if (y>=21 && y<=24) {
+                        buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 50, guiTop + 60 - 4*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+                    } else if (y>=25 && y<=28) {
+                        buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 50, guiTop + 60 - 4*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+                    } else {
+                        buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 50, guiTop + 60 - 4 * hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+                    }
+                    y++;
+                }
 			if (!modified)
 			{
 				textboxTitle = new GuiTextField(fontRendererObj, 7, 16, 162, 18);

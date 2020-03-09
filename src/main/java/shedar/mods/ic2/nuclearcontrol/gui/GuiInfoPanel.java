@@ -155,7 +155,7 @@ public class GuiInfoPanel extends GuiContainer {
 		ItemStack card = container.panel.getCards().get(0);
 		if (((card == null && prevCard == null) || (card != null && card.equals(prevCard))) && this.container.panel.getColored() == isColored)
 			return;
-		int h = fontRendererObj.FONT_HEIGHT + 1;
+
 		buttonList.clear();
 		prevCard = card;
 		isColored = container.panel.getColored();
@@ -172,18 +172,23 @@ public class GuiInfoPanel extends GuiContainer {
 			if (source instanceof IAdvancedCardSettings) {
 				buttonList.add(new CompactButton(111, guiLeft + xSize - 25, guiTop + 55 + delta, 18, 12, "..."));
 			}
-			int row = 0;
 			List<PanelSetting> settingsList = null;
 			if (card.getItem() instanceof IPanelMultiCard) {
 				settingsList = ((IPanelMultiCard) source).getSettingsList(new CardWrapperImpl(card, (byte) 0));
 			} else {
 				settingsList = source.getSettingsList();
 			}
+			int hy = fontRendererObj.FONT_HEIGHT + 1;
+			int y=1;
 
 			if (settingsList != null)
 				for (PanelSetting panelSetting : settingsList) {
-					buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 32, guiTop + 40 + h * row, panelSetting, container.panel, slot, fontRendererObj));
-					row++;
+					if (y<=4) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 32, guiTop + 40 + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=5 && y<=8) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 50, guiTop + 40 - 4*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					}
+					y++;
 				}
 			if (!modified) {
 				textboxTitle = new GuiTextField(fontRendererObj, 7, 16, 162, 18);
