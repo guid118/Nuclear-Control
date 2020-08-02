@@ -1,6 +1,7 @@
 *For the 1.10 version, check out [World Control](https://github.com/World-Control-Team/World-Control)!*
 
-Nuclear-Control
+Nuclear-Control 
+Terralization modpack bug fix
 ===============
 
 An updated version of nuclear control.
