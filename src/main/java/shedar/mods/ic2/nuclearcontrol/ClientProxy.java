@@ -63,13 +63,4 @@ public class ClientProxy extends CommonProxy {
 	public static EntityPlayer getPlayer() {
 		return Minecraft.getMinecraft().thePlayer;
 	}
-
-	@Override
-	public void cape(){
-		try {
-			DevCapes.getInstance().registerConfig(new URL("http://xbony2.github.io/cape.json"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }
