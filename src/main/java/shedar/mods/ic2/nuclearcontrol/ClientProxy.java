@@ -5,7 +5,6 @@
  */
 package shedar.mods.ic2.nuclearcontrol;
 
-import com.jadarstudios.developercapes.DevCapes;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
