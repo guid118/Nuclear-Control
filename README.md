@@ -1,6 +1,6 @@
 *For the 1.10 version, check out [World Control](https://github.com/World-Control-Team/World-Control)!*
 
-Terralization's forked version of Nuclear-Control to fix an cape bug with our mod
+Terralization's forked version of Nuclear-Control to fix an cape bug with our mod and added some community fixes from both 4gname and Baldrvolsk
 
 ===============
 
