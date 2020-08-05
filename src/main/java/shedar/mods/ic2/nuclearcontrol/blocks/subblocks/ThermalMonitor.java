@@ -37,7 +37,7 @@ public class ThermalMonitor extends Subblock {
 					I_FACE_GREEN, I_BACK } };
 
 	private IIcon[] icons = new IIcon[6];
-	
+
 
 	public ThermalMonitor() {
 		super(DAMAGE, "tile.blockThermalMonitor");
@@ -71,7 +71,7 @@ public class ThermalMonitor extends Subblock {
 
 	@Override
 	public Object getClientGuiElement(TileEntity tileEntity, EntityPlayer player) {
-		return new GuiIC2Thermo((TileEntityThermo) tileEntity);
+		return tileEntity instanceof TileEntityThermo ? new GuiIC2Thermo((TileEntityThermo) tileEntity) : null;
 	}
 
 	@Override
