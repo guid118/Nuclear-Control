@@ -1,9 +1,13 @@
 buildscript {
     repositories {
         mavenCentral()
+                maven {
+            name = "MavenRepo"
+            url = "https://repo.maven.apache.org/maven2"
+        }
         maven {
             name = "forge"
-            url = "http://files.minecraftforge.net/maven"
+            url = "https://files.minecraftforge.net/maven"
         }
         maven {
             name = "sonatype"
@@ -35,24 +39,27 @@ repositories {
         name = "chickenbones" 
         url = "http://chickenbones.net/maven/" 
 	}
-	maven {
-        name "ProfMobius"
-        url "http://mobiusstrip.eu/maven"
-    }
+
 	maven {
 		name "OC"
 		url "http://maven.cil.li/"
 	}
 }
 
+configurations {
+    provided
+    embedded
+    compile.extendsFrom provided, embedded
+    mods
+
+}
+
 dependencies {
 	compile ic2Version
+	provided fileTree(dir: 'lib/', include:'*.jar')
 	compile codeChickenCoreVersion
 	compile notEnoughItemsVersion
 	compile codeChickenLibVersion
-	compile argoVersion
-	compile wailaVersion
-	compile openCVersion
 	compile files(aeVersion)
 	compile files(cofhCoreVersion)
 	compile files(brVersion)  

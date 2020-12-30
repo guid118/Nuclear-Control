@@ -1,6 +1,9 @@
 package shedar.mods.ic2.nuclearcontrol.network.message;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
+import shedar.mods.ic2.nuclearcontrol.containers.ContainerRangeTrigger;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityRangeTrigger;
 import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -46,17 +49,27 @@ public class PacketClientRangeTrigger implements IMessage,
 	}
 
 	@Override
-	public IMessage onMessage(PacketClientRangeTrigger message,
-			MessageContext ctx) {
-		TileEntity tileEntity = ctx.getServerHandler().playerEntity.worldObj
-				.getTileEntity(message.x, message.y, message.z);
-		if (tileEntity instanceof TileEntityRangeTrigger) {
-			if (message.isEnd) {
-				((TileEntityRangeTrigger) tileEntity)
-						.setLevelEnd(message.value);
-			} else {
-				((TileEntityRangeTrigger) tileEntity)
-						.setLevelStart(message.value);
+	public IMessage onMessage(PacketClientRangeTrigger message, MessageContext ctx) {
+		/*TileEntity tile = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
+		if (tile instanceof TileEntityRangeTrigger)
+			if (message.isEnd)
+				((TileEntityRangeTrigger) tile).setLevelEnd(message.value);
+			else
+				((TileEntityRangeTrigger) tile).setLevelStart(message.value); */
+		EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+		Container openContainer = player.openContainer;
+		if (openContainer instanceof ContainerRangeTrigger)
+		{
+			int x = message.x;
+			int y = message.y;
+			int z = message.z;
+			TileEntityRangeTrigger rangeTrigger = ((ContainerRangeTrigger) openContainer).trigger;
+			if (rangeTrigger != null && rangeTrigger.xCoord == x && rangeTrigger.yCoord == y && rangeTrigger.zCoord == z && rangeTrigger == player.worldObj.getTileEntity(x, y, z))
+			{
+				if (message.isEnd)
+					rangeTrigger.setLevelEnd(message.value);
+				else
+					rangeTrigger.setLevelStart(message.value);
 			}
 		}
 		return null;

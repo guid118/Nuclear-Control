@@ -3,8 +3,11 @@ package shedar.mods.ic2.nuclearcontrol.network.message;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
+import shedar.mods.ic2.nuclearcontrol.containers.ContainerInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
@@ -112,40 +115,78 @@ public class PacketClientSensor implements IMessage,
 	}
 
 	@Override
-	public IMessage onMessage(PacketClientSensor message, MessageContext ctx) {
-		TileEntity tileEntity = ctx.getServerHandler().playerEntity.worldObj
-				.getTileEntity(message.x, message.y, message.z);
-		if (tileEntity instanceof TileEntityInfoPanel) {
-			TileEntityInfoPanel panel = (TileEntityInfoPanel) tileEntity;
+	public IMessage onMessage(PacketClientSensor message, MessageContext ctx)
+	{
+		/*TileEntity tile = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
+		if (tile instanceof TileEntityInfoPanel)
+		{
+			TileEntityInfoPanel panel = (TileEntityInfoPanel) tile;
 			ItemStack stack = panel.getStackInSlot(message.slot);
-			if (stack == null || !(stack.getItem() instanceof IPanelDataSource)) {
+			if (stack == null || !(stack.getItem() instanceof IPanelDataSource))
 				return null;
-			}
-			if (!stack.getItem().getClass().getName().equals(message.className)) {
-				IC2NuclearControl.logger
-						.warn("Class mismatch: '%s'!='%s'", message.className,
-								stack.getItem().getClass().getName());
+			if (!stack.getItem().getClass().getName().equals(message.className))
+			{
+				IC2NuclearControl.logger.warn("Class mismatch: '%s'!='%s'", message.className, stack.getItem().getClass().getName());
 				return null;
 			}
 			CardWrapperImpl helper = new CardWrapperImpl(stack, message.slot);
-			for (Map.Entry<String, Object> entry : message.fields.entrySet()) {
+			for (Map.Entry<String, Object> entry : message.fields.entrySet())
+			{
 				String name = entry.getKey();
 				Object value = entry.getValue();
-				if (value instanceof Long) {
+				if (value instanceof Long)
 					helper.setLong(name, (Long) value);
-				} else if (value instanceof Double) {
+				else if (value instanceof Double)
 					helper.setDouble(name, (Double) value);
-				} else if (value instanceof Integer) {
+				else if (value instanceof Integer)
 					helper.setInt(name, (Integer) value);
-				} else if (value instanceof String) {
+				else if (value instanceof String)
 					helper.setString(name, (String) value);
-				} else if (value instanceof Boolean) {
+				else if (value instanceof Boolean)
 					helper.setBoolean(name, (Boolean) value);
-				}
 
 			}
 			helper.commit(panel);
+		} */
+		EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+		Container openContainer = player.openContainer;
+		if (openContainer instanceof ContainerInfoPanel)
+		{
+			int x = message.x;
+			int y = message.y;
+			int z = message.z;
+			TileEntityInfoPanel panel = ((ContainerInfoPanel) openContainer).panel;
+			if (panel != null && panel.xCoord == x && panel.yCoord == y && panel.zCoord == z && panel == player.worldObj.getTileEntity(x, y, z))
+			{
+				ItemStack stack = panel.getStackInSlot(message.slot);
+				if (stack == null || !(stack.getItem() instanceof IPanelDataSource))
+					return null;
+				if (!stack.getItem().getClass().getName().equals(message.className))
+				{
+					IC2NuclearControl.logger.warn("Class mismatch: '%s'!='%s'", message.className, stack.getItem().getClass().getName());
+					return null;
+				}
+				CardWrapperImpl helper = new CardWrapperImpl(stack, message.slot);
+				for (Map.Entry<String, Object> entry : message.fields.entrySet())
+				{
+					String name = entry.getKey();
+					Object value = entry.getValue();
+					if (value instanceof Long)
+						helper.setLong(name, (Long) value);
+					else if (value instanceof Double)
+						helper.setDouble(name, (Double) value);
+					else if (value instanceof Integer)
+						helper.setInt(name, (Integer) value);
+					else if (value instanceof String)
+						helper.setString(name, (String) value);
+					else if (value instanceof Boolean)
+						helper.setBoolean(name, (Boolean) value);
+
+				}
+				helper.commit(panel);
+			}
 		}
+
 		return null;
 	}
 }
