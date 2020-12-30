@@ -1,5 +1,6 @@
 package shedar.mods.ic2.nuclearcontrol;
 
+import com.jadarstudios.developercapes.DevCapes;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -205,6 +206,10 @@ public class IC2NuclearControl {
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
+		//proxy, tilentity
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
+			DevCapes.getInstance().registerConfig("https://technic-solder.eu-central-1.linodeobjects.com/cape.json");
+		}
 		if(!disableCapes) {
 			proxy.cape();
 		}
