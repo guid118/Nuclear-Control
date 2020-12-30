@@ -10,6 +10,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.world.World;
@@ -21,17 +22,52 @@ import shedar.mods.ic2.nuclearcontrol.items.ItemRemoteMonitor;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.NCLog;
 
+import java.util.UUID;
+
 public class ContainerRemoteMonitor extends Container{
 
     protected ItemStack is;
-    protected InventoryItem item;
+    public InventoryItem item;
 
-    public ContainerRemoteMonitor(InventoryPlayer inv, ItemStack stack, InventoryItem iItem){
+    private static final String NBT_KEY_UID = "UID";
+    private final ItemStack itemStack;
+    private final int itemSlot;
+
+    private static boolean isSameItemInventory(ItemStack base, ItemStack comparison)
+    {
+        if (base == null || comparison == null)
+            return false;
+
+        if (base.getItem() != comparison.getItem())
+            return false;
+
+        if (!base.hasTagCompound() || !comparison.hasTagCompound())
+            return false;
+
+        String baseUID = base.getTagCompound().getString(NBT_KEY_UID);
+        String comparisonUID = comparison.getTagCompound().getString(NBT_KEY_UID);
+        return baseUID != null && comparisonUID != null && baseUID.equals(comparisonUID);
+    }
+
+    public ContainerRemoteMonitor(InventoryPlayer inv, ItemStack stack, InventoryItem iItem)
+    {
         this.is = stack;
         this.item = iItem;
 
-        this.addSlotToContainer(new SlotFilter(this.item, 0, 177, 21));
-        bindPlayerInventory(inv);
+        Slot slot = this.addSlotToContainer(new SlotFilter(this.item, 0, 177, 21));
+
+        this.itemStack = stack;
+        this.itemSlot = slot.slotNumber;
+        if (stack != null && stack.getItem() instanceof ItemRemoteMonitor)
+        {
+            if (!stack.hasTagCompound())
+                stack.setTagCompound(new NBTTagCompound());
+            NBTTagCompound nbt = stack.getTagCompound();
+            if (!nbt.hasKey(NBT_KEY_UID))
+                nbt.setString(NBT_KEY_UID, UUID.randomUUID().toString());
+        }
+
+        this.bindPlayerInventory(inv);
     }
 
     protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
@@ -47,57 +83,71 @@ public class ContainerRemoteMonitor extends Container{
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer p_75145_1_) {
-        return true;
+    public boolean canInteractWith(EntityPlayer player) {
+        return isSameItemInventory(player.getHeldItem(), this.itemStack);
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slot){
-        ItemStack stack = null;
-        Slot slots = (Slot)this.inventorySlots.get(slot);
+    public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
+		if (slot == this.itemSlot)
+            return null;
+		if (!isSameItemInventory(player.getHeldItem(), this.itemStack))
+            return null;
 
-        if (slots.getStack() != null) {
-            if(slots.getStack().getItem() == IC2NuclearControl.itemRemoteMonitor){
-                return null;
-            }
-        }
+    ItemStack stack = null;
+    Slot slots = (Slot) this.inventorySlots.get(slot);
 
-        if (slots != null && slots.getHasStack()) {
-            ItemStack itemstackR = slots.getStack();
-            stack = itemstackR.copy();
+		if (slots.getStack() != null)
+                if (slots.getStack().getItem() == IC2NuclearControl.itemRemoteMonitor)
+            return null;
 
-            if (slot == 0) {
-                boolean fixed = false;
-               for(int h=1; h < 10; h++){
-                   Slot know = (Slot)this.inventorySlots.get(h);
-                   if(!know.getHasStack()){
-                       know.putStack(slots.getStack());
-                       slots.decrStackSize(1);
-                       fixed = true;
-                   }
-               }
-                if(!fixed){
-                    return null;
+		if (slots != null && slots.getHasStack())
+    {
+        ItemStack itemstackR = slots.getStack();
+        stack = itemstackR.copy();
+
+        if (slot == 0)
+        {
+            boolean fixed = false;
+            for (int h = 1; h < 10; h++)
+            {
+                Slot know = (Slot) this.inventorySlots.get(h);
+                if (!know.getHasStack())
+                {
+                    know.putStack(slots.getStack());
+                    slots.decrStackSize(1);
+                    fixed = true;
                 }
-                slots.onSlotChange(itemstackR, stack);
-            } else if(slots.getStack().getItem() instanceof IPanelDataSource && !((Slot)this.inventorySlots.get(0)).getHasStack()){
-                ((Slot)this.inventorySlots.get(0)).putStack(itemstackR);
-                slots.decrStackSize(1);
-                slots.onSlotChange(itemstackR, stack);
-                ((Slot)this.inventorySlots.get(0)).onSlotChanged();
-            }else{
-                return null;
             }
+            if (!fixed)
+                return null;
+            slots.onSlotChange(itemstackR, stack);
         }
-        return stack;
+        else if (slots.getStack().getItem() instanceof IPanelDataSource && !((Slot) this.inventorySlots.get(0)).getHasStack())
+        {
+            ((Slot) this.inventorySlots.get(0)).putStack(itemstackR);
+            slots.decrStackSize(1);
+            slots.onSlotChange(itemstackR, stack);
+            ((Slot) this.inventorySlots.get(0)).onSlotChanged();
+        }
+        else
+            return null;
     }
+		return stack;
+}
 
 
     @Override
     public ItemStack slotClick(int slot, int button, int flag, EntityPlayer player) {
-        if (slot >= 0 && getSlot(slot) != null && getSlot(slot).getStack() == player.getHeldItem()) {
+        if (slot == this.itemSlot)
             return null;
-        }
+        if (flag == 2 && button == this.itemSlot)
+            return null;
+        if (!isSameItemInventory(player.getHeldItem(), this.itemStack))
+            return null;
+
+        if (slot >= 0 && this.getSlot(slot) != null && this.getSlot(slot).getStack() == player.getHeldItem())
+            return null;
         return super.slotClick(slot, button, flag, player);
     }
 }

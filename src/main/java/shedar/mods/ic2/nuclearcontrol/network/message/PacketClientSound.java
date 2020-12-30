@@ -1,8 +1,12 @@
 package shedar.mods.ic2.nuclearcontrol.network.message;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
+import shedar.mods.ic2.nuclearcontrol.containers.ContainerEmpty;
+import shedar.mods.ic2.nuclearcontrol.containers.ContainerInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityHowlerAlarm;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
@@ -51,23 +55,43 @@ public class PacketClientSound implements IMessage,
 	}
 
 	@Override
-	public IMessage onMessage(PacketClientSound message, MessageContext ctx) {
-		TileEntity tileEntity = ctx.getServerHandler().playerEntity.worldObj
-				.getTileEntity(message.x, message.y, message.z);
-		if (tileEntity instanceof TileEntityHowlerAlarm) {
-			((TileEntityHowlerAlarm) tileEntity)
-					.setSoundName(message.soundName);
-		} else if (tileEntity instanceof TileEntityInfoPanel) {
-			ItemStack stack = ((TileEntityInfoPanel) tileEntity)
-					.getStackInSlot(message.slot);
-			if (stack == null || !(stack.getItem() instanceof IPanelDataSource)) {
+	public IMessage onMessage(PacketClientSound message, MessageContext ctx)
+	{
+		/*TileEntity tile = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
+		if (tile instanceof TileEntityHowlerAlarm)
+			((TileEntityHowlerAlarm) tile).setSoundName(message.soundName);
+		else if (tile instanceof TileEntityInfoPanel)
+		{
+			ItemStack stack = ((TileEntityInfoPanel) tile).getStackInSlot(message.slot);
+			if (stack == null || !(stack.getItem() instanceof IPanelDataSource))
 				return null;
-			}
 			new CardWrapperImpl(stack, -1).setTitle(message.soundName);
-			NuclearNetworkHelper.setSensorCardTitle(
-					(TileEntityInfoPanel) tileEntity, message.slot,
-					message.soundName);
+			NuclearNetworkHelper.setSensorCardTitle((TileEntityInfoPanel) tile, message.slot, message.soundName);
+		} */
+		int x = message.x;
+		int y = message.y;
+		int z = message.z;
+		EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+		Container openContainer = player.openContainer;
+		if (openContainer instanceof ContainerInfoPanel)
+		{
+			TileEntityInfoPanel panel = ((ContainerInfoPanel) openContainer).panel;
+			if (panel != null && panel.xCoord == x && panel.yCoord == y && panel.zCoord == z && panel == player.worldObj.getTileEntity(x, y, z))
+			{
+				ItemStack stack = panel.getStackInSlot(message.slot);
+				if (stack == null || !(stack.getItem() instanceof IPanelDataSource))
+					return null;
+				new CardWrapperImpl(stack, -1).setTitle(message.soundName);
+				NuclearNetworkHelper.setSensorCardTitle(panel, message.slot, message.soundName);
+			}
 		}
+		else if (openContainer instanceof ContainerEmpty)
+		{
+			TileEntity tile = ((ContainerEmpty) openContainer).entity;
+			if (tile instanceof TileEntityHowlerAlarm && tile.xCoord == x && tile.yCoord == y && tile.zCoord == z && tile == player.worldObj.getTileEntity(x, y, z))
+				((TileEntityHowlerAlarm) tile).setSoundName(message.soundName);
+		}
+
 		return null;
 	}
 }

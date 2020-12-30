@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerEmpty extends Container
 {
-	private TileEntity entity;
+	public TileEntity entity;
 
 	public ContainerEmpty(TileEntity entity)
 	{
@@ -18,7 +18,8 @@ public class ContainerEmpty extends Container
 	@Override
 	public boolean canInteractWith(EntityPlayer player)
 	{
-		return entity.getWorldObj().getBlock(entity.xCoord, entity.yCoord, entity.zCoord) != IC2NuclearControl.instance.blockNuclearControlMain ? 
-				false : player.getDistanceSq(entity.xCoord + 0.5D, entity.yCoord + 0.5D, entity.zCoord + 0.5D) <= 64.0D;
+		if (this.entity == null || !this.entity.hasWorldObj())
+			return false;
+		return this.entity.getWorldObj().getBlock(this.entity.xCoord, this.entity.yCoord, this.entity.zCoord) == IC2NuclearControl.blockNuclearControlMain && player.getDistanceSq(this.entity.xCoord + 0.5D, this.entity.yCoord + 0.5D, this.entity.zCoord + 0.5D) <= 64.0D;
 	}
 }
