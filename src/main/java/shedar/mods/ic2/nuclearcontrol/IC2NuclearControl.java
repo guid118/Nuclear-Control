@@ -80,6 +80,7 @@ public class IC2NuclearControl {
 	protected File configDir;
 
 	public static boolean isServer;
+	public static boolean isThorfusionLoaded;
 	public String allowedAlarms;
 	public List<String> serverAllowedAlarms;
 	public static Item itemToolThermometer;
@@ -165,6 +166,7 @@ public class IC2NuclearControl {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		isThorfusionLoaded = Loader.isModLoaded("thorfusion");
 		logger = event.getModLog();
 		if (event.getSide() == Side.CLIENT)
 			isServer = false;
@@ -207,8 +209,10 @@ public class IC2NuclearControl {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		//proxy, tilentity
-		if(!disableCapes) {
-			proxy.cape();
+		if (!isThorfusionLoaded) {
+			if (!disableCapes) {
+				proxy.cape();
+			}
 		}
 		CrossModLoader.postinit();
 		crossBC = new CrossBuildcraft();
