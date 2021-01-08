@@ -5,9 +5,13 @@
  */
 package shedar.mods.ic2.nuclearcontrol;
 
+import com.jadarstudios.developercapes.DevCapes;
+
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -61,5 +65,12 @@ public class ClientProxy extends CommonProxy {
 
 	public static EntityPlayer getPlayer() {
 		return Minecraft.getMinecraft().thePlayer;
+	}
+	public void cape(){
+		try {
+		DevCapes.getInstance().registerConfig("https://technic-solder.eu-central-1.linodeobjects.com/cape.json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
