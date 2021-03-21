@@ -300,11 +300,8 @@ public class BlockNuclearControlMain extends BlockContainer {
 		}
 	}
 
-	public static float[] getBlockBounds(int damage) {
-		if (subblocks.containsKey(damage)) {
-			return subblocks.get(damage).getBlockBounds(null);
-		}
-		return new float[] { 0, 0, 0, 1, 1, 1 };
+	public static float[] getBlockBounds(int damage, TileEntity te) {
+		return subblocks.containsKey(damage) ? subblocks.get(damage).getBlockBounds(te) : new float[] { 0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F };
 	}
 
 	/**
