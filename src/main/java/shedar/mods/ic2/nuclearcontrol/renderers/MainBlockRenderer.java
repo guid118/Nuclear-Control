@@ -36,6 +36,7 @@ public class MainBlockRenderer implements ISimpleBlockRenderingHandler {
 					size[5]);
 			renderer.setRenderBoundsFromBlock(block);
 			Tessellator tesselator = Tessellator.instance;
+			GL11.glPushMatrix();
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 			tesselator.startDrawingQuads();
 			tesselator.setNormal(0.0F, -1.0F, 0.0F);
@@ -68,6 +69,7 @@ public class MainBlockRenderer implements ISimpleBlockRenderingHandler {
 					block.getIcon(5, metadata));
 			tesselator.draw();
 			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+			GL11.glPopMatrix();
 		}
 	}
 
