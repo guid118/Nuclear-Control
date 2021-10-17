@@ -155,7 +155,7 @@ public class GuiInfoPanel extends GuiContainer {
 		ItemStack card = container.panel.getCards().get(0);
 		if (((card == null && prevCard == null) || (card != null && card.equals(prevCard))) && this.container.panel.getColored() == isColored)
 			return;
-		int h = fontRendererObj.FONT_HEIGHT + 1;
+
 		buttonList.clear();
 		prevCard = card;
 		isColored = container.panel.getColored();
@@ -172,18 +172,38 @@ public class GuiInfoPanel extends GuiContainer {
 			if (source instanceof IAdvancedCardSettings) {
 				buttonList.add(new CompactButton(111, guiLeft + xSize - 25, guiTop + 55 + delta, 18, 12, "..."));
 			}
-			int row = 0;
 			List<PanelSetting> settingsList = null;
 			if (card.getItem() instanceof IPanelMultiCard) {
 				settingsList = ((IPanelMultiCard) source).getSettingsList(new CardWrapperImpl(card, (byte) 0));
 			} else {
 				settingsList = source.getSettingsList();
 			}
+			int hy = fontRendererObj.FONT_HEIGHT + 1;
+			int y=1;
+			int x = guiLeft+24;
 
 			if (settingsList != null)
+
 				for (PanelSetting panelSetting : settingsList) {
-					buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 32, guiTop + 40 + h * row, panelSetting, container.panel, slot, fontRendererObj));
-					row++;
+					if (y<=6) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 4,   guiTop + 32 + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=7 && y<=12) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 22,  guiTop + 32 - 6*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=13 && y<=18) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 44,  guiTop + 32 - 12*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=19 && y<=24) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 68,  guiTop + 32 - 18*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=25 && y<=32) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 92,  guiTop + 32 - 24*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=31 && y<=38) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 114, guiTop + 32 - 32*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=37 && y<=44) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 136, guiTop + 32 - 38*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 158, guiTop + 32 - 44*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					}
+
+					y++;
 				}
 			if (!modified) {
 				textboxTitle = new GuiTextField(fontRendererObj, 7, 16, 162, 18);
@@ -205,7 +225,7 @@ public class GuiInfoPanel extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRendererObj.drawString(name,(xSize - fontRendererObj.getStringWidth(name)) / 2, 6, 0x404040);
-		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, (ySize - 96) + 2, 0x404040);
+		//fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, (ySize - 96) + 2, 0x404040);
 		if (textboxTitle != null)
 			textboxTitle.drawTextBox();
 	}

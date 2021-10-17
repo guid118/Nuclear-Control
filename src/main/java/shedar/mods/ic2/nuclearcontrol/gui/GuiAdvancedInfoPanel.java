@@ -102,7 +102,6 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel{
 				//settings
 				buttonList.add(new IconButton(ID_SETTINGS, guiLeft + 83 + 17*4, guiTop + 42, 16, 16, TEXTURE_LOCATION, 192, 15 + 16*2));
 			}
-			int row = 0;
 			List<PanelSetting> settingsList = null;
 			if (card.getItem() instanceof IPanelMultiCard)
 			{
@@ -112,12 +111,31 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel{
 			{
 				settingsList = source.getSettingsList();
 			}
+            int hy = fontRendererObj.FONT_HEIGHT + 1;
+            int y=1;
+			int x = guiLeft+24;
+			int hpos = guiTop+55;
+            if (settingsList != null)
+				for (PanelSetting panelSetting : settingsList) {
+					if (y<=6) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 4,   hpos + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=7 && y<=12) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 22,  hpos - 6*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=13 && y<=18) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 44,  hpos - 12*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=19 && y<=24) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 68,  hpos - 18*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=25 && y<=32) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 92,  hpos - 24*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=31 && y<=38) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 114, hpos - 32*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else if (y>=37 && y<=44) {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 136, hpos - 38*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					} else {
+						buttonList.add(new GuiInfoPanelCheckBox(0, x + 158, hpos - 44*hy + hy * y, panelSetting, container.panel, slot, fontRendererObj));
+					}
 
-			if (settingsList != null)
-				for (PanelSetting panelSetting : settingsList)
-				{
-					buttonList.add(new GuiInfoPanelCheckBox(0, guiLeft + 32, guiTop + 60 + h*row, panelSetting, container.panel, slot, fontRendererObj));
-					row++;
+					y++;
 				}
 			if (!modified)
 			{

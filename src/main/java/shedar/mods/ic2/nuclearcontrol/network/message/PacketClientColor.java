@@ -1,6 +1,9 @@
 package shedar.mods.ic2.nuclearcontrol.network.message;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
+import shedar.mods.ic2.nuclearcontrol.containers.ContainerInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
 import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -42,13 +45,29 @@ public class PacketClientColor implements IMessage,
 
 	@Override
 	public IMessage onMessage(PacketClientColor message, MessageContext ctx) {
-		TileEntity tileEntity = ctx.getServerHandler().playerEntity.worldObj
-				.getTileEntity(message.x, message.y, message.z);
-		if (tileEntity instanceof TileEntityInfoPanel) {
+		/*TileEntity tile = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
+		if (tile instanceof TileEntityInfoPanel)
+		{
 			int back = message.colors >> 4;
 			int text = message.colors & 0xf;
-			((TileEntityInfoPanel) tileEntity).setColorBackground(back);
-			((TileEntityInfoPanel) tileEntity).setColorText(text);
+			((TileEntityInfoPanel) tile).setColorBackground(back);
+			((TileEntityInfoPanel) tile).setColorText(text);
+		} */
+		EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+		Container openContainer = player.openContainer;
+		if (openContainer instanceof ContainerInfoPanel)
+		{
+			int x = message.x;
+			int y = message.y;
+			int z = message.z;
+			TileEntityInfoPanel panel = ((ContainerInfoPanel) openContainer).panel;
+			if (panel != null && panel.xCoord == x && panel.yCoord == y && panel.zCoord == z && panel == player.worldObj.getTileEntity(x, y, z))
+			{
+				int back = message.colors >> 4;
+				int text = message.colors & 0xf;
+				panel.setColorBackground(back);
+				panel.setColorText(text);
+			}
 		}
 		return null;
 	}

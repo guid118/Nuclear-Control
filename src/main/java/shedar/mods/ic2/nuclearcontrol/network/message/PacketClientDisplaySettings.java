@@ -1,6 +1,9 @@
 package shedar.mods.ic2.nuclearcontrol.network.message;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
+import shedar.mods.ic2.nuclearcontrol.containers.ContainerInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
 import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -46,13 +49,19 @@ public class PacketClientDisplaySettings implements IMessage,
 	}
 
 	@Override
-	public IMessage onMessage(PacketClientDisplaySettings message,
-			MessageContext ctx) {
-		TileEntity tileEntity = ctx.getServerHandler().playerEntity.worldObj
-				.getTileEntity(message.x, message.y, message.z);
-		if (tileEntity instanceof TileEntityInfoPanel) {
-			((TileEntityInfoPanel) tileEntity).setDisplaySettings(message.slot,
-					message.settings);
+	public IMessage onMessage(PacketClientDisplaySettings message, MessageContext ctx) {
+		/*TileEntity tile = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y, message.z);
+		if (tile instanceof TileEntityInfoPanel)
+			((TileEntityInfoPanel) tile).setDisplaySettings(message.slot, message.settings); */
+		EntityPlayerMP player = ctx.getServerHandler().playerEntity;
+		Container openContainer = player.openContainer;
+		if (openContainer instanceof ContainerInfoPanel) {
+			int x = message.x;
+			int y = message.y;
+			int z = message.z;
+			TileEntityInfoPanel panel = ((ContainerInfoPanel) openContainer).panel;
+			if (panel != null && panel.xCoord == x && panel.yCoord == y && panel.zCoord == z && panel == player.worldObj.getTileEntity(x, y, z))
+				panel.setDisplaySettings(message.slot, message.settings);
 		}
 		return null;
 	}
