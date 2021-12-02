@@ -86,8 +86,8 @@ dependencies {
         setChanging(true)
         transitive = false
     }
-    compileOnly("curse.maven:craftguide-241994:2282591") //bigreactors - not needed in gtnh, won't build without
-    compileOnly("curse.maven:craftguide-268560:2475797") //mekanism - not needed in gtnh, won't build without
+    compileOnly("curse.maven:bigreactors-241994:2282591") //bigreactors - not needed in gtnh, won't build without
+    compileOnly("curse.maven:mekanism-268560:2475797") //mekanism - not needed in gtnh, won't build without
     compile "com.mod-buildcraft:buildcraft:7.1.23:dev"
     compile("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev") {
         setChanging(true)
