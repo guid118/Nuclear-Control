@@ -55,9 +55,6 @@ repositories {
         name "jitpack"
         url "https://jitpack.io"
     }
-    maven {
-        url "https://cursemaven.com"
-    }
 }
 
 group = "com.shedar.IC2NuclearControl"
@@ -86,8 +83,6 @@ dependencies {
         setChanging(true)
         transitive = false
     }
-    compileOnly("curse.maven:craftguide-241994:2282591")
-    compileOnly("curse.maven:craftguide-268560:2475797")
     compile "com.mod-buildcraft:buildcraft:7.1.23:dev"
     compile("com.github.GTNewHorizons:GT5-Unofficial:experimental-SNAPSHOT:dev") {
         setChanging(true)
