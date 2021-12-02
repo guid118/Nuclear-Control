@@ -1,6 +1,7 @@
 *.class
 /out
 /eclipse
+/.idea
 *.iml
 *.ipr
 *.iws
