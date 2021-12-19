@@ -1,6 +1,5 @@
 package shedar.mods.ic2.nuclearcontrol;
 
-import com.jadarstudios.developercapes.DevCapes;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;

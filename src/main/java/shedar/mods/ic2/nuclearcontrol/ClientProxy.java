@@ -66,11 +66,17 @@ public class ClientProxy extends CommonProxy {
 	public static EntityPlayer getPlayer() {
 		return Minecraft.getMinecraft().thePlayer;
 	}
+
 	public void cape(){
 		try {
-		DevCapes.getInstance().registerConfig("http://technic-solder.eu-central-1.linodeobjects.com/cape.json");
-		} catch (Exception e) {
+			Class.forName("com.jadarstudios.developercapes.DevCapes");
+			registerSupporterCapes();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void registerSupporterCapes() {
+		DevCapes.getInstance().registerConfig("http://technic-solder.eu-central-1.linodeobjects.com/cape.json");
 	}
 }
