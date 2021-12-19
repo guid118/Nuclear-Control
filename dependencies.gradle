@@ -1,0 +1,40 @@
+// Add your dependencies here
+
+dependencies {
+    compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
+
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:waila:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:NotEnoughItems:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:OpenComputers:unified-build-script-SNAPSHOT:dev") {  // TODO: switch to master
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+    compileOnly("com.github.GTNewHorizons:DeveloperCapes:master-SNAPSHOT:dev") {
+        transitive = false
+    }
+
+    compileOnly("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev") {
+        transitive = false
+    }
+    compileOnly("com.mod-buildcraft:buildcraft:7.1.23:dev") {
+        transitive = false
+    }
+    compileOnly("curse.maven:bigreactors-241994:2282591") {
+        transitive = false
+    }
+    compileOnly("curse.maven:mekanism-268560:2475797") {
+        transitive = false
+    }
+    compileOnly("net.sourceforge.argo:argo:6.0") {
+        transitive = false
+    }
+}
