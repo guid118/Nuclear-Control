@@ -21,10 +21,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:DeveloperCapes:master-SNAPSHOT:dev") {
         transitive = false
     }
-
-    compileOnly("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev") {
-        transitive = false
-    }
+    
     compileOnly("com.mod-buildcraft:buildcraft:7.1.23:dev") {
         transitive = false
     }
