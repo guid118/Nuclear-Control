@@ -39,15 +39,7 @@ public abstract class IC2Cross {
 
 	public static IC2Cross getIC2Cross() {
 		try {
-			if(Loader.isModLoaded("IC2-Classic-Spmod"))
-			{
-				Class clz = Class.forName("shedar.mods.ic2.nuclearcontrol.crossmod.ic2.IC2ClassicCross");
-				if(clz != null)
-				{
-					return (IC2Cross)clz.newInstance();
-				}
-			}
-			else if(Loader.isModLoaded("IC2"))
+			if(Loader.isModLoaded("IC2"))
 			{
 				Class clz = Class.forName("shedar.mods.ic2.nuclearcontrol.crossmod.ic2.IC2ExpCross");
 				if(clz != null)
