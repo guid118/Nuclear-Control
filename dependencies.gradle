@@ -12,7 +12,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:NotEnoughItems:master-SNAPSHOT:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:OpenComputers:unified-build-script-SNAPSHOT:dev") {  // TODO: switch to master
+    compileOnly("com.github.GTNewHorizons:OpenComputers:master-SNAPSHOT:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev") {
@@ -21,7 +21,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:DeveloperCapes:master-SNAPSHOT:dev") {
         transitive = false
     }
-    
+
     compileOnly("com.mod-buildcraft:buildcraft:7.1.23:dev") {
         transitive = false
     }
