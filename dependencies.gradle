@@ -3,19 +3,19 @@
 dependencies {
     compile("net.industrial-craft:industrialcraft-2:2.2.828-experimental:dev")
 
-    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta-70-GTNH:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:waila:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:waila:1.5.18:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:NotEnoughItems:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:NotEnoughItems:2.1.22-GTNH:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:OpenComputers:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:OpenComputers:1.7.5.20-GTNH:dev") {
         transitive = false
     }
-    compileOnly("com.github.GTNewHorizons:GT5-Unofficial:master-SNAPSHOT:dev") {
+    compileOnly("com.github.GTNewHorizons:GT5-Unofficial:5.09.40.17:dev") {
         transitive = false
     }
     compileOnly("com.github.GTNewHorizons:DeveloperCapes:master-SNAPSHOT:dev") {
