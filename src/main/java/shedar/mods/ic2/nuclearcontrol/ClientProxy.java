@@ -77,6 +77,6 @@ public class ClientProxy extends CommonProxy {
 	}
 
 	private void registerSupporterCapes() {
-		DevCapes.getInstance().registerConfig("http://technic-solder.eu-central-1.linodeobjects.com/cape.json");
+		DevCapes.getInstance().registerConfig("https://raw.githubusercontent.com/xbony2/xbony2.github.io/master/cape.json");
 	}
 }
