@@ -33,7 +33,7 @@ public class TileEntityInfoPanelExtender extends TileEntity implements
 	private short prevFacing;
 	public short facing;
 	private boolean partOfScreen;
-
+	private boolean NBTLoaded;
 	private int coreX;
 	private int coreY;
 	private int coreZ;
@@ -41,6 +41,14 @@ public class TileEntityInfoPanelExtender extends TileEntity implements
 	@Override
 	public short getFacing() {
 		return (short) Facing.oppositeSide[facing];
+	}
+
+	public boolean getPartOfScreen() {
+		return partOfScreen;
+	}
+
+	public boolean getNBTLoaded() {
+		return NBTLoaded;
 	}
 
 	@Override
@@ -78,6 +86,7 @@ public class TileEntityInfoPanelExtender extends TileEntity implements
 		prevFacing = 0;
 		screen = null;
 		partOfScreen = false;
+		NBTLoaded = false;
 	}
 
 	@Override
@@ -102,6 +111,12 @@ public class TileEntityInfoPanelExtender extends TileEntity implements
 		init = true;
 	}
 
+	public void setCoreCoordinates(int x, int y, int z) {
+		coreX = x;
+		coreY = y;
+		coreZ = z;
+	}
+
 	@Override
 	public void updateEntity() {
 		if (!init) {
@@ -120,6 +135,7 @@ public class TileEntityInfoPanelExtender extends TileEntity implements
 			coreY = nbttagcompound.getInteger("coreY");
 			coreZ = nbttagcompound.getInteger("coreZ");
 		}
+		NBTLoaded = true;
 	}
 
 	@Override
@@ -174,6 +190,9 @@ public class TileEntityInfoPanelExtender extends TileEntity implements
 	public void setScreen(Screen screen) {
 		this.screen = screen;
 		partOfScreen = screen != null;
+		if (partOfScreen) {
+			setCoreCoordinates(screen.getCore(worldObj).xCoord, screen.getCore(worldObj).yCoord, screen.getCore(worldObj).zCoord);
+		}
 	}
 
 	@Override
