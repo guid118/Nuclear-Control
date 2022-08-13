@@ -161,6 +161,10 @@ public class TileEntityInfoPanel extends TileEntity implements ISlotItemFilter,
 		return colored;
 	}
 
+	public byte getTextRotation() {
+		return 0;
+	}
+
 	public void setIsWeb(boolean c) {
 		isWeb = c;
 		if (prevIsWeb != c) {

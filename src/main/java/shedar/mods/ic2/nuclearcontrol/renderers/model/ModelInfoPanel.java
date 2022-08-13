@@ -388,71 +388,75 @@ public class ModelInfoPanel {
 
 		tess.setBrightness(block.getMixedBrightnessForBlock(panel.getWorldObj(), panel.xCoord, panel.yCoord, panel.zCoord));
 		tess.setColorOpaque_F(0.5F, 0.5F, 0.5F);
-		drawFacing(facing, panel.getRotation(), screen, panel, block, tess);
+
+		if (panel.getTransparencyMode() == 0) { //Check if face should be transparent
+			drawFacing(facing, panel.getRotation(), screen, panel, block, tess);
+		}
         //
 		tess.draw();
 		
 		//SIDES
-		Tessellator.instance.startDrawingQuads();
-        renderer.minecraftRB.renderEngine.bindTexture(TEXTURE_LOCATION);
-		Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(panel.getWorldObj(), panel.xCoord, panel.yCoord, panel.zCoord));
-		Tessellator.instance.setColorOpaque_F(0.5F, 0.5F, 0.5F);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		if (panel.getTransparencyMode() == 0) { //Check if block should be transparent
+			Tessellator.instance.startDrawingQuads();
+			renderer.minecraftRB.renderEngine.bindTexture(TEXTURE_LOCATION);
+			Tessellator.instance.setBrightness(block.getMixedBrightnessForBlock(panel.getWorldObj(), panel.xCoord, panel.yCoord, panel.zCoord));
+			Tessellator.instance.setColorOpaque_F(0.5F, 0.5F, 0.5F);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-		int dx = screen.getDx() + 1;
-		int dy = screen.getDy() + 1;
-		int dz = screen.getDz() + 1;
+			int dx = screen.getDx() + 1;
+			int dy = screen.getDy() + 1;
+			int dz = screen.getDz() + 1;
 
-		// bottom
-		if (facing != 0) {
-			Tessellator.instance.setNormal(0, -1, 0);
-			addPoint(0, 0, 0);
-			addPoint(3, dx, 0);
-			addPoint(2, dx, dz);
-			addPoint(1, 0, dz);
+			// bottom
+			if (facing != 0) {
+				Tessellator.instance.setNormal(0, -1, 0);
+				addPoint(0, 0, 0);
+				addPoint(3, dx, 0);
+				addPoint(2, dx, dz);
+				addPoint(1, 0, dz);
+			}
+
+			if (facing != 1) {
+				Tessellator.instance.setNormal(0, 1, 0);
+				addPoint(4, 0, 0);
+				addPoint(5, dz, 0);
+				addPoint(6, dz, dx);
+				addPoint(7, 0, dx);
+			}
+
+			if (facing != 2) {
+				Tessellator.instance.setNormal(0, 0, -1);
+				addPoint(0, 0, 0);
+				addPoint(4, dy, 0);
+				addPoint(7, dy, dx);
+				addPoint(3, 0, dx);
+			}
+
+			if (facing != 3) {
+				Tessellator.instance.setNormal(0, 0, 1);
+				addPoint(6, 0, 0);
+				addPoint(5, dx, 0);
+				addPoint(1, dx, dy);
+				addPoint(2, 0, dy);
+			}
+
+			if (facing != 4) {
+				Tessellator.instance.setNormal(-1, 0, 0);
+				addPoint(5, 0, 0);
+				addPoint(4, dz, 0);
+				addPoint(0, dz, dy);
+				addPoint(1, 0, dy);
+			}
+
+			if (facing != 5) {
+				Tessellator.instance.setNormal(1, 0, 0);
+				addPoint(2, 0, 0);
+				addPoint(3, dz, 0);
+				addPoint(7, dz, dy);
+				addPoint(6, 0, dy);
+			}
+			Tessellator.instance.draw();
 		}
-
-		if (facing != 1) {
-			Tessellator.instance.setNormal(0, 1, 0);
-			addPoint(4, 0, 0);
-			addPoint(5, dz, 0);
-			addPoint(6, dz, dx);
-			addPoint(7, 0, dx);
-		}
-
-		if (facing != 2) {
-			Tessellator.instance.setNormal(0, 0, -1);
-			addPoint(0, 0, 0);
-			addPoint(4, dy, 0);
-			addPoint(7, dy, dx);
-			addPoint(3, 0, dx);
-		}
-
-		if (facing != 3) {
-			Tessellator.instance.setNormal(0, 0, 1);
-			addPoint(6, 0, 0);
-			addPoint(5, dx, 0);
-			addPoint(1, dx, dy);
-			addPoint(2, 0, dy);
-		}
-
-		if (facing != 4) {
-			Tessellator.instance.setNormal(-1, 0, 0);
-			addPoint(5, 0, 0);
-			addPoint(4, dz, 0);
-			addPoint(0, dz, dy);
-			addPoint(1, 0, dy);
-		}
-
-		if (facing != 5) {
-			Tessellator.instance.setNormal(1, 0, 0);
-			addPoint(2, 0, 0);
-			addPoint(3, dz, 0);
-			addPoint(7, dz, dy);
-			addPoint(6, 0, dy);
-		}
-		Tessellator.instance.draw();
-		
 		//RETURN TO MC DRAWING
 		Tessellator.instance.startDrawingQuads();
 		renderer.minecraftRB.renderEngine.bindTexture(TEXTURE_LOCATION);

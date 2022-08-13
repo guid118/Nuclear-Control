@@ -116,10 +116,9 @@ public class MainBlockRenderer implements ISimpleBlockRenderingHandler {
 					renderer.renderStandardBlock(block, x, y, z);
 			} else if (tileEntity instanceof TileEntityAdvancedInfoPanelExtender) {
 				TileEntityAdvancedInfoPanelExtender advancedExtender = (TileEntityAdvancedInfoPanelExtender) tileEntity;
-				if (advancedExtender.getScreen() == null
-						|| advancedExtender.getScreen().getCore(
-								advancedExtender.getWorldObj()) == null)
+				if (advancedExtender.getNBTLoaded() && !advancedExtender.getPartOfScreen()) {
 					renderer.renderStandardBlock(block, x, y, z);
+				}
 			} else {
 				renderer.renderStandardBlock(block, x, y, z);
 			}

@@ -18,6 +18,9 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 	private byte prevPowerMode;
 	public byte powerMode;
 
+	private byte prevtransparencyMode;
+	public byte transparencyMode;
+
 	private byte prevThickness;
 	public byte thickness;
 
@@ -26,6 +29,9 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 
 	private byte prevRotateVert;
 	public byte rotateVert;
+
+	private byte prevTextRotation;
+	public byte textRotation;
 
 	public ItemStack card2;
 	public ItemStack card3;
@@ -40,6 +46,9 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 	public static final int POWER_INVERTED = 1;
 	public static final int POWER_ON = 2;
 	public static final int POWER_OFF = 3;
+	public static final int TRANSPARENCY_CHANGED = 6;
+	public static final int ROTATE_LEFT = 7;
+	public static final int ROTATE_RIGHT = 8;
 
 	public static final int OFFSET_THICKNESS = 100;
 	public static final int OFFSET_ROTATE_HOR = 200;
@@ -66,6 +75,32 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 			IC2.network.get().updateTileEntityField(this, "powerMode");
 		}
 		prevPowerMode = powerMode;
+	}
+
+	public byte getTransparencyMode() {
+		return transparencyMode;
+	}
+
+	public void setTransparencyMode(byte b) {
+		if (b == 2) {b = 0;}
+		transparencyMode = b;
+		if (prevtransparencyMode != b) {
+			IC2.network.get().updateTileEntityField(this, "transparencyMode");
+		}
+		prevtransparencyMode = transparencyMode;
+	}
+	@Override
+	public byte getTextRotation() {
+		return textRotation;
+	}
+
+	public void setTextRotation(byte r) {
+		if (r == -1) {r = 3;} else if (r == 4) {r = 0;}
+		textRotation = r;
+		if (prevTextRotation != r) {
+			IC2.network.get().updateTileEntityField(this, "textRotation");
+		}
+		prevTextRotation = textRotation;
 	}
 
 	public void setThickness(byte p) {
@@ -110,9 +145,11 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 		list.add("card2");
 		list.add("card3");
 		list.add("powerMode");
+		list.add("transparencyMode");
 		list.add("thickness");
 		list.add("rotateHor");
 		list.add("rotateVert");
+		list.add("textRotation");
 		return list;
 	}
 
@@ -133,6 +170,11 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 			prevPowerMode = powerMode;
 		} else if (field.equals("thickness") || field.equals("rotateHor")
 				|| field.equals("rotateVert")) {
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		} else if (field.equals("transparencyMode")) {
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			worldObj.func_147451_t(xCoord, yCoord, zCoord);
+		} else if (field.equals("textRotation")) {
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 
@@ -194,6 +236,8 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 		nbttagcompound.setByte("rotateVert", rotateVert);
 		nbttagcompound.setByte("thickness", thickness);
 		nbttagcompound.setByte("powerMode", powerMode);
+		nbttagcompound.setByte("transparencyMode", transparencyMode);
+		nbttagcompound.setByte("textRotation", transparencyMode);
 	}
 
 	@Override
@@ -205,6 +249,8 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 		rotateVert = nbttagcompound.getByte("rotateVert");
 		thickness = nbttagcompound.getByte("thickness");
 		powerMode = nbttagcompound.getByte("powerMode");
+		transparencyMode = nbttagcompound.getByte("transparencyMode");
+		textRotation = nbttagcompound.getByte("textRotation");
 	}
 
 	@Override
@@ -259,6 +305,16 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 			case POWER_REDSTONE:
 			case POWER_INVERTED:
 				setPowerMode((byte) i);
+				break;
+			case TRANSPARENCY_CHANGED:
+				setTransparencyMode((byte) (getTransparencyMode() + 1));
+				break;
+			case ROTATE_LEFT:
+				setTextRotation((byte) (textRotation - 1));
+				break;
+			case ROTATE_RIGHT:
+			setTextRotation((byte) (textRotation + 1));
+				break;
 			}
 		} else if (i >= OFFSET_THICKNESS && i < OFFSET_THICKNESS + 100) {
 			i -= OFFSET_THICKNESS;
