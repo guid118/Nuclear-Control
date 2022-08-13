@@ -239,6 +239,8 @@ public class TileEntityInfoPanelRenderer extends TileEntitySpecialRenderer {
 			}
 			GL11.glRotatef((float) -angleVert, 1, 0, 0);
 			GL11.glRotatef((float) angleHor, 0, 1, 0);
+			//Do text rotation here
+			GL11.glRotatef((float) panel.getTextRotation() * 90.0f, 0, 0, 1);
 			FontRenderer fontRenderer = this.func_147498_b();
 
 			int maxWidth = 1;
@@ -253,6 +255,11 @@ public class TileEntityInfoPanelRenderer extends TileEntitySpecialRenderer {
 
 			int lineHeight = fontRenderer.FONT_HEIGHT + 2;
 			int requiredHeight = lineHeight * joinedData.size();
+			if (panel.getTextRotation() == 1 || panel.getTextRotation() == 3) {
+				float tm = displayWidth;
+				displayWidth = displayHeight;
+				displayHeight = tm;
+			}
 			float scaleX = displayWidth / maxWidth;
 			float scaleY = displayHeight / requiredHeight;
 			float scale = Math.min(scaleX, scaleY);

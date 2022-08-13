@@ -43,6 +43,8 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel{
 	private static final int ID_POWER = 4;
 	private static final int ID_SETTINGS = 5;
 	private static final int ID_TRANSPARENCY = 6;
+	private static final int ID_ROTATELEFT = 7;
+	private static final int ID_ROTATERIGHT = 8;
 
 	private byte activeTab;
 	private boolean initialized;
@@ -93,7 +95,12 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel{
 		//power
 		buttonList.add(new IconButton(ID_POWER, guiLeft + 80 + 18*3, guiTop + 42, 16, 16, TEXTURE_LOCATION, 192-16, 
 				getIconPowerTopOffset(((TileEntityAdvancedInfoPanel)container.panel).getPowerMode())));
+		//transparency
 		buttonList.add(new IconButton(ID_TRANSPARENCY, guiLeft + 80 + 18*4, guiTop + 42 + 18, 16, 16, TEXTURE_LOCATION, 192, 15 + 48));
+		//rotate left
+		buttonList.add(new IconButton(ID_ROTATELEFT, guiLeft + 80 + 18*1, guiTop + 42, 16, 16, TEXTURE_LOCATION, 192, 15 + 64));
+		//rotate right
+		buttonList.add(new IconButton(ID_ROTATERIGHT, guiLeft + 80 + 18*1, guiTop + 42 + 18, 16, 16, TEXTURE_LOCATION, 192, 15 + 80));
 
 		if (card != null && card.getItem() instanceof IPanelDataSource)
 		{
@@ -234,6 +241,12 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel{
 			break;
 		case ID_TRANSPARENCY:
 			((NetworkManager)IC2.network.get()).initiateClientTileEntityEvent(container.panel, ID_TRANSPARENCY);
+			break;
+		case ID_ROTATELEFT:
+			((NetworkManager)IC2.network.get()).initiateClientTileEntityEvent(container.panel, ID_ROTATELEFT);
+			break;
+		case ID_ROTATERIGHT:
+			((NetworkManager)IC2.network.get()).initiateClientTileEntityEvent(container.panel, ID_ROTATERIGHT);
 			break;
 		}
 	}
