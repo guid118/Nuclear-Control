@@ -264,7 +264,6 @@ public class TileEntityInfoPanelRenderer extends TileEntitySpecialRenderer {
 			float scaleY = displayHeight / requiredHeight;
 			float scale = Math.min(scaleX, scaleY);
 			GL11.glScalef(scale, -scale, scale);
-			GL11.glDepthMask(false);
 
 			int offsetX;
 			int offsetY;
@@ -314,7 +313,6 @@ public class TileEntityInfoPanelRenderer extends TileEntitySpecialRenderer {
 
 			GL11.glEnable(GL11.GL_LIGHTING);
 
-			GL11.glDepthMask(true);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
 			GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
