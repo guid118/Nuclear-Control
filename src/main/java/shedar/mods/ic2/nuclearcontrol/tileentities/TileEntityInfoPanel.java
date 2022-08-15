@@ -53,11 +53,7 @@ public class TileEntityInfoPanel extends TileEntity implements ISlotItemFilter,
 			0x1f3ce7, 0x8f1fea, 0x1fd7e9, 0xcbcbcb, 0x222222, 0xe60675,
 			0x1fe723, 0xe9cc1f, 0x06aee4, 0xb006e3, 0xe7761f };
 
-	public static final int BORDER_NONE = 0;
-	public static final int BORDER_LEFT = 1;
-	public static final int BORDER_RIGHT = 2;
-	public static final int BORDER_TOP = 4;
-	public static final int BORDER_BOTTOM = 8;
+	public static final int I_PANEL_BACKGROUND = 6;
 
 	public static final int DISPLAY_DEFAULT = Integer.MAX_VALUE;
 
@@ -786,7 +782,7 @@ public class TileEntityInfoPanel extends TileEntity implements ISlotItemFilter,
 		if (texture != InfoPanel.I_COLOR_DEFAULT) {
 			return texture;
 		}
-		texture = 6;
+		texture = I_PANEL_BACKGROUND;
 
 		if (colored) {
 			texture = texture + colorBackground * 16;
