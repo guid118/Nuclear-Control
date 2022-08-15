@@ -231,14 +231,6 @@ public class ModelInfoPanel {
 		addPoint(points[3], u2, v1);
 	}
 
-	private double[] midpointToPointScaled(double[] mid, double[] point, double scale) {
-		double[] vec = new double[3];
-		vec[0] = (point[0] - mid[0]) * scale;
-		vec[1] = (point[1] - mid[1]) * scale;
-		vec[2] = (point[2] - mid[2]) * scale;
-		return vec;
-	}
-
 	private double[] normalize(double[] vec) {
 		double len = Math.sqrt((vec[0]*vec[0]) + (vec[1]*vec[1]) + (vec[2]*vec[2]));
 		return new double[] {vec[0]/len, vec[1]/len, vec[2]/len};
@@ -251,13 +243,12 @@ public class ModelInfoPanel {
 	private double[] vectorBetweenPoints(double[] vec1, double[] vec2) {
 		return new double[] {vec1[0] - vec2[0], vec1[1] - vec2[1], vec1[2] - vec2[2]};
 	}
-	private void addPointsWithScaling(byte[] points, byte[] n, double u1, double u2, double v1, double v2, double border, int facing) {
+	private void drawScreenWithBorder(byte[] points, byte[] n, double u1, double u2, double v1, double v2, double border, int facing) {
 		Tessellator.instance.setNormal(n[0], n[1], n[2]);
 		double[][] UVMap = {{u1, v1},{u1, v2},{u2, v2},{u2, v1}};
 		byte[] edges = {points[3], points[0], points[1], points[2], points[3], points[0]};
 
 		for (int i = 1; i < 5; i++) {
-
 			double[] edge1 = scale(normalize(vectorBetweenPoints(
 				new double[] {coordinates[edges[i]*3], coordinates[edges[i]*3+1], coordinates[edges[i]*3+2]},
 				new double[] {coordinates[edges[i+1]*3], coordinates[edges[i+1]*3+1], coordinates[edges[i+1]*3+2]})), border);
@@ -291,7 +282,7 @@ public class ModelInfoPanel {
 		v1 = texture.getMinV();
 		v2 = texture.getMaxV();
 		
-		addPointsWithScaling(pointMap[facing], normalMap[facing], u1, u2, v1, v2, 0.05, facing);
+		drawScreenWithBorder(pointMap[facing], normalMap[facing], u1, u2, v1, v2, 0.05, facing);
 
 	}
 
