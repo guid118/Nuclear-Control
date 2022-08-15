@@ -27,7 +27,7 @@ public class ScreenManager {
 		unusedPanels = new HashMap<Integer, List<TileEntityInfoPanel>>();
 	}
 
-	private int getWorldKey(World world) {
+	public int getWorldKey(World world) {
 		if (world == null)
 			return -10;
 		if (world.getWorldInfo() == null)
@@ -38,6 +38,10 @@ public class ScreenManager {
 		} else {
 			return world.getWorldInfo().getVanillaDimension();
 		}
+	}
+
+	public Map<Integer, List<Screen>> getScreens() {
+		return screens;
 	}
 
 	private boolean isValidExtender(World world, int x, int y, int z,
