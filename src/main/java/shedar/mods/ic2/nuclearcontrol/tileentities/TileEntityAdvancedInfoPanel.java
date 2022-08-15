@@ -237,7 +237,7 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 		nbttagcompound.setByte("thickness", thickness);
 		nbttagcompound.setByte("powerMode", powerMode);
 		nbttagcompound.setByte("transparencyMode", transparencyMode);
-		nbttagcompound.setByte("textRotation", transparencyMode);
+		nbttagcompound.setByte("textRotation", textRotation);
 	}
 
 	@Override

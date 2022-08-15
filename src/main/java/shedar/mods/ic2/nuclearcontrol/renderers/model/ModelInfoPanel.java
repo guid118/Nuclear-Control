@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Facing;
 
 import org.lwjgl.opengl.GL11;
 
@@ -20,6 +21,22 @@ public class ModelInfoPanel {
 	private static final ResourceLocation TEXTURE_LOCATION = new ResourceLocation(TEXTURE_FILE);
 
 	private double[] coordinates = new double[24];
+	private static final byte[][] pointMap = {
+		{0, 3, 2, 1},
+		{4, 5, 6, 7},
+		{0, 4, 7, 3},
+		{6, 5, 1, 2},
+		{5, 4, 0, 1},
+		{2, 3, 7, 6} 
+	};
+	private static final byte[][] normalMap = {
+		{0, -1, 0},
+		{0, 1, 0},
+		{0, 0, -1},
+		{0, 0, 1},
+		{-1, 0, 0},
+		{1, 0, 0} 
+	};
 
 	private void assignWithRotation(int rotation, int offset, int sign, int tl,
 			int tr, int br, int bl, double dtl, double dtr, double dbr,
@@ -152,11 +169,13 @@ public class ModelInfoPanel {
 
 	private void initCoordinates(Block block, Screen screen) {
 
-		// 5o ----- o6
-		// 4o ----- o7
-		// / | /
-		// / 1o / o2
-		// 0o ----- o3
+		//   5 -------6
+		//  /|       /|
+		// 4 -------7 |
+		// | |      | |
+		// | 1 -----|-2
+	    // |/	    |/
+		// 0 ------ 3
 		double blockMinX = block.getBlockBoundsMinX();
 		double blockMinY = block.getBlockBoundsMinY();
 		double blockMinZ = block.getBlockBoundsMinZ();
@@ -204,175 +223,67 @@ public class ModelInfoPanel {
 				coordinates[point * 3 + 1], coordinates[point * 3 + 2], u, v);
 	}
 
+	private void addPoints(byte[] points, byte[] n, double u1, double u2, double v1, double v2) {
+		Tessellator.instance.setNormal(n[0], n[1], n[2]);
+		addPoint(points[0], u1, v1);
+		addPoint(points[1], u1, v2);
+		addPoint(points[2], u2, v2);
+		addPoint(points[3], u2, v1);
+	}
+
+	private double[] normalize(double[] vec) {
+		double len = Math.sqrt((vec[0]*vec[0]) + (vec[1]*vec[1]) + (vec[2]*vec[2]));
+		return new double[] {vec[0]/len, vec[1]/len, vec[2]/len};
+	}
+
+	private double[] scale(double[] vec, double scale) {
+		return new double[] {vec[0]*scale, vec[1]*scale, vec[2]*scale};
+	}
+
+	private double[] vectorBetweenPoints(double[] vec1, double[] vec2) {
+		return new double[] {vec1[0] - vec2[0], vec1[1] - vec2[1], vec1[2] - vec2[2]};
+	}
+	private void drawScreenWithBorder(byte[] points, byte[] n, double u1, double u2, double v1, double v2, double border, int facing) {
+		Tessellator.instance.setNormal(n[0], n[1], n[2]);
+		double[][] UVMap = {{u1, v1},{u1, v2},{u2, v2},{u2, v1}};
+		byte[] edges = {points[3], points[0], points[1], points[2], points[3], points[0]};
+
+		for (int i = 1; i < 5; i++) {
+			double[] edge1 = scale(normalize(vectorBetweenPoints(
+				new double[] {coordinates[edges[i]*3], coordinates[edges[i]*3+1], coordinates[edges[i]*3+2]},
+				new double[] {coordinates[edges[i+1]*3], coordinates[edges[i+1]*3+1], coordinates[edges[i+1]*3+2]})), border);
+			double[] edge2 = scale(normalize(vectorBetweenPoints(
+				new double[] {coordinates[edges[i]*3], coordinates[edges[i]*3+1], coordinates[edges[i]*3+2]},
+				new double[] {coordinates[edges[i-1]*3], coordinates[edges[i-1]*3+1], coordinates[edges[i-1]*3+2]})), border);
+
+			Tessellator.instance.addVertexWithUV(
+				coordinates[edges[i]*3] - edge1[0] - edge2[0] + 0.001 * Facing.offsetsXForSide[facing],
+				coordinates[edges[i]*3 + 1] - edge1[1] - edge2[1] + 0.001 * Facing.offsetsYForSide[facing],
+				coordinates[edges[i]*3 + 2] - edge1[2] - edge2[2] + 0.001 * Facing.offsetsZForSide[facing], UVMap[i-1][0], UVMap[i-1][1]);
+		}
+
+	}
+
 	private void drawFacing(int facing, int rotation, Screen screen, TileEntityAdvancedInfoPanel panel, Block block, Tessellator tess) {
-		// TODO: refactor here
-		int point = 0;
-		int pointR = 0;
-		int pointB = 0;
-		int pointRB = 0;
 
-		int offsetH = 0;
-		int offsetV = 0;
-		int offsetD = 0;
+		IIcon texture = block.getIcon(panel.getWorldObj(), panel.xCoord, panel.yCoord, panel.zCoord, 0);
 
-		boolean ccw = false;
-		switch (facing) {
-		case 0:
-			tess.setNormal(0, -1, 0);
-			point = 3;
-			pointR = 0;
-			pointB = 2;
-			pointRB = 1;
+		double u1 = texture.getMinU();
+		double u2 = texture.getMaxU();
+		double v1 = texture.getMinV();
+		double v2 = texture.getMaxV();
+		GL11.glDepthMask(false);
+		addPoints(pointMap[facing], normalMap[facing], u1, u2, v1, v2);
+		GL11.glDepthMask(true);
+		texture = block.getIcon(panel.getWorldObj(), panel.xCoord, panel.yCoord, panel.zCoord, facing);
 
-			offsetH = 0;
-			offsetV = 2;
-			offsetD = 1;
-			ccw = true;
-			break;
-		case 1:
-			tess.setNormal(0, 1, 0);
-			point = 4;
-			pointR = 7;
-			pointB = 5;
-			pointRB = 6;
+		u1 = texture.getMinU();
+		u2 = texture.getMaxU();
+		v1 = texture.getMinV();
+		v2 = texture.getMaxV();
+		
+		drawScreenWithBorder(pointMap[facing], normalMap[facing], u1, u2, v1, v2, 0.05, facing);
 
-			offsetH = 0;
-			offsetV = 2;
-			offsetD = 1;
-			break;
-		case 2:
-			tess.setNormal(0, 0, -1);
-			point = 7;
-			pointR = 4;
-			pointB = 3;
-			pointRB = 0;
-
-			offsetH = 0;
-			offsetV = 1;
-			offsetD = 2;
-			ccw = rotation == 1 || rotation == 2;
-			break;
-		case 3:
-			tess.setNormal(0, 0, 1);
-			point = 5;
-			pointR = 6;
-			pointB = 1;
-			pointRB = 2;
-
-			offsetH = 0;
-			offsetV = 1;
-			offsetD = 2;
-			break;
-		case 4:
-			tess.setNormal(-1, 0, 0);
-			point = 4;
-			pointR = 5;
-			pointB = 0;
-			pointRB = 1;
-
-			offsetH = 2;
-			offsetV = 1;
-			offsetD = 0;
-			break;
-		case 5:
-			tess.setNormal(1, 0, 0);
-			point = 6;
-			pointR = 7;
-			pointB = 2;
-			pointRB = 3;
-
-			offsetH = 2;
-			offsetV = 1;
-			offsetD = 0;
-			ccw = rotation == 1 || rotation == 2;
-			break;
-		}
-		switch (rotation) {
-		case 1:
-			int tmp = offsetH;
-			offsetH = offsetV;
-			offsetV = tmp;
-
-			pointB = point;
-			point = pointR;
-			pointR = pointRB;
-			break;
-		case 2:
-			tmp = offsetH;
-			offsetH = offsetV;
-			offsetV = tmp;
-
-			pointR = point;
-			point = pointB;
-			pointB = pointRB;
-			break;
-		case 3:
-			point = pointRB;
-			tmp = pointR;
-			pointR = pointB;
-			pointB = tmp;
-			break;
-		}
-
-		int stepsHor = screen.getWidth(panel);
-		int stepsVert = screen.getHeight(panel);
-		int sh = 0;
-		double dh = (coordinates[pointR * 3 + offsetH] - coordinates[point * 3
-				+ offsetH])
-				/ stepsHor;
-		double dv = (coordinates[pointB * 3 + offsetV] - coordinates[point * 3
-				+ offsetV])
-				/ stepsVert;
-		double ddh = (coordinates[pointR * 3 + offsetD] - coordinates[point * 3
-				+ offsetD])
-				/ stepsHor;
-		double ddv = (coordinates[pointB * 3 + offsetD] - coordinates[point * 3
-				+ offsetD])
-				/ stepsVert;
-		double[] base = new double[] { coordinates[point * 3],
-				coordinates[point * 3 + 1], coordinates[point * 3 + 2] };
-		double[] midpoint = new double[3];
-		while (sh < stepsHor) {
-			int sv = 0;
-			while (sv < stepsVert) {
-				double[] p = base.clone();
-				p[offsetH] += dh * sh;
-				p[offsetV] += dv * sv;
-				p[offsetD] += ddh * sh + ddv * sv;
-
-				midpoint[offsetH] = p[offsetH] + dh / 2;
-				midpoint[offsetV] = p[offsetV] + dv / 2;
-				midpoint[offsetD] = p[offsetD] + (ddh + ddv) / 2;
-
-				IIcon texture = block.getIcon(panel.getWorldObj(),
-						(int) Math.floor(midpoint[0]),
-						(int) Math.floor(midpoint[1]),
-						(int) Math.floor(midpoint[2]), facing);
-
-				double u1 = texture.getMinU();
-				double u2 = texture.getMaxU();
-				double v1 = texture.getMinV();
-				double v2 = texture.getMaxV();
-				if (ccw) {
-					double tu = u1;
-					u1 = u2;
-					u2 = tu;
-				}
-				tess.addVertexWithUV(p[0], p[1], p[2], u1, v1);
-				p[offsetV] += dv;
-				p[offsetD] += ddv;
-				tess.addVertexWithUV(p[0], p[1], p[2], u1, v2);
-				p[offsetH] += dh;
-				p[offsetD] += ddh;
-				tess.addVertexWithUV(p[0], p[1], p[2], u2, v2);
-				p[offsetV] -= dv;
-				p[offsetD] -= ddv;
-				tess.addVertexWithUV(p[0], p[1], p[2], u2, v1);
-
-				sv++;
-			}
-			sh++;
-		}
 	}
 
 	public void renderScreen(Block block, TileEntityAdvancedInfoPanel panel, double x, double y, double z, RenderBlocks renderer) {
