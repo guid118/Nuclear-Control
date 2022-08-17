@@ -121,10 +121,12 @@ public class MainBlockRenderer implements ISimpleBlockRenderingHandler {
 				TileEntityAdvancedInfoPanelExtender advancedExtender = (TileEntityAdvancedInfoPanelExtender) tileEntity;
 				boolean wasRendered = false;
 
-				for (Screen screen : IC2NuclearControl.instance.screenManager.getScreens().get(
-					IC2NuclearControl.instance.screenManager.getWorldKey(advancedExtender.getWorldObj()))) {
-					if (screen.isBlockPartOf(advancedExtender)) {
-						wasRendered = true;
+				if (IC2NuclearControl.instance.screenManager != null) {
+					for (Screen screen : IC2NuclearControl.instance.screenManager.getScreens().get(
+						IC2NuclearControl.instance.screenManager.getWorldKey(advancedExtender.getWorldObj()))) {
+						if (screen != null && screen.isBlockPartOf(advancedExtender)) {
+							wasRendered = true;
+						}
 					}
 				}
 
