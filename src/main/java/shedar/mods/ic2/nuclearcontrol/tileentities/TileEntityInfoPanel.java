@@ -784,9 +784,7 @@ public class TileEntityInfoPanel extends TileEntity implements ISlotItemFilter,
 		}
 		texture = I_PANEL_BACKGROUND;
 
-		if (colored) {
-			texture = texture + colorBackground * 16;
-		}
+		texture = texture + colorBackground * 16;
 
 		if (getPowered()) {
 			texture += 240;
