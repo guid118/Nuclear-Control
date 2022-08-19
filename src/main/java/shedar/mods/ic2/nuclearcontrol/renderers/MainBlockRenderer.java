@@ -18,7 +18,6 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import shedar.mods.ic2.nuclearcontrol.panel.Screen;
-import shedar.mods.ic2.nuclearcontrol.panel.ScreenManager;
 
 @SideOnly(Side.CLIENT)
 public class MainBlockRenderer implements ISimpleBlockRenderingHandler {
@@ -121,7 +120,10 @@ public class MainBlockRenderer implements ISimpleBlockRenderingHandler {
 				TileEntityAdvancedInfoPanelExtender advancedExtender = (TileEntityAdvancedInfoPanelExtender) tileEntity;
 				boolean wasRendered = false;
 
-				if (IC2NuclearControl.instance.screenManager != null) {
+				if (IC2NuclearControl.instance.screenManager == null || IC2NuclearControl.instance.screenManager.getScreens().get(
+					IC2NuclearControl.instance.screenManager.getWorldKey(advancedExtender.getWorldObj())) == null ) {
+					wasRendered = true;
+				} else {
 					for (Screen screen : IC2NuclearControl.instance.screenManager.getScreens().get(
 						IC2NuclearControl.instance.screenManager.getWorldKey(advancedExtender.getWorldObj()))) {
 						if (screen != null && screen.isBlockPartOf(advancedExtender)) {
