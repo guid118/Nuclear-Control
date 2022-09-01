@@ -56,7 +56,7 @@ public class ItemPanelMemoryCard extends Item {
 	public boolean onItemUseFirst(ItemStack itemStack, EntityPlayer player,
 								  World world, int x, int y, int z, int side,
 								  float hitX, float hitY, float hitZ) {
-		boolean isServer = player instanceof EntityPlayerMP;
+		boolean isServer = !world.isRemote;
 		if (!isServer)
 			return false;
 
