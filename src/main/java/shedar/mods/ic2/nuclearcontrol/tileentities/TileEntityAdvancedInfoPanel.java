@@ -254,6 +254,30 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 	}
 
 	@Override
+	public void readDisplaySettingsFromCard(ItemStack item) {
+		NBTTagCompound nbt = item.getTagCompound();
+
+		setDeserializedDisplaySettings(nbt, "dSettings1", SLOT_CARD1);
+		setDeserializedDisplaySettings(nbt, "dSettings2", SLOT_CARD2);
+		setDeserializedDisplaySettings(nbt, "dSettings3", SLOT_CARD3);
+
+		// Compat for settings for one card from normal panel
+		setDeserializedDisplaySettings(nbt, "dSettings", SLOT_CARD1);
+
+		// If one of these keys exists, all should
+		if (nbt.hasKey("rotateHor")) {
+			setRotateHor(nbt.getByte("rotateHor"));
+			setRotateVert(nbt.getByte("rotateVert"));
+			setThickness(nbt.getByte("thickness"));
+			setPowerMode(nbt.getByte("powerMode"));
+			setTransparencyMode(nbt.getByte("transparencyMode"));
+			setTextRotation(nbt.getByte("textRotation"));
+			setColorText(nbt.getInteger("colorText"));
+			setColorBackground(nbt.getInteger("colorBackground"));
+		}
+	}
+
+	@Override
 	protected void postReadFromNBT() {
 		if (inventory[SLOT_CARD1] != null) {
 			card = inventory[SLOT_CARD1];

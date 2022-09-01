@@ -3,6 +3,7 @@ nc.itemgroup.tab=Nuclear Control 2
 
 #Internal Items
 item.ItemToolThermometer.name=Thermometer
+item.ItemPanelMemoryCard.name=Information Panel Memory Card
 item.ItemToolDigitalThermometer.name=Digital Thermometer
 item.ItemRemoteSensorKit.name=Remote Sensor Kit
 item.ItemEnergySensorKit.name=Energy Sensor Kit
