@@ -44,6 +44,7 @@ import shedar.mods.ic2.nuclearcontrol.items.ItemKitMultipleSensor;
 import shedar.mods.ic2.nuclearcontrol.items.ItemKitReactorSensor;
 import shedar.mods.ic2.nuclearcontrol.items.ItemNuclearControlLight;
 import shedar.mods.ic2.nuclearcontrol.items.ItemNuclearControlMain;
+import shedar.mods.ic2.nuclearcontrol.items.ItemPanelMemoryCard;
 import shedar.mods.ic2.nuclearcontrol.items.ItemRemoteMonitor;
 import shedar.mods.ic2.nuclearcontrol.items.ItemTimeCard;
 import shedar.mods.ic2.nuclearcontrol.items.ItemToolDigitalThermometer;
@@ -82,6 +83,7 @@ public class IC2NuclearControl {
 	public static boolean isThorfusionLoaded;
 	public String allowedAlarms;
 	public List<String> serverAllowedAlarms;
+	public static Item itemPanelMemoryCard;
 	public static Item itemToolThermometer;
 	public static Item itemToolDigitalThermometer;
 	public static Item itemRemoteSensorKit;
@@ -126,6 +128,7 @@ public class IC2NuclearControl {
 	protected void initBlocks() {
 		blockNuclearControlMain = new BlockNuclearControlMain();
 		blockNuclearControlLight = new BlockNuclearControlLight();
+		itemPanelMemoryCard = new ItemPanelMemoryCard().setUnlocalizedName("ItemPanelMemoryCard");
 		itemToolThermometer = new ItemToolThermometer().setUnlocalizedName("ItemToolThermometer");
 		itemToolDigitalThermometer = new ItemToolDigitalThermometer(1, 80, 80).setUnlocalizedName("ItemToolDigitalThermometer");
 		itemSensorLocationCard = new ItemCardReactorSensorLocation().setUnlocalizedName("ItemSensorLocationCard");
@@ -140,12 +143,13 @@ public class IC2NuclearControl {
 		itemRemoteSensorKit = new ItemKitReactorSensor().setUnlocalizedName("ItemRemoteSensorKit");
 		itemLiquidArrayLocationCard = new ItemCardLiquidArrayLocation().setUnlocalizedName("ItemLiquidArrayLocationCard");
 		item55ReactorCard = new ItemCard55Reactor().setUnlocalizedName("Item55ReactorCard");
-        itemRemoteMonitor = new ItemRemoteMonitor().setUnlocalizedName("remoteMonitor");
+		itemRemoteMonitor = new ItemRemoteMonitor().setUnlocalizedName("remoteMonitor");
 	}
 
 	protected void registerBlocks() {
 		GameRegistry.registerBlock(blockNuclearControlMain, ItemNuclearControlMain.class, "blockNuclearControlMain");
 		GameRegistry.registerBlock(blockNuclearControlLight, ItemNuclearControlLight.class,"blockNuclearControlLight");
+		GameRegistry.registerItem(itemPanelMemoryCard, "ItemPanelMemoryCard");
 		GameRegistry.registerItem(itemToolThermometer, "ItemToolThermometer");
 		GameRegistry.registerItem(itemToolDigitalThermometer, "ItemToolDigitalThermometer");
 		GameRegistry.registerItem(itemRemoteSensorKit, "ItemRemoteSensorKit");
@@ -160,7 +164,7 @@ public class IC2NuclearControl {
 		GameRegistry.registerItem(itemTextCard, "ItemTextCard");
 		GameRegistry.registerItem(itemLiquidArrayLocationCard, "ItemLiquidArrayLocationCard");
 		GameRegistry.registerItem(item55ReactorCard, "Item55ReactorCard");
-        GameRegistry.registerItem(itemRemoteMonitor, "remoteMonitor");
+		GameRegistry.registerItem(itemRemoteMonitor, "remoteMonitor");
 	}
 
 	@EventHandler
@@ -188,7 +192,7 @@ public class IC2NuclearControl {
 			FMLCommonHandler.instance().bus().register(ClientTickHandler.instance);
 		}
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
-        CrossModLoader.preinit();
+		CrossModLoader.preinit();
 	}
 
 	@EventHandler

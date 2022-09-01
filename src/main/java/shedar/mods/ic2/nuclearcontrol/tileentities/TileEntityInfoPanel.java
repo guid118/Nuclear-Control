@@ -438,6 +438,26 @@ public class TileEntityInfoPanel extends TileEntity implements ISlotItemFilter,
 		}
 	}
 
+	// Same as deserializeDisplaySettings, but uses setDisplaySettings
+	// to ensure values are properly updated
+	protected void setDeserializedDisplaySettings(NBTTagCompound nbttagcompound,
+			String tagName, byte slot) {
+		if (nbttagcompound.hasKey(tagName)) {
+			NBTTagList settingsList = nbttagcompound.getTagList(tagName,
+					Constants.NBT.TAG_COMPOUND);
+			for (int i = 0; i < settingsList.tagCount(); i++) {
+				NBTTagCompound compound = settingsList.getCompoundTagAt(i);
+				try {
+					int value = compound.getInteger("value");
+					setDisplaySettings(slot, value);
+				} catch (IllegalArgumentException e) {
+					IC2NuclearControl.logger
+							.warn("Ivalid display settings for Information Panel");
+				}
+			}
+		}
+	}
+
 	protected void readDisplaySettings(NBTTagCompound nbttagcompound) {
 		deserializeDisplaySettings(nbttagcompound, "dSettings", SLOT_CARD);
 		if (nbttagcompound.hasKey("dSets")) {// v.1.3.2 compatibility
@@ -446,6 +466,14 @@ public class TileEntityInfoPanel extends TileEntity implements ISlotItemFilter,
 				displaySettings.get(SLOT_CARD).put(new UUID(0, i), dSets[i]);
 			}
 		}
+	}
+
+	public void readDisplaySettingsFromCard(ItemStack item) {
+		NBTTagCompound nbt = item.getTagCompound();
+		setDeserializedDisplaySettings(nbt, "dSettings", SLOT_CARD);
+
+		// Compat for settings for one card from advanced panel
+		setDeserializedDisplaySettings(nbt, "dSettings1", SLOT_CARD);
 	}
 
 	@Override
@@ -512,6 +540,14 @@ public class TileEntityInfoPanel extends TileEntity implements ISlotItemFilter,
 
 	protected void saveDisplaySettings(NBTTagCompound nbttagcompound) {
 		nbttagcompound.setTag("dSettings", serializeSlotSettings(SLOT_CARD));
+	}
+
+	public void saveDisplaySettingsToCard(ItemStack item) {
+		NBTTagCompound nbt = new NBTTagCompound();
+		this.saveDisplaySettings(nbt);
+		nbt.setInteger("colorText", colorText);
+		nbt.setInteger("colorBackground", colorBackground);
+		item.setTagCompound(nbt);
 	}
 
 	@Override
