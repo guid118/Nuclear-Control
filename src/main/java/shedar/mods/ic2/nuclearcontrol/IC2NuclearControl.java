@@ -95,7 +95,6 @@ public class IC2NuclearControl {
 	public int screenRefreshPeriod;
 	public int dataRefreshPeriod;
 	public int rangeTriggerRefreshPeriod;
-	public boolean disableCapes;
 	public String recipes;
 
 	public CrossBuildcraft crossBC;
@@ -189,9 +188,6 @@ public class IC2NuclearControl {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		//proxy, tilentity
-		if (!isThorfusionLoaded && !disableCapes) {
-			proxy.cape();
-		}
 		CrossModLoader.postinit();
 		crossBC = new CrossBuildcraft();
 		crossRailcraft = new CrossRailcraft();

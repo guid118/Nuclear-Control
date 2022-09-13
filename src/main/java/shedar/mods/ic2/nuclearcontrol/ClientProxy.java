@@ -5,7 +5,6 @@
  */
 package shedar.mods.ic2.nuclearcontrol;
 
-import com.jadarstudios.developercapes.DevCapes;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -58,18 +57,5 @@ public class ClientProxy extends CommonProxy {
 
 	public static EntityPlayer getPlayer() {
 		return Minecraft.getMinecraft().thePlayer;
-	}
-
-	public void cape() {
-		try {
-			Class.forName("com.jadarstudios.developercapes.DevCapes");
-			registerSupporterCapes();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void registerSupporterCapes() {
-		DevCapes.getInstance().registerConfig("https://raw.githubusercontent.com/xbony2/xbony2.github.io/master/cape.json");
 	}
 }
