@@ -1,11 +1,12 @@
 package shedar.mods.ic2.nuclearcontrol;
 
 public interface IRotation {
-	void rotate();
 
-	int getRotation();
+    void rotate();
 
-	void setRotation(int rotation);
+    int getRotation();
 
-	short getFacing();
+    void setRotation(int rotation);
+
+    short getFacing();
 }

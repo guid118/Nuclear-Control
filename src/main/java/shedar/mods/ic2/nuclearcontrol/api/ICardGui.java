@@ -7,12 +7,12 @@ package shedar.mods.ic2.nuclearcontrol.api;
  *
  */
 public interface ICardGui {
-	/**
-	 * Method sets wrapper object, which should be used to store new settings
-	 * and return to the Information Panel gui.
-	 * 
-	 * @param wrapper
-	 * @see ICardSettingsWrapper
-	 */
-	void setCardSettingsHelper(ICardSettingsWrapper wrapper);
+
+    /**
+     * Method sets wrapper object, which should be used to store new settings and return to the Information Panel gui.
+     * 
+     * @param wrapper
+     * @see ICardSettingsWrapper
+     */
+    void setCardSettingsHelper(ICardSettingsWrapper wrapper);
 }

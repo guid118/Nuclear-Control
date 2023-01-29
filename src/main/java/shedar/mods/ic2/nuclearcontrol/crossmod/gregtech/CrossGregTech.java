@@ -1,19 +1,20 @@
 package shedar.mods.ic2.nuclearcontrol.crossmod.gregtech;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.items.GT_RadioactiveCell_Item;
 import net.minecraft.item.ItemStack;
 
-import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.crossmod.ModLib;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.items.GT_RadioactiveCellIC_Item;
+import gregtech.api.items.GT_RadioactiveCell_Item;
 
 public class CrossGregTech {
+
     private boolean _isApiAvailable;
 
     public CrossGregTech() {
-        if(Loader.isModLoaded(ModLib.GT)) {
+        if (Loader.isModLoaded(ModLib.GT)) {
             _isApiAvailable = true;
             IC2NuclearControl.logger.info("[IC2NuclearControl] find GregTech");
         } else {
@@ -21,8 +22,8 @@ public class CrossGregTech {
         }
 
     }
-    public boolean isApiAvailable()
-    {
+
+    public boolean isApiAvailable() {
         return _isApiAvailable;
     }
 

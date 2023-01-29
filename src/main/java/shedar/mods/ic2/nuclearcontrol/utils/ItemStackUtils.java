@@ -5,12 +5,12 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemStackUtils {
 
-	public static NBTTagCompound getTagCompound(ItemStack itemStack) {
-		NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
-		if (nbtTagCompound == null) {
-			nbtTagCompound = new NBTTagCompound();
-			itemStack.setTagCompound(nbtTagCompound);
-		}
-		return nbtTagCompound;
-	}
+    public static NBTTagCompound getTagCompound(ItemStack itemStack) {
+        NBTTagCompound nbtTagCompound = itemStack.getTagCompound();
+        if (nbtTagCompound == null) {
+            nbtTagCompound = new NBTTagCompound();
+            itemStack.setTagCompound(nbtTagCompound);
+        }
+        return nbtTagCompound;
+    }
 }

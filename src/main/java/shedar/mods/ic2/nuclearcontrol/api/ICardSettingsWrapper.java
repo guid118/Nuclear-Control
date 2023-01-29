@@ -9,22 +9,22 @@ package shedar.mods.ic2.nuclearcontrol.api;
  *
  */
 public interface ICardSettingsWrapper {
-	void setInt(String name, Integer value);
 
-	void setDouble(String name, double value);
+    void setInt(String name, Integer value);
 
-	void setString(String name, String value);
+    void setDouble(String name, double value);
 
-	void setBoolean(String name, Boolean value);
+    void setString(String name, String value);
 
-	/**
-	 * Method saves unsaved field changes.
-	 */
-	void commit();
+    void setBoolean(String name, Boolean value);
 
-	/**
-	 * Method closes card's gui and returns control to the gui of Information
-	 * panel.
-	 */
-	void closeGui();
+    /**
+     * Method saves unsaved field changes.
+     */
+    void commit();
+
+    /**
+     * Method closes card's gui and returns control to the gui of Information panel.
+     */
+    void closeGui();
 }

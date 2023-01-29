@@ -1,50 +1,54 @@
 package shedar.mods.ic2.nuclearcontrol.utils;
 
-import ic2.api.tile.IWrenchable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.IRotation;
 import cpw.mods.fml.common.FMLCommonHandler;
+import ic2.api.tile.IWrenchable;
 
 public class WrenchHelper {
-	//TODO: DO nothing when IC2 Classic Wrench Plugin is installed...
-	public static boolean isWrenchClicked(TileEntity tileEntity, EntityPlayer player, int side) {
-		if (player != null && tileEntity != null) {
-			ItemStack equipped = player.getCurrentEquippedItem();
 
-			if (equipped != null) {
-				boolean ic2Wrench = IC2NuclearControl.instance.crossIc2.isWrench(equipped);
-				boolean bcWrench = IC2NuclearControl.instance.crossBC.isWrench(equipped, tileEntity, player);// TODO: DMF
-				if (player.isSneaking() && tileEntity instanceof IRotation) {
-					if (ic2Wrench || bcWrench) {
-						if (bcWrench) {
-							IC2NuclearControl.instance.crossBC.useWrench(equipped, tileEntity, player);
-						}
+    // TODO: DO nothing when IC2 Classic Wrench Plugin is installed...
+    public static boolean isWrenchClicked(TileEntity tileEntity, EntityPlayer player, int side) {
+        if (player != null && tileEntity != null) {
+            ItemStack equipped = player.getCurrentEquippedItem();
 
-						if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
-							((IRotation) tileEntity).rotate();
-						}
-						return true;
-					}
-				}else if (bcWrench && tileEntity instanceof IWrenchable){
-					IWrenchable wrenchable = (IWrenchable) tileEntity;
+            if (equipped != null) {
+                boolean ic2Wrench = IC2NuclearControl.instance.crossIc2.isWrench(equipped);
+                boolean bcWrench = IC2NuclearControl.instance.crossBC.isWrench(equipped, tileEntity, player);// TODO:
+                                                                                                             // DMF
+                if (player.isSneaking() && tileEntity instanceof IRotation) {
+                    if (ic2Wrench || bcWrench) {
+                        if (bcWrench) {
+                            IC2NuclearControl.instance.crossBC.useWrench(equipped, tileEntity, player);
+                        }
 
-					if (player.isSneaking()) {
-						side += side % 2 * -2 + 1;
-					}
+                        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+                            ((IRotation) tileEntity).rotate();
+                        }
+                        return true;
+                    }
+                } else if (bcWrench && tileEntity instanceof IWrenchable) {
+                    IWrenchable wrenchable = (IWrenchable) tileEntity;
 
-					if (wrenchable.wrenchCanSetFacing(player, side)) {  //TODO: yo Xbony2, the thing with wrenches only working BC wise... right here!
-						IC2NuclearControl.instance.crossBC.useWrench(equipped, tileEntity, player);
-						if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
-							wrenchable.setFacing((short) side);
-						}
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
+                    if (player.isSneaking()) {
+                        side += side % 2 * -2 + 1;
+                    }
+
+                    if (wrenchable.wrenchCanSetFacing(player, side)) { // TODO: yo Xbony2, the thing with wrenches only
+                                                                       // working BC wise... right here!
+                        IC2NuclearControl.instance.crossBC.useWrench(equipped, tileEntity, player);
+                        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+                            wrenchable.setFacing((short) side);
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

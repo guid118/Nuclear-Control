@@ -1,5 +1,20 @@
 package shedar.mods.ic2.nuclearcontrol.network.message;
 
+import java.io.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+
+import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
+import shedar.mods.ic2.nuclearcontrol.InventoryItem;
+import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
+import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
+import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -7,22 +22,6 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
-import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
-import shedar.mods.ic2.nuclearcontrol.InventoryItem;
-import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
-import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
-import shedar.mods.ic2.nuclearcontrol.utils.NCLog;
-import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
-
-import java.io.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 
 public class PacketClientRemoteMonitor implements IMessage {
 
@@ -36,8 +35,7 @@ public class PacketClientRemoteMonitor implements IMessage {
     public static final int FIELD_NULL = 6;
     public static final int FIELD_LONG = 7;
 
-    public PacketClientRemoteMonitor() {
-    }
+    public PacketClientRemoteMonitor() {}
 
     public PacketClientRemoteMonitor(Map<String, Object> updateSet) {
         this.fields = updateSet;
@@ -71,9 +69,11 @@ public class PacketClientRemoteMonitor implements IMessage {
                     try {
                         int size = buf.readInt();
                         DataInputStream dat = new DataInputStream(
-                                new ByteArrayInputStream(Arrays.copyOfRange(
-                                        buf.array(), buf.readerIndex() + 1,
-                                        buf.readerIndex() + 1 + size)));
+                                new ByteArrayInputStream(
+                                        Arrays.copyOfRange(
+                                                buf.array(),
+                                                buf.readerIndex() + 1,
+                                                buf.readerIndex() + 1 + size)));
                         tag = CompressedStreamTools.readCompressed(dat);
                         fields.put(name, tag);
                     } catch (IOException e) {
@@ -88,7 +88,6 @@ public class PacketClientRemoteMonitor implements IMessage {
                     break;
             }
         }
-
 
     }
 
@@ -118,8 +117,7 @@ public class PacketClientRemoteMonitor implements IMessage {
                 try {
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     DataOutputStream output = new DataOutputStream(stream);
-                    CompressedStreamTools.writeCompressed(
-                            (NBTTagCompound) value, output);
+                    CompressedStreamTools.writeCompressed((NBTTagCompound) value, output);
                     buf.writeInt(stream.size());
                     buf.writeBytes(stream.toByteArray());
                 } catch (IOException e) {
@@ -131,29 +129,31 @@ public class PacketClientRemoteMonitor implements IMessage {
         }
 
     }
+
     public static class Handler implements IMessageHandler<PacketClientRemoteMonitor, IMessage> {
 
         @Override
         @SideOnly(Side.CLIENT)
         public IMessage onMessage(PacketClientRemoteMonitor message, MessageContext ctx) {
             EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-            if(player.getHeldItem() != null) {
+            if (player.getHeldItem() != null) {
                 if (player.getHeldItem().getItem() == IC2NuclearControl.itemRemoteMonitor) {
-                    //ItemRemoteMonitor remote = (ItemRemoteMonitor) player.getHeldItem().getItem();
+                    // ItemRemoteMonitor remote = (ItemRemoteMonitor) player.getHeldItem().getItem();
                     InventoryItem itemInv = new InventoryItem(player.getHeldItem());
-                    //NCLog.fatal(itemInv.getStackInSlot(0));
-                    if (itemInv.getStackInSlot(0) == null || !(itemInv.getStackInSlot(0).getItem() instanceof IPanelDataSource)) {
+                    // NCLog.fatal(itemInv.getStackInSlot(0));
+                    if (itemInv.getStackInSlot(0) == null
+                            || !(itemInv.getStackInSlot(0).getItem() instanceof IPanelDataSource)) {
                         return null;
                     }
                     CardWrapperImpl helper = new CardWrapperImpl(itemInv.getStackInSlot(0), -1);
-                    //NCLog.fatal("PACKET SIDE:" + message.fields.entrySet());
+                    // NCLog.fatal("PACKET SIDE:" + message.fields.entrySet());
                     for (Map.Entry<String, Object> entry : message.fields.entrySet()) {
                         String name = entry.getKey();
                         Object value = entry.getValue();
                         if (value instanceof Long) {
                             helper.setLong(name, (Long) value);
                         } else if (value instanceof Double) {
-                            //NCLog.fatal(name + " " + value);
+                            // NCLog.fatal(name + " " + value);
                             helper.setDouble(name, (Double) value);
                         } else if (value instanceof Integer) {
                             helper.setInt(name, (Integer) value);
@@ -167,7 +167,8 @@ public class PacketClientRemoteMonitor implements IMessage {
                             helper.clearField(name);
                         }
                     }
-                    //NCLog.fatal("CLIENT RECIEVE: " + ItemStackUtils.getTagCompound(itemInv.getStackInSlot(0)).getInteger("energyL"));
+                    // NCLog.fatal("CLIENT RECIEVE: " +
+                    // ItemStackUtils.getTagCompound(itemInv.getStackInSlot(0)).getInteger("energyL"));
                 }
             }
             return null;

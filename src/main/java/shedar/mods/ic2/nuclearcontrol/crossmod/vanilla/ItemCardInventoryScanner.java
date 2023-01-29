@@ -1,11 +1,16 @@
 package shedar.mods.ic2.nuclearcontrol.crossmod.vanilla;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
@@ -14,12 +19,7 @@ import shedar.mods.ic2.nuclearcontrol.items.ItemCardBase;
 import shedar.mods.ic2.nuclearcontrol.utils.LangHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
-
-public class ItemCardInventoryScanner extends ItemCardBase{
+public class ItemCardInventoryScanner extends ItemCardBase {
 
     public static final int DISPLAY_NAME = 1;
     public static final int DISPLAY_TOTAL = 2;
@@ -36,13 +36,13 @@ public class ItemCardInventoryScanner extends ItemCardBase{
     @Override
     public CardState update(World world, ICardWrapper card, int range) {
         ChunkCoordinates target = card.getTarget();
-		if(target == null) return CardState.NO_TARGET;
+        if (target == null) return CardState.NO_TARGET;
         TileEntity tile = world.getTileEntity(target.posX, target.posY, target.posZ);
-        if(tile instanceof IInventory){
+        if (tile instanceof IInventory) {
             IInventory inv = (IInventory) tile;
             int inUse = 0;
-            for(int z=0; z < inv.getSizeInventory(); z++){
-                if(inv.getStackInSlot(z) != null){
+            for (int z = 0; z < inv.getSizeInventory(); z++) {
+                if (inv.getStackInSlot(z) != null) {
                     inUse++;
                 }
             }
@@ -75,7 +75,8 @@ public class ItemCardInventoryScanner extends ItemCardBase{
         }
         if ((displaySettings & DISPLAY_TOTAL) > 0) {
             line = new PanelString();
-            line.textLeft = String.format(StatCollector.translateToLocal("msg.nc.Vanilla.Display"), TotalInUse, TotalInv);
+            line.textLeft = String
+                    .format(StatCollector.translateToLocal("msg.nc.Vanilla.Display"), TotalInUse, TotalInv);
             result.add(line);
         }
         return result;

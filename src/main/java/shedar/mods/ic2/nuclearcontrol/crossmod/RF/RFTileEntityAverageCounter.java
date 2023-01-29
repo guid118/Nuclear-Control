@@ -1,102 +1,104 @@
 package shedar.mods.ic2.nuclearcontrol.crossmod.RF;
 
-import shedar.mods.ic2.nuclearcontrol.crossmod.EnergyStorageData;
-import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAverageCounter;
-
-import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyHandler;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class RFTileEntityAverageCounter extends TileEntityAverageCounter implements IEnergyHandler{
+import shedar.mods.ic2.nuclearcontrol.crossmod.EnergyStorageData;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAverageCounter;
+import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyHandler;
 
-	protected EnergyStorage storage = new EnergyStorage(32000);
-	private int rec;
-	private int send;
-	private int duration;
-	private int AVG;
+public class RFTileEntityAverageCounter extends TileEntityAverageCounter implements IEnergyHandler {
 
-	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+    protected EnergyStorage storage = new EnergyStorage(32000);
+    private int rec;
+    private int send;
+    private int duration;
+    private int AVG;
 
-		super.readFromNBT(nbt);
-		storage.readFromNBT(nbt);
-	}
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        storage.readFromNBT(nbt);
+    }
 
-		super.writeToNBT(nbt);
-		storage.writeToNBT(nbt);
-	}
+    @Override
+    public void writeToNBT(NBTTagCompound nbt) {
 
-	/* IEnergyConnection */
-	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+        super.writeToNBT(nbt);
+        storage.writeToNBT(nbt);
+    }
 
-		return true;
-	}
+    /* IEnergyConnection */
+    @Override
+    public boolean canConnectEnergy(ForgeDirection from) {
 
-	/* IEnergyReceiver */
-	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+        return true;
+    }
 
-		rec = maxReceive;
-		return storage.receiveEnergy(maxReceive, simulate);
-	}
+    /* IEnergyReceiver */
+    @Override
+    public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 
-	/* IEnergyProvider */
-	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+        rec = maxReceive;
+        return storage.receiveEnergy(maxReceive, simulate);
+    }
 
-		return storage.extractEnergy(maxExtract, simulate);
-	}
+    /* IEnergyProvider */
+    @Override
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
 
-	/* IEnergyReceiver and IEnergyProvider */
-	@Override
-	public int getEnergyStored(ForgeDirection from) {
+        return storage.extractEnergy(maxExtract, simulate);
+    }
 
-		return storage.getEnergyStored();
-	}
+    /* IEnergyReceiver and IEnergyProvider */
+    @Override
+    public int getEnergyStored(ForgeDirection from) {
 
-	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+        return storage.getEnergyStored();
+    }
 
-		return storage.getMaxEnergyStored();
-	}
-	 @Override
-	    public void initData() {
-	        super.initData();
-	    }
-	 
-	 @Override
-	 public void updateEntity(){
-		 super.updateEntity();
-		 //NCLog.error(storage.getEnergyStored());
-         if(getNeibough()) {
-             if (storage.getEnergyStored() > 0) {
-                 transferEnergy();
-             }
-             if (!worldObj.isRemote) {
-                 index = (index + 1) % DATA_POINTS;
-                 data[index] = 0;
-                 duration = period * 20;
-                 AVG = duration * send;
-                 clientAverage = AVG;
-                 data[index] = AVG;
-                 //NCLog.fatal(send);
-                 //NCLog.fatal(AVG);
-                 setPowerType((byte) EnergyStorageData.TARGET_TYPE_RF);
-                 send = 0;
-                 rec = 0;
-             }
-         }
-	 }
-    private boolean getNeibough(){
+    @Override
+    public int getMaxEnergyStored(ForgeDirection from) {
+
+        return storage.getMaxEnergyStored();
+    }
+
+    @Override
+    public void initData() {
+        super.initData();
+    }
+
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+        // NCLog.error(storage.getEnergyStored());
+        if (getNeibough()) {
+            if (storage.getEnergyStored() > 0) {
+                transferEnergy();
+            }
+            if (!worldObj.isRemote) {
+                index = (index + 1) % DATA_POINTS;
+                data[index] = 0;
+                duration = period * 20;
+                AVG = duration * send;
+                clientAverage = AVG;
+                data[index] = AVG;
+                // NCLog.fatal(send);
+                // NCLog.fatal(AVG);
+                setPowerType((byte) EnergyStorageData.TARGET_TYPE_RF);
+                send = 0;
+                rec = 0;
+            }
+        }
+    }
+
+    private boolean getNeibough() {
         for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-            TileEntity tile = getWorldObj().getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+            TileEntity tile = getWorldObj()
+                    .getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
             if (!(tile instanceof RFTileEntityAverageCounter)) {
                 if (tile instanceof IEnergyHandler) {
                     return true;
@@ -105,21 +107,26 @@ public class RFTileEntityAverageCounter extends TileEntityAverageCounter impleme
         }
         return false;
     }
-	 protected void transferEnergy() {
-			for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
-				TileEntity tile = getWorldObj().getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
-				if (!(tile instanceof RFTileEntityAverageCounter)) {
-					if (tile instanceof IEnergyHandler) {
-						IEnergyHandler receiver = (IEnergyHandler) tile;
-						this.sendMaxTo(receiver, direction.getOpposite());
-					}
-				}
-			}
-		}
 
-	 public int sendMaxTo(IEnergyHandler pEnergyHandler, ForgeDirection pFrom) {
-		 send = Math.min(storage.getEnergyStored(), 128);
-		 return extractEnergy(pFrom, pEnergyHandler.receiveEnergy(pFrom, Math.min(storage.getEnergyStored(), 128), false), false);
-		
-	}
+    protected void transferEnergy() {
+        for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
+            TileEntity tile = getWorldObj()
+                    .getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+            if (!(tile instanceof RFTileEntityAverageCounter)) {
+                if (tile instanceof IEnergyHandler) {
+                    IEnergyHandler receiver = (IEnergyHandler) tile;
+                    this.sendMaxTo(receiver, direction.getOpposite());
+                }
+            }
+        }
+    }
+
+    public int sendMaxTo(IEnergyHandler pEnergyHandler, ForgeDirection pFrom) {
+        send = Math.min(storage.getEnergyStored(), 128);
+        return extractEnergy(
+                pFrom,
+                pEnergyHandler.receiveEnergy(pFrom, Math.min(storage.getEnergyStored(), 128), false),
+                false);
+
+    }
 }

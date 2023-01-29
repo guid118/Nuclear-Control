@@ -1,6 +1,5 @@
 package shedar.mods.ic2.nuclearcontrol.blocks.subblocks;
 
-import ic2.api.tile.IWrenchable;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -8,60 +7,61 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+
 import shedar.mods.ic2.nuclearcontrol.ITextureHelper;
+import ic2.api.tile.IWrenchable;
 
 public abstract class Subblock {
-	protected int damage;
-	protected String name;
 
-	public Subblock(int damage, String name) {
-		this.damage = damage;
-		this.name = name;
-	}
+    protected int damage;
+    protected String name;
 
-	public int getDamage() {
-		return damage;
-	}
+    public Subblock(int damage, String name) {
+        this.damage = damage;
+        this.name = name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public int getDamage() {
+        return damage;
+    }
 
-	public IIcon getBlockTextureFromSide(int side) {
-		return getIcon(getMapping()[0][side]);
-	}
+    public String getName() {
+        return name;
+    }
 
-	public IIcon getBlockTexture(IBlockAccess blockaccess, int x, int y, int z, int side) {
-		TileEntity tileentity = blockaccess.getTileEntity(x, y, z);
-		int metaSide = 0;
-		if (tileentity instanceof IWrenchable) {
-			metaSide = Facing.oppositeSide[((IWrenchable) tileentity).getFacing()];
-		}
-		int texture = getMapping()[metaSide][side];
+    public IIcon getBlockTextureFromSide(int side) {
+        return getIcon(getMapping()[0][side]);
+    }
 
-		if (tileentity instanceof ITextureHelper) {
-			texture = ((ITextureHelper) tileentity).modifyTextureIndex(texture);
-		}
-		return getIcon(texture);
-	}
+    public IIcon getBlockTexture(IBlockAccess blockaccess, int x, int y, int z, int side) {
+        TileEntity tileentity = blockaccess.getTileEntity(x, y, z);
+        int metaSide = 0;
+        if (tileentity instanceof IWrenchable) {
+            metaSide = Facing.oppositeSide[((IWrenchable) tileentity).getFacing()];
+        }
+        int texture = getMapping()[metaSide][side];
 
-	public abstract IIcon getIcon(int index);
+        if (tileentity instanceof ITextureHelper) {
+            texture = ((ITextureHelper) tileentity).modifyTextureIndex(texture);
+        }
+        return getIcon(texture);
+    }
 
-	protected abstract byte[][] getMapping();
+    public abstract IIcon getIcon(int index);
 
-	public abstract void registerIcons(IIconRegister iconRegister);
+    protected abstract byte[][] getMapping();
 
-	public abstract TileEntity getTileEntity();
+    public abstract void registerIcons(IIconRegister iconRegister);
 
-	public abstract boolean isSolidBlockRequired();
+    public abstract TileEntity getTileEntity();
 
-	public abstract boolean hasGui();
+    public abstract boolean isSolidBlockRequired();
 
-	public abstract float[] getBlockBounds(TileEntity tileEntity);
+    public abstract boolean hasGui();
 
-	public abstract Container getServerGuiElement(TileEntity tileEntity,
-			EntityPlayer player);
+    public abstract float[] getBlockBounds(TileEntity tileEntity);
 
-	public abstract Object getClientGuiElement(TileEntity tileEntity,
-			EntityPlayer player);
+    public abstract Container getServerGuiElement(TileEntity tileEntity, EntityPlayer player);
+
+    public abstract Object getClientGuiElement(TileEntity tileEntity, EntityPlayer player);
 }

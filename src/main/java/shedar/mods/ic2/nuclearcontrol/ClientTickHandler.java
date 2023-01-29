@@ -15,75 +15,68 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundList;
 import net.minecraft.client.audio.SoundListSerializer;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ClientTickHandler {
-	public final static ClientTickHandler instance = new ClientTickHandler();
-	private static final Gson gson = (new GsonBuilder()).registerTypeAdapter(
-			SoundList.class, new SoundListSerializer()).create();
-	private static final ParameterizedType type = new ParameterizedType() {
-		private static final String __OBFID = "CL_00001148";
 
-		@Override
-		public Type[] getActualTypeArguments() {
-			return new Type[] { String.class, SoundList.class };
-		}
+    public final static ClientTickHandler instance = new ClientTickHandler();
+    private static final Gson gson = (new GsonBuilder()).registerTypeAdapter(SoundList.class, new SoundListSerializer())
+            .create();
+    private static final ParameterizedType type = new ParameterizedType() {
 
-		@Override
-		public Type getRawType() {
-			return Map.class;
-		}
+        @Override
+        public Type[] getActualTypeArguments() {
+            return new Type[] { String.class, SoundList.class };
+        }
 
-		@Override
-		public Type getOwnerType() {
-			return null;
-		}
-	};
+        @Override
+        public Type getRawType() {
+            return Map.class;
+        }
 
-	@SubscribeEvent
-	public void importSound(SoundLoadEvent event) {
-		IC2NuclearControl ncInstance = IC2NuclearControl.instance;
-		ncInstance.availableAlarms = new ArrayList<String>();
+        @Override
+        public Type getOwnerType() {
+            return null;
+        }
+    };
 
-		try {
-			List list = Minecraft
-					.getMinecraft()
-					.getResourceManager()
-					.getAllResources(
-							new ResourceLocation("nuclearcontrol",
-									"sounds.json"));
+    @SubscribeEvent
+    public void importSound(SoundLoadEvent event) {
+        IC2NuclearControl ncInstance = IC2NuclearControl.instance;
+        ncInstance.availableAlarms = new ArrayList<String>();
 
-			for (int i = list.size() - 1; i >= 0; --i) {
-				IResource iresource = (IResource) list.get(i);
+        try {
+            List list = Minecraft.getMinecraft().getResourceManager()
+                    .getAllResources(new ResourceLocation("nuclearcontrol", "sounds.json"));
 
-				try {
-					Map map = (Map) gson.fromJson(new InputStreamReader(
-							iresource.getInputStream()), type);
-					Iterator iterator1 = map.entrySet().iterator();
+            for (int i = list.size() - 1; i >= 0; --i) {
+                IResource iresource = (IResource) list.get(i);
 
-					while (iterator1.hasNext()) {
-						Entry entry = (Entry) iterator1.next();
-						ncInstance.availableAlarms
-								.add(((String) entry.getKey()).replace(
-										"alarm-", ""));
-					}
-				} catch (RuntimeException runtimeexception) {
-					;
-				}
-			}
-		} catch (IOException ioexception) {
-			;
-		}
+                try {
+                    Map map = (Map) gson.fromJson(new InputStreamReader(iresource.getInputStream()), type);
+                    Iterator iterator1 = map.entrySet().iterator();
 
-		ncInstance.serverAllowedAlarms = new ArrayList<String>();
-	}
+                    while (iterator1.hasNext()) {
+                        Entry entry = (Entry) iterator1.next();
+                        ncInstance.availableAlarms.add(((String) entry.getKey()).replace("alarm-", ""));
+                    }
+                } catch (RuntimeException runtimeexception) {
+                    ;
+                }
+            }
+        } catch (IOException ioexception) {
+            ;
+        }
+
+        ncInstance.serverAllowedAlarms = new ArrayList<String>();
+    }
 }

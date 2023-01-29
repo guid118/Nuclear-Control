@@ -1,17 +1,18 @@
 package shedar.mods.ic2.nuclearcontrol.crossmod.appeng;
 
-import appeng.block.crafting.BlockCraftingMonitor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
 import shedar.mods.ic2.nuclearcontrol.items.ItemKitEnergySensor;
 import shedar.mods.ic2.nuclearcontrol.utils.ItemStackUtils;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
+import appeng.block.crafting.BlockCraftingMonitor;
 
-public class ItemKitAppeng extends ItemKitEnergySensor{
+public class ItemKitAppeng extends ItemKitEnergySensor {
 
     public ItemKitAppeng() {
         this.setTextureName("nuclearcontrol:kitAEMonitor");
@@ -24,12 +25,11 @@ public class ItemKitAppeng extends ItemKitEnergySensor{
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-        if (player == null)
-            return false;
+    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+            float hitX, float hitY, float hitZ) {
+        if (player == null) return false;
         boolean isServer = player instanceof EntityPlayerMP;
-        if (!isServer)
-            return false;
+        if (!isServer) return false;
 
         Block theBlock = world.getBlock(x, y, z);
         if (theBlock == CrossAppeng.networklink) {
@@ -46,7 +46,9 @@ public class ItemKitAppeng extends ItemKitEnergySensor{
                 NuclearNetworkHelper.chatMessage(player, "SensorKit");
             }
             return true;
-        } else if(theBlock instanceof BlockCraftingMonitor/*AEApi.instance().definitions().blocks().craftingMonitor()*/){
+        } else if (theBlock instanceof BlockCraftingMonitor/*
+                                                            * AEApi.instance().definitions().blocks().craftingMonitor()
+                                                            */) {
             ItemStack sensorLocationCard = getItemStackByDamage(stack.getItemDamage());
 
             NBTTagCompound nbtTagCompound = ItemStackUtils.getTagCompound(sensorLocationCard);

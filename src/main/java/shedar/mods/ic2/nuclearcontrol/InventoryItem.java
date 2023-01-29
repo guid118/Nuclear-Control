@@ -5,12 +5,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
 import shedar.mods.ic2.nuclearcontrol.items.ItemCardBase;
 import shedar.mods.ic2.nuclearcontrol.items.ItemRemoteMonitor;
 
-public class InventoryItem implements IInventory, ISlotItemFilter{
-    private String name = "Inventory Item";
+public class InventoryItem implements IInventory, ISlotItemFilter {
 
+    private String name = "Inventory Item";
 
     public static final int INV_SIZE = 1;
     private ItemStack[] inventory = new ItemStack[INV_SIZE];
@@ -41,15 +42,11 @@ public class InventoryItem implements IInventory, ISlotItemFilter{
     @Override
     public ItemStack decrStackSize(int slot, int amount) {
         ItemStack stack = getStackInSlot(slot);
-        if(stack != null)
-        {
-            if(stack.stackSize > amount)
-            {
+        if (stack != null) {
+            if (stack.stackSize > amount) {
                 stack = stack.splitStack(amount);
                 markDirty();
-            }
-            else
-            {
+            } else {
                 setInventorySlotContents(slot, null);
             }
         }
@@ -59,8 +56,7 @@ public class InventoryItem implements IInventory, ISlotItemFilter{
     @Override
     public ItemStack getStackInSlotOnClosing(int slot) {
         ItemStack stack = getStackInSlot(slot);
-        if(stack != null)
-        {
+        if (stack != null) {
             setInventorySlotContents(slot, null);
         }
         return stack;
@@ -70,8 +66,7 @@ public class InventoryItem implements IInventory, ISlotItemFilter{
     public void setInventorySlotContents(int slot, ItemStack itemstack) {
         this.inventory[slot] = itemstack;
 
-        if (itemstack != null && itemstack.stackSize > this.getInventoryStackLimit())
-        {
+        if (itemstack != null && itemstack.stackSize > this.getInventoryStackLimit()) {
             itemstack.stackSize = this.getInventoryStackLimit();
         }
         markDirty();
@@ -92,13 +87,10 @@ public class InventoryItem implements IInventory, ISlotItemFilter{
         return 1;
     }
 
-
     @Override
     public void markDirty() {
-        for (int i = 0; i < getSizeInventory(); ++i)
-        {
-            if (getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0)
-                inventory[i] = null;
+        for (int i = 0; i < getSizeInventory(); ++i) {
+            if (getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0) inventory[i] = null;
         }
         writeToNBT(invItem.getTagCompound());
     }
@@ -137,15 +129,11 @@ public class InventoryItem implements IInventory, ISlotItemFilter{
         }
     }
 
-
-    public void writeToNBT(NBTTagCompound tagcompound)
-    {
+    public void writeToNBT(NBTTagCompound tagcompound) {
         NBTTagList items = new NBTTagList();
 
-        for (int i = 0; i < getSizeInventory(); ++i)
-        {
-            if (getStackInSlot(i) != null)
-            {
+        for (int i = 0; i < getSizeInventory(); ++i) {
+            if (getStackInSlot(i) != null) {
                 NBTTagCompound item = new NBTTagCompound();
                 item.setInteger("Slot", i);
                 getStackInSlot(i).writeToNBT(item);
@@ -154,6 +142,5 @@ public class InventoryItem implements IInventory, ISlotItemFilter{
         }
         tagcompound.setTag("ItemInventory", items);
     }
-
 
 }

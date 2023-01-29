@@ -9,54 +9,55 @@ import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 
 public class StringUtils {
-	private static DecimalFormat formatter = null;
 
-	private static DecimalFormat getFormatter() {
-		if (formatter == null) {
-			DecimalFormat lFormatter = new DecimalFormat("#,###.###");
-			DecimalFormatSymbols smb = new DecimalFormatSymbols();
-			smb.setGroupingSeparator(' ');
-			lFormatter.setDecimalFormatSymbols(smb);
-			formatter = lFormatter;
-		}
-		return formatter;
-	}
+    private static DecimalFormat formatter = null;
 
-	public static String getFormatted(String resourceName, String value, boolean showLabels) {
-		if (showLabels)
-			return String.format(LangHelper.translate(resourceName), value);
-		else
-			return value;
-	}
+    private static DecimalFormat getFormatter() {
+        if (formatter == null) {
+            DecimalFormat lFormatter = new DecimalFormat("#,###.###");
+            DecimalFormatSymbols smb = new DecimalFormatSymbols();
+            smb.setGroupingSeparator(' ');
+            lFormatter.setDecimalFormatSymbols(smb);
+            formatter = lFormatter;
+        }
+        return formatter;
+    }
 
-	public static String getFormatted(String resourceName, double value, boolean showLabels) {
-		return getFormatted(resourceName, getFormatter().format(value),
-				showLabels);
-	}
+    public static String getFormatted(String resourceName, String value, boolean showLabels) {
+        if (showLabels) return String.format(LangHelper.translate(resourceName), value);
+        else return value;
+    }
 
-	public static String getFormattedKey(String resourceName, Object... arguments) {
-		return String.format(LangHelper.translate(resourceName), arguments);
-	}
+    public static String getFormatted(String resourceName, double value, boolean showLabels) {
+        return getFormatted(resourceName, getFormatter().format(value), showLabels);
+    }
 
-	public static List<PanelString> getStateMessage(CardState state) {
-		List<PanelString> result = new LinkedList<PanelString>();
-		PanelString line = new PanelString();
-		switch (state) {
-		case OUT_OF_RANGE: line.textCenter = LangHelper.translate("msg.nc.InfoPanelOutOfRange");
-			break;
-		case INVALID_CARD: line.textCenter = LangHelper.translate("msg.nc.InfoPanelInvalidCard");
-			break;
-		case NO_TARGET: line.textCenter = LangHelper.translate("msg.nc.InfoPanelNoTarget");
-			break;
-		case CUSTOM_ERROR:
-			break;
-		case OK:
-			break;
-		default:
-			break;
-		}
-		result.add(line);
-		return result;
-	}
+    public static String getFormattedKey(String resourceName, Object... arguments) {
+        return String.format(LangHelper.translate(resourceName), arguments);
+    }
+
+    public static List<PanelString> getStateMessage(CardState state) {
+        List<PanelString> result = new LinkedList<PanelString>();
+        PanelString line = new PanelString();
+        switch (state) {
+            case OUT_OF_RANGE:
+                line.textCenter = LangHelper.translate("msg.nc.InfoPanelOutOfRange");
+                break;
+            case INVALID_CARD:
+                line.textCenter = LangHelper.translate("msg.nc.InfoPanelInvalidCard");
+                break;
+            case NO_TARGET:
+                line.textCenter = LangHelper.translate("msg.nc.InfoPanelNoTarget");
+                break;
+            case CUSTOM_ERROR:
+                break;
+            case OK:
+                break;
+            default:
+                break;
+        }
+        result.add(line);
+        return result;
+    }
 
 }

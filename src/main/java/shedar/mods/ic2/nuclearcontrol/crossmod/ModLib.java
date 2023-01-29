@@ -1,6 +1,5 @@
 package shedar.mods.ic2.nuclearcontrol.crossmod;
 
-
 public class ModLib {
 
     public static final String BC = "BuildCraft|Core";
