@@ -367,6 +367,7 @@ public class GuiInfoPanel extends GuiContainer {
         else {
             modified = true;
             textboxTitle.textboxKeyTyped(par1, par2);
+            updateTitle();
         }
         else super.keyTyped(par1, par2);
     }
