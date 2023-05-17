@@ -11,10 +11,6 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 
-import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
-import shedar.mods.ic2.nuclearcontrol.IRedstoneConsumer;
-import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
-import shedar.mods.ic2.nuclearcontrol.utils.RedstoneHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
 import ic2.api.network.INetworkClientTileEntityEventListener;
 import ic2.api.network.INetworkDataProvider;
@@ -23,6 +19,10 @@ import ic2.api.tile.IWrenchable;
 import ic2.core.IC2;
 import ic2.core.network.ClientModifiable;
 import ic2.core.network.NetworkManager;
+import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
+import shedar.mods.ic2.nuclearcontrol.IRedstoneConsumer;
+import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
+import shedar.mods.ic2.nuclearcontrol.utils.RedstoneHelper;
 
 public class TileEntityHowlerAlarm extends TileEntity implements INetworkDataProvider, INetworkUpdateListener,
         IWrenchable, IRedstoneConsumer, INetworkClientTileEntityEventListener {

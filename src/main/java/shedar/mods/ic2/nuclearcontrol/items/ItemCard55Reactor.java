@@ -10,6 +10,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
+import ic2.api.item.IC2Items;
+import ic2.api.reactor.IReactor;
+import ic2.api.reactor.IReactorChamber;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
@@ -19,9 +22,6 @@ import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.crossmod.ic2.IC2Cross.ReactorInfo;
 import shedar.mods.ic2.nuclearcontrol.utils.LangHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
-import ic2.api.item.IC2Items;
-import ic2.api.reactor.IReactor;
-import ic2.api.reactor.IReactorChamber;
 
 public class ItemCard55Reactor extends ItemCardEnergySensorLocation implements IRemoteSensor {
 

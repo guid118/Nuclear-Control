@@ -14,6 +14,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
@@ -22,8 +24,6 @@ import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.utils.LangHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.LiquidStorageHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemCardLiquidArrayLocation extends ItemCardBase {
 

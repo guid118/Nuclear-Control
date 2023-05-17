@@ -17,6 +17,13 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Facing;
 import net.minecraftforge.common.util.Constants;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import ic2.api.network.INetworkClientTileEntityEventListener;
+import ic2.api.network.INetworkDataProvider;
+import ic2.api.network.INetworkUpdateListener;
+import ic2.api.tile.IWrenchable;
+import ic2.core.IC2;
+import ic2.core.network.NetworkManager;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.IRedstoneConsumer;
 import shedar.mods.ic2.nuclearcontrol.IRotation;
@@ -37,13 +44,6 @@ import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
 import shedar.mods.ic2.nuclearcontrol.utils.ColorUtil;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.RedstoneHelper;
-import cpw.mods.fml.common.FMLCommonHandler;
-import ic2.api.network.INetworkClientTileEntityEventListener;
-import ic2.api.network.INetworkDataProvider;
-import ic2.api.network.INetworkUpdateListener;
-import ic2.api.tile.IWrenchable;
-import ic2.core.IC2;
-import ic2.core.network.NetworkManager;
 
 public class TileEntityInfoPanel extends TileEntity
         implements ISlotItemFilter, INetworkDataProvider, INetworkUpdateListener, INetworkClientTileEntityEventListener,

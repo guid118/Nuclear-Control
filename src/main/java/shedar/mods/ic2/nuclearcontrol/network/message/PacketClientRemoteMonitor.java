@@ -10,11 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
-import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
-import shedar.mods.ic2.nuclearcontrol.InventoryItem;
-import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
-import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
-import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -22,6 +17,11 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
+import shedar.mods.ic2.nuclearcontrol.InventoryItem;
+import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
+import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
+import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
 public class PacketClientRemoteMonitor implements IMessage {
 

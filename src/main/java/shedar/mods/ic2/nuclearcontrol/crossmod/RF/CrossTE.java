@@ -2,10 +2,10 @@ package shedar.mods.ic2.nuclearcontrol.crossmod.RF;
 
 import net.minecraft.item.Item;
 
-import shedar.mods.ic2.nuclearcontrol.crossmod.ModLib;
-import shedar.mods.ic2.nuclearcontrol.utils.NCLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
+import shedar.mods.ic2.nuclearcontrol.crossmod.ModLib;
+import shedar.mods.ic2.nuclearcontrol.utils.NCLog;
 
 public class CrossTE {
 

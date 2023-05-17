@@ -8,14 +8,14 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import shedar.mods.ic2.nuclearcontrol.containers.ContainerEmpty;
-import shedar.mods.ic2.nuclearcontrol.gui.controls.CompactButton;
-import shedar.mods.ic2.nuclearcontrol.gui.controls.GuiThermoInvertRedstone;
-import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityThermo;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.IC2;
 import ic2.core.network.NetworkManager;
+import shedar.mods.ic2.nuclearcontrol.containers.ContainerEmpty;
+import shedar.mods.ic2.nuclearcontrol.gui.controls.CompactButton;
+import shedar.mods.ic2.nuclearcontrol.gui.controls.GuiThermoInvertRedstone;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityThermo;
 
 @SideOnly(Side.CLIENT)
 public class GuiIC2Thermo extends GuiContainer {

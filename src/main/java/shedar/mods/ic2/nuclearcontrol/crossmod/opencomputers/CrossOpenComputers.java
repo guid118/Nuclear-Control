@@ -1,7 +1,7 @@
 package shedar.mods.ic2.nuclearcontrol.crossmod.opencomputers;
 
-import li.cil.oc.api.Driver;
 import cpw.mods.fml.common.Loader;
+import li.cil.oc.api.Driver;
 
 public class CrossOpenComputers {
 

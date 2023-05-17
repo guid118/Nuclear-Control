@@ -2,12 +2,12 @@ package shedar.mods.ic2.nuclearcontrol.crossmod.gregtech;
 
 import net.minecraft.item.ItemStack;
 
-import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
-import shedar.mods.ic2.nuclearcontrol.crossmod.ModLib;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.items.GT_RadioactiveCellIC_Item;
 import gregtech.api.items.GT_RadioactiveCell_Item;
+import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
+import shedar.mods.ic2.nuclearcontrol.crossmod.ModLib;
 
 public class CrossGregTech {
 

@@ -17,6 +17,8 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.api.IAdvancedCardSettings;
 import shedar.mods.ic2.nuclearcontrol.api.ICardGui;
@@ -32,8 +34,6 @@ import shedar.mods.ic2.nuclearcontrol.gui.controls.GuiInfoPanelShowLabels;
 import shedar.mods.ic2.nuclearcontrol.panel.CardSettingsWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiInfoPanel extends GuiContainer {

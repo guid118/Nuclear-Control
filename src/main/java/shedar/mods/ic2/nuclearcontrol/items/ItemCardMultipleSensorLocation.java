@@ -18,6 +18,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidTankInfo;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.energy.EnergyNet;
+import ic2.core.block.generator.tileentity.TileEntityBaseGenerator;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelMultiCard;
@@ -33,10 +37,6 @@ import shedar.mods.ic2.nuclearcontrol.utils.LangHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.LiquidStorageHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 import shedar.mods.ic2.nuclearcontrol.utils.TextureResolver;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import ic2.api.energy.EnergyNet;
-import ic2.core.block.generator.tileentity.TileEntityBaseGenerator;
 
 public class ItemCardMultipleSensorLocation extends ItemCardBase
         implements IRemoteSensor, IPanelMultiCard, IRangeTriggerable {

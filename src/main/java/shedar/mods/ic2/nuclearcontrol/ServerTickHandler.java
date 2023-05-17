@@ -8,10 +8,10 @@ package shedar.mods.ic2.nuclearcontrol;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.world.WorldEvent;
 
-import shedar.mods.ic2.nuclearcontrol.network.ChannelHandler;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketAlarm;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import shedar.mods.ic2.nuclearcontrol.network.ChannelHandler;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketAlarm;
 
 public class ServerTickHandler {
 

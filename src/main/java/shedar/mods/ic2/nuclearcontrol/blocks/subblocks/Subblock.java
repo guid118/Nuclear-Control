@@ -8,8 +8,8 @@ import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-import shedar.mods.ic2.nuclearcontrol.ITextureHelper;
 import ic2.api.tile.IWrenchable;
+import shedar.mods.ic2.nuclearcontrol.ITextureHelper;
 
 public abstract class Subblock {
 

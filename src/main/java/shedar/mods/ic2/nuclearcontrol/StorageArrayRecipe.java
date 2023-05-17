@@ -9,13 +9,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
 
+import ic2.api.item.IC2Items;
 import shedar.mods.ic2.nuclearcontrol.items.ItemCardEnergyArrayLocation;
 import shedar.mods.ic2.nuclearcontrol.items.ItemCardEnergySensorLocation;
 import shedar.mods.ic2.nuclearcontrol.items.ItemCardLiquidArrayLocation;
 import shedar.mods.ic2.nuclearcontrol.items.ItemCardMultipleSensorLocation;
 import shedar.mods.ic2.nuclearcontrol.items.ItemKitMultipleSensor;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
-import ic2.api.item.IC2Items;
 
 public class StorageArrayRecipe implements IRecipe {
 

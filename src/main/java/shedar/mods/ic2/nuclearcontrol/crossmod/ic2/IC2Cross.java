@@ -3,8 +3,8 @@ package shedar.mods.ic2.nuclearcontrol.crossmod.ic2;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-import shedar.mods.ic2.nuclearcontrol.crossmod.EnergyStorageData;
 import cpw.mods.fml.common.Loader;
+import shedar.mods.ic2.nuclearcontrol.crossmod.EnergyStorageData;
 
 /**
  * 

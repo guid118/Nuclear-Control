@@ -4,10 +4,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import shedar.mods.ic2.nuclearcontrol.crossmod.EnergyStorageData;
-import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAverageCounter;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import shedar.mods.ic2.nuclearcontrol.crossmod.EnergyStorageData;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAverageCounter;
 
 public class RFTileEntityAverageCounter extends TileEntityAverageCounter implements IEnergyHandler {
 

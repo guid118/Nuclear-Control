@@ -32,6 +32,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import ic2.api.tile.IWrenchable;
+import ic2.core.item.tool.ItemToolPainter;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.*;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityHowlerAlarm;
@@ -42,10 +46,6 @@ import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityRangeTrigger;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityRemoteThermo;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityThermo;
 import shedar.mods.ic2.nuclearcontrol.utils.*;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import ic2.api.tile.IWrenchable;
-import ic2.core.item.tool.ItemToolPainter;
 
 public class BlockNuclearControlMain extends BlockContainer {
 

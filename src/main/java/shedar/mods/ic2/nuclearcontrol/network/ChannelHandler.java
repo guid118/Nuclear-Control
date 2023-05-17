@@ -1,9 +1,9 @@
 package shedar.mods.ic2.nuclearcontrol.network;
 
-import shedar.mods.ic2.nuclearcontrol.network.message.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+import shedar.mods.ic2.nuclearcontrol.network.message.*;
 
 public class ChannelHandler {
 

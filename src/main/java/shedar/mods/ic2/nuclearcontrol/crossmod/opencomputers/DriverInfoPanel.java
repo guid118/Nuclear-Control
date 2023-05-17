@@ -1,5 +1,7 @@
 package shedar.mods.ic2.nuclearcontrol.crossmod.opencomputers;
 
+import net.minecraft.world.World;
+
 import li.cil.oc.api.driver.NamedBlock;
 import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
@@ -7,9 +9,6 @@ import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.ManagedEnvironment;
 import li.cil.oc.api.prefab.DriverTileEntity;
 import li.cil.oc.integration.ManagedTileEntityEnvironment;
-
-import net.minecraft.world.World;
-
 import shedar.mods.ic2.nuclearcontrol.crossmod.opencomputers.DriverAdvancedInfoPanel.Environment;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
 
