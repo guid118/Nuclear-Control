@@ -19,7 +19,7 @@ dependencies {
         transitive = false
     }
 
-    compileOnly("com.mod-buildcraft:buildcraft:7.1.23:dev") {
+    compileOnly("com.github.GTNewHorizons:BuildCraft:7.1.33:dev") {
         transitive = false
     }
     compileOnly("curse.maven:bigreactors-241994:2282591") {
