@@ -8,14 +8,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
-import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
-import shedar.mods.ic2.nuclearcontrol.utils.ItemStackUtils;
-import shedar.mods.ic2.nuclearcontrol.utils.NuclearHelper;
-import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 import ic2.api.item.IC2Items;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorChamber;
 import ic2.core.Ic2Items;
+import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
+import shedar.mods.ic2.nuclearcontrol.utils.ItemStackUtils;
+import shedar.mods.ic2.nuclearcontrol.utils.NuclearHelper;
+import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
 public class ItemKitReactorSensor extends ItemSensorKitBase {
 

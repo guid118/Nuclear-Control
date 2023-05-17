@@ -10,12 +10,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
-import shedar.mods.ic2.nuclearcontrol.ITextureHelper;
-import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.ThermalMonitor;
-import shedar.mods.ic2.nuclearcontrol.items.ItemCard55Reactor;
-import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
-import shedar.mods.ic2.nuclearcontrol.utils.NuclearHelper;
 import ic2.api.network.INetworkClientTileEntityEventListener;
 import ic2.api.network.INetworkDataProvider;
 import ic2.api.network.INetworkUpdateListener;
@@ -24,6 +18,12 @@ import ic2.api.reactor.IReactorChamber;
 import ic2.api.tile.IWrenchable;
 import ic2.core.IC2;
 import ic2.core.network.NetworkManager;
+import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
+import shedar.mods.ic2.nuclearcontrol.ITextureHelper;
+import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.ThermalMonitor;
+import shedar.mods.ic2.nuclearcontrol.items.ItemCard55Reactor;
+import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
+import shedar.mods.ic2.nuclearcontrol.utils.NuclearHelper;
 
 public class TileEntityThermo extends TileEntity implements INetworkDataProvider, INetworkUpdateListener,
         INetworkClientTileEntityEventListener, IWrenchable, ITextureHelper {

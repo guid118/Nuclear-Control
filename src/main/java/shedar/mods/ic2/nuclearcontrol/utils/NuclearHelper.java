@@ -6,9 +6,9 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorChamber;
+import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 
 public class NuclearHelper {
 

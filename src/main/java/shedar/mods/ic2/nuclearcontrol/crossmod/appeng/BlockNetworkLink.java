@@ -9,10 +9,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import appeng.tile.networking.TileCableBus;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 
 public class BlockNetworkLink extends BlockContainer {
 

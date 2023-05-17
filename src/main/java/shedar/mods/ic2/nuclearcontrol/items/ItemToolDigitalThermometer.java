@@ -7,13 +7,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
-import shedar.mods.ic2.nuclearcontrol.utils.TextureResolver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.reactor.IReactor;
+import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
+import shedar.mods.ic2.nuclearcontrol.utils.TextureResolver;
 
 public class ItemToolDigitalThermometer extends ItemToolThermometer implements IElectricItem {
 

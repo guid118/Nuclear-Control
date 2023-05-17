@@ -1,10 +1,10 @@
 package shedar.mods.ic2.nuclearcontrol.network.message;
 
-import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
 public class PacketClientRequest implements IMessage, IMessageHandler<PacketClientRequest, IMessage> {
 

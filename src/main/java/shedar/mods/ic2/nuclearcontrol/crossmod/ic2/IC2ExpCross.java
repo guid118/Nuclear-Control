@@ -3,7 +3,6 @@ package shedar.mods.ic2.nuclearcontrol.crossmod.ic2;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-import shedar.mods.ic2.nuclearcontrol.crossmod.EnergyStorageData;
 import ic2.api.tile.IEnergyStorage;
 import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
 import ic2.core.block.reactor.tileentity.TileEntityReactorAccessHatch;
@@ -12,6 +11,7 @@ import ic2.core.item.reactor.ItemReactorLithiumCell;
 import ic2.core.item.reactor.ItemReactorMOX;
 import ic2.core.item.reactor.ItemReactorUranium;
 import ic2.core.item.tool.ItemToolWrench;
+import shedar.mods.ic2.nuclearcontrol.crossmod.EnergyStorageData;
 
 /**
  * 

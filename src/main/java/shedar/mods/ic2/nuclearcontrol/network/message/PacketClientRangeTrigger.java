@@ -3,12 +3,12 @@ package shedar.mods.ic2.nuclearcontrol.network.message;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 
-import shedar.mods.ic2.nuclearcontrol.containers.ContainerRangeTrigger;
-import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityRangeTrigger;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import shedar.mods.ic2.nuclearcontrol.containers.ContainerRangeTrigger;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityRangeTrigger;
 
 public class PacketClientRangeTrigger implements IMessage, IMessageHandler<PacketClientRangeTrigger, IMessage> {
 

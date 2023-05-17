@@ -2,12 +2,12 @@ package shedar.mods.ic2.nuclearcontrol.network.message;
 
 import net.minecraft.tileentity.TileEntity;
 
-import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAverageCounter;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAverageCounter;
 
 public class PacketAcounter implements IMessage, IMessageHandler<PacketAcounter, IMessage> {
 

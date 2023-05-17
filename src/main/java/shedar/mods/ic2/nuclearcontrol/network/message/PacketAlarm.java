@@ -3,12 +3,12 @@ package shedar.mods.ic2.nuclearcontrol.network.message;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 
 public class PacketAlarm implements IMessage, IMessageHandler<PacketAlarm, IMessage> {
 

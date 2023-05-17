@@ -5,15 +5,15 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 
+import ic2.api.item.IC2Items;
+import ic2.api.recipe.Recipes;
+import ic2.core.util.StackUtil;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.StorageArrayRecipe;
 import shedar.mods.ic2.nuclearcontrol.items.ItemKitMultipleSensor;
 import shedar.mods.ic2.nuclearcontrol.items.ItemUpgrade;
 import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
 import shedar.mods.ic2.nuclearcontrol.utils.LightDamages;
-import ic2.api.item.IC2Items;
-import ic2.api.recipe.Recipes;
-import ic2.core.util.StackUtil;
 
 public class RecipesNew {
 

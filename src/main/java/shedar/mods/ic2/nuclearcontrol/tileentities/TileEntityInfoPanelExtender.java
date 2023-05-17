@@ -9,6 +9,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import ic2.api.network.INetworkDataProvider;
+import ic2.api.network.INetworkUpdateListener;
+import ic2.api.tile.IWrenchable;
+import ic2.core.IC2;
+import ic2.core.network.NetworkManager;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.IRotation;
 import shedar.mods.ic2.nuclearcontrol.IScreenPart;
@@ -16,12 +22,6 @@ import shedar.mods.ic2.nuclearcontrol.ITextureHelper;
 import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.InfoPanel;
 import shedar.mods.ic2.nuclearcontrol.panel.Screen;
 import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
-import cpw.mods.fml.common.FMLCommonHandler;
-import ic2.api.network.INetworkDataProvider;
-import ic2.api.network.INetworkUpdateListener;
-import ic2.api.tile.IWrenchable;
-import ic2.core.IC2;
-import ic2.core.network.NetworkManager;
 
 public class TileEntityInfoPanelExtender extends TileEntity
         implements INetworkDataProvider, INetworkUpdateListener, IWrenchable, ITextureHelper, IScreenPart, IRotation {

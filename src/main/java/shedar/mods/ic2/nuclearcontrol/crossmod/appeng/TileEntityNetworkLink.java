@@ -12,7 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import shedar.mods.ic2.nuclearcontrol.utils.NCLog;
 import appeng.api.AEApi;
 import appeng.api.implementations.tiles.IChestOrDrive;
 import appeng.api.networking.GridFlags;
@@ -31,6 +30,7 @@ import appeng.api.util.DimensionalCoord;
 import appeng.tile.grid.AENetworkTile;
 import appeng.tile.storage.TileChest;
 import appeng.tile.storage.TileDrive;
+import shedar.mods.ic2.nuclearcontrol.utils.NCLog;
 
 public class TileEntityNetworkLink extends AENetworkTile {
 

@@ -1,12 +1,12 @@
 package shedar.mods.ic2.nuclearcontrol.crossmod;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import shedar.mods.ic2.nuclearcontrol.crossmod.RF.CrossTE;
 import shedar.mods.ic2.nuclearcontrol.crossmod.appeng.CrossAppeng;
 import shedar.mods.ic2.nuclearcontrol.crossmod.bigreactors.CrossBigReactors;
 import shedar.mods.ic2.nuclearcontrol.crossmod.mekanism.CrossMekanism;
 import shedar.mods.ic2.nuclearcontrol.crossmod.vanilla.Vanilla;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.event.FMLInterModComms;
 
 public class CrossModLoader {
 

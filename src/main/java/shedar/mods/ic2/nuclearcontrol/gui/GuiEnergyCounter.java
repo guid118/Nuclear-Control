@@ -8,12 +8,12 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import shedar.mods.ic2.nuclearcontrol.containers.ContainerEnergyCounter;
-import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.IC2;
 import ic2.core.network.NetworkManager;
+import shedar.mods.ic2.nuclearcontrol.containers.ContainerEnergyCounter;
+import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 
 @SideOnly(Side.CLIENT)
 public class GuiEnergyCounter extends GuiContainer {

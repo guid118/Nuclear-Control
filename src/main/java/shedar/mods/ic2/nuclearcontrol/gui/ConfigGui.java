@@ -4,8 +4,8 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 
-import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import cpw.mods.fml.client.config.GuiConfig;
+import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 
 public class ConfigGui extends GuiConfig {
 

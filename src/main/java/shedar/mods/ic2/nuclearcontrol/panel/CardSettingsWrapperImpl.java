@@ -6,12 +6,12 @@ import java.util.Map;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.api.ICardSettingsWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
 import shedar.mods.ic2.nuclearcontrol.gui.GuiInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class CardSettingsWrapperImpl implements ICardSettingsWrapper {
 

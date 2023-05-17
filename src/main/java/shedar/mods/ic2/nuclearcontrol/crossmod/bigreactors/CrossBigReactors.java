@@ -3,14 +3,14 @@ package shedar.mods.ic2.nuclearcontrol.crossmod.bigreactors;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.registry.GameRegistry;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.crossmod.ModLib;
 import shedar.mods.ic2.nuclearcontrol.crossmod.bigreactors.recipes.BigReactorsRecipesGregtech;
 import shedar.mods.ic2.nuclearcontrol.crossmod.bigreactors.recipes.BigReactorsRecipesNew;
 import shedar.mods.ic2.nuclearcontrol.utils.NCLog;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class CrossBigReactors {
 

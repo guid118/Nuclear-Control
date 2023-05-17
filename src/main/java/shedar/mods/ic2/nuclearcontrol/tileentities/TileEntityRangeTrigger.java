@@ -14,6 +14,14 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Facing;
 import net.minecraftforge.common.util.Constants;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import ic2.api.network.INetworkClientTileEntityEventListener;
+import ic2.api.network.INetworkDataProvider;
+import ic2.api.network.INetworkUpdateListener;
+import ic2.api.tile.IWrenchable;
+import ic2.core.IC2;
+import ic2.core.network.ClientModifiable;
+import ic2.core.network.NetworkManager;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.IRotation;
 import shedar.mods.ic2.nuclearcontrol.ISlotItemFilter;
@@ -23,14 +31,6 @@ import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.RangeTrigger;
 import shedar.mods.ic2.nuclearcontrol.items.ItemUpgrade;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
-import cpw.mods.fml.common.FMLCommonHandler;
-import ic2.api.network.INetworkClientTileEntityEventListener;
-import ic2.api.network.INetworkDataProvider;
-import ic2.api.network.INetworkUpdateListener;
-import ic2.api.tile.IWrenchable;
-import ic2.core.IC2;
-import ic2.core.network.ClientModifiable;
-import ic2.core.network.NetworkManager;
 
 public class TileEntityRangeTrigger extends TileEntity
         implements ISlotItemFilter, INetworkDataProvider, INetworkUpdateListener, IWrenchable, ITextureHelper,

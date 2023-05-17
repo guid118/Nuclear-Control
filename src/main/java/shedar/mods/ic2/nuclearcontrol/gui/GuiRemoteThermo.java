@@ -9,13 +9,13 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import shedar.mods.ic2.nuclearcontrol.containers.ContainerRemoteThermo;
-import shedar.mods.ic2.nuclearcontrol.gui.controls.CompactButton;
-import shedar.mods.ic2.nuclearcontrol.gui.controls.GuiThermoInvertRedstone;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.IC2;
 import ic2.core.network.NetworkManager;
+import shedar.mods.ic2.nuclearcontrol.containers.ContainerRemoteThermo;
+import shedar.mods.ic2.nuclearcontrol.gui.controls.CompactButton;
+import shedar.mods.ic2.nuclearcontrol.gui.controls.GuiThermoInvertRedstone;
 
 @SideOnly(Side.CLIENT)
 public class GuiRemoteThermo extends GuiContainer {

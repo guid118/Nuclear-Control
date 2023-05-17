@@ -5,10 +5,10 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.LangHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class GuiScreenColor extends GuiScreen {
 

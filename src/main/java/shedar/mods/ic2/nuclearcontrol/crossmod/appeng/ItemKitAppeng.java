@@ -7,10 +7,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import appeng.block.crafting.BlockCraftingMonitor;
 import shedar.mods.ic2.nuclearcontrol.items.ItemKitEnergySensor;
 import shedar.mods.ic2.nuclearcontrol.utils.ItemStackUtils;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
-import appeng.block.crafting.BlockCraftingMonitor;
 
 public class ItemKitAppeng extends ItemKitEnergySensor {
 

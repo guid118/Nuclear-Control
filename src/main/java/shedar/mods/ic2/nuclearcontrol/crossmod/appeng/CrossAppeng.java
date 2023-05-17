@@ -3,12 +3,12 @@ package shedar.mods.ic2.nuclearcontrol.crossmod.appeng;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
-import shedar.mods.ic2.nuclearcontrol.crossmod.ModLib;
-import shedar.mods.ic2.nuclearcontrol.utils.NCLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
+import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
+import shedar.mods.ic2.nuclearcontrol.crossmod.ModLib;
+import shedar.mods.ic2.nuclearcontrol.utils.NCLog;
 
 public class CrossAppeng {
 
