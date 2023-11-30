@@ -37,7 +37,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.tile.IWrenchable;
 import ic2.core.item.tool.ItemToolPainter;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
-import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.*;
+import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.AdvancedInfoPanel;
+import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.AdvancedInfoPanelExtender;
+import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.AverageCounter;
+import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.EnergyCounter;
+import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.HowlerAlarm;
+import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.IndustrialAlarm;
+import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.InfoPanel;
+import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.InfoPanelExtender;
+import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.RangeTrigger;
+import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.RemoteThermo;
+import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.Subblock;
+import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.ThermalMonitor;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityHowlerAlarm;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityIndustrialAlarm;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
@@ -45,7 +56,11 @@ import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanelExtender;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityRangeTrigger;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityRemoteThermo;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityThermo;
-import shedar.mods.ic2.nuclearcontrol.utils.*;
+import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
+import shedar.mods.ic2.nuclearcontrol.utils.DyeUtil;
+import shedar.mods.ic2.nuclearcontrol.utils.NuclearHelper;
+import shedar.mods.ic2.nuclearcontrol.utils.RedstoneHelper;
+import shedar.mods.ic2.nuclearcontrol.utils.WrenchHelper;
 
 public class BlockNuclearControlMain extends BlockContainer {
 

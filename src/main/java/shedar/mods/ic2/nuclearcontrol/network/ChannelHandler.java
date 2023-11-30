@@ -3,7 +3,22 @@ package shedar.mods.ic2.nuclearcontrol.network;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
-import shedar.mods.ic2.nuclearcontrol.network.message.*;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketAcounter;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketAlarm;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketChat;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketClientColor;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketClientDisplaySettings;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketClientRangeTrigger;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketClientRemoteMonitor;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketClientRequest;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketClientSensor;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketClientSound;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketDispSettingsAll;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketDispSettingsUpdate;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketEncounter;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketSensor;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketSensorTitle;
+import shedar.mods.ic2.nuclearcontrol.network.message.PacketServerUpdate;
 
 public class ChannelHandler {
 

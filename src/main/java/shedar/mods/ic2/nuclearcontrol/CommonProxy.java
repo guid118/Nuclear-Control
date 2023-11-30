@@ -14,7 +14,17 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.Subblock;
 import shedar.mods.ic2.nuclearcontrol.containers.ContainerRemoteMonitor;
 import shedar.mods.ic2.nuclearcontrol.gui.GuiRemoteMonitor;
-import shedar.mods.ic2.nuclearcontrol.tileentities.*;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanelExtender;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAverageCounter;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityEnergyCounter;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityHowlerAlarm;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityIndustrialAlarm;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanelExtender;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityRangeTrigger;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityRemoteThermo;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityThermo;
 
 public class CommonProxy implements IGuiHandler {
 
