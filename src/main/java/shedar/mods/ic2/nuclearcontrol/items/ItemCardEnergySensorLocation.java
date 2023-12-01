@@ -13,7 +13,12 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import shedar.mods.ic2.nuclearcontrol.api.*;
+import shedar.mods.ic2.nuclearcontrol.api.CardState;
+import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
+import shedar.mods.ic2.nuclearcontrol.api.IRangeTriggerable;
+import shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor;
+import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
+import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.crossmod.EnergyStorageData;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.utils.EnergyStorageHelper;

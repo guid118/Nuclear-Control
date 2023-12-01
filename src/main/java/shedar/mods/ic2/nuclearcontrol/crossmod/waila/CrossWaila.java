@@ -1,7 +1,11 @@
 package shedar.mods.ic2.nuclearcontrol.crossmod.waila;
 
 import mcp.mobius.waila.api.IWailaRegistrar;
-import shedar.mods.ic2.nuclearcontrol.tileentities.*;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAverageCounter;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityEnergyCounter;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityHowlerAlarm;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityThermo;
 
 public class CrossWaila {
 

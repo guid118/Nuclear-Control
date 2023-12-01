@@ -9,7 +9,6 @@ import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.ManagedEnvironment;
 import li.cil.oc.api.prefab.DriverTileEntity;
 import li.cil.oc.integration.ManagedTileEntityEnvironment;
-import shedar.mods.ic2.nuclearcontrol.crossmod.opencomputers.DriverAdvancedInfoPanel.Environment;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
 
 /**
