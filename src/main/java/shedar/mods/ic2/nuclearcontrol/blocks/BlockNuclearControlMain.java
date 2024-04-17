@@ -403,23 +403,24 @@ public class BlockNuclearControlMain extends BlockContainer {
             float f3) {
         int blockType = world.getBlockMetadata(x, y, z);
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if (tileEntity instanceof TileEntityHowlerAlarm) {
+        if (tileEntity instanceof TileEntityHowlerAlarm tileHowler) {
             if (player.getCurrentEquippedItem() != null && DyeUtil.isADye(player.getCurrentEquippedItem())) {
-                ((TileEntityHowlerAlarm) tileEntity)
-                        .setColor(ItemDye.field_150922_c[DyeUtil.getDyeId(player.getCurrentEquippedItem())]);
-                world.markBlockForUpdate(x, y, z);
-                if (!player.capabilities.isCreativeMode) {
-                    if (player.inventory.getCurrentItem().stackSize == 1) {
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                    } else {
-                        player.inventory.getCurrentItem().stackSize--;
+                int dyeId = DyeUtil.getDyeId(player.getCurrentEquippedItem());
+                if(dyeId >= 0){
+                    tileHowler.setColor(ItemDye.field_150922_c[dyeId]);
+                    world.markBlockForUpdate(x, y, z);
+                    if (!player.capabilities.isCreativeMode) {
+                        if (player.inventory.getCurrentItem().stackSize == 1) {
+                            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+                        } else {
+                            player.inventory.getCurrentItem().stackSize--;
+                        }
                     }
+                    return true;
                 }
-                return true;
             } else if (player.getCurrentEquippedItem() != null) {
-                if (player.getCurrentEquippedItem().getItem() instanceof ItemToolPainter) {
-                    ItemToolPainter p = (ItemToolPainter) player.getCurrentEquippedItem().getItem();
-                    ((TileEntityHowlerAlarm) tileEntity).setColor(ItemDye.field_150922_c[p.color]);
+                if (player.getCurrentEquippedItem().getItem() instanceof ItemToolPainter toolPainter) {
+                    tileHowler.setColor(ItemDye.field_150922_c[toolPainter.color]);
                     world.markBlockForUpdate(x, y, z);
                     player.getCurrentEquippedItem().damageItem(1, player);
                     return true;
