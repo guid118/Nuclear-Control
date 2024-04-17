@@ -406,7 +406,7 @@ public class BlockNuclearControlMain extends BlockContainer {
         if (tileEntity instanceof TileEntityHowlerAlarm tileHowler) {
             if (player.getCurrentEquippedItem() != null && DyeUtil.isADye(player.getCurrentEquippedItem())) {
                 int dyeId = DyeUtil.getDyeId(player.getCurrentEquippedItem());
-                if(dyeId >= 0){
+                if (dyeId >= 0) {
                     tileHowler.setColor(ItemDye.field_150922_c[dyeId]);
                     world.markBlockForUpdate(x, y, z);
                     if (!player.capabilities.isCreativeMode) {
