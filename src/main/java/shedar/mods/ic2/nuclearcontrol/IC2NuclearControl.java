@@ -57,7 +57,7 @@ import shedar.mods.ic2.nuclearcontrol.recipes.RecipesOld;
 @Mod(
         modid = "IC2NuclearControl",
         name = "Nuclear Control 2",
-        version = "GRADLETOKEN_VERSION",
+        version = Tags.VERSION,
         dependencies = "required-after:IC2; after:gregtech;",
         guiFactory = "shedar.mods.ic2.nuclearcontrol.gui.GuiFactory")
 public class IC2NuclearControl {
