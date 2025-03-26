@@ -1,6 +1,5 @@
 package shedar.mods.ic2.nuclearcontrol.gui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiButton;
@@ -182,9 +181,15 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
                     int xpos = x + column * 24;
                     int ypos = i < 24 ? hpos + row * hy : hpos + row * hy + hy * 2;
 
-                    buttonList.add(new GuiInfoPanelCheckBox(
-                            0, xpos, ypos, panelSetting, container.panel, slot, fontRendererObj
-                    ));
+                    buttonList.add(
+                            new GuiInfoPanelCheckBox(
+                                    0,
+                                    xpos,
+                                    ypos,
+                                    panelSetting,
+                                    container.panel,
+                                    slot,
+                                    fontRendererObj));
 
                 }
             }

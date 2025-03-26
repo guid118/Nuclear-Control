@@ -1,6 +1,5 @@
 package shedar.mods.ic2.nuclearcontrol.gui;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -183,9 +182,15 @@ public class GuiInfoPanel extends GuiContainer {
                     int xpos = x + column * 24;
                     int ypos = hpos + row * hy;
 
-                    buttonList.add(new GuiInfoPanelCheckBox(
-                            0, xpos, ypos, panelSetting, container.panel, slot, fontRendererObj
-                    ));
+                    buttonList.add(
+                            new GuiInfoPanelCheckBox(
+                                    0,
+                                    xpos,
+                                    ypos,
+                                    panelSetting,
+                                    container.panel,
+                                    slot,
+                                    fontRendererObj));
                 }
             }
             if (!modified) {
