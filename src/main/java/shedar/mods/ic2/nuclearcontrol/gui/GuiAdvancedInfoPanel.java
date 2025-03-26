@@ -178,7 +178,7 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
                     int row = i < 24 ? i % 8 : (i - 24) % 6;
 
                     // calculate actual positions
-                    int xpos = x + column * 24;
+                    int xpos = x + column * 23;
                     int ypos = i < 24 ? hpos + row * hy : hpos + row * hy + hy * 2;
 
                     buttonList.add(
