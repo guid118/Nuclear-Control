@@ -1,7 +1,9 @@
 package shedar.mods.ic2.nuclearcontrol.gui;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -24,7 +26,7 @@ import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelMultiCard;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
-import shedar.mods.ic2.nuclearcontrol.gui.controls.GuiInfoPanelCheckBox;
+import shedar.mods.ic2.nuclearcontrol.gui.controls.GuiScrollableList;
 import shedar.mods.ic2.nuclearcontrol.gui.controls.IconButton;
 import shedar.mods.ic2.nuclearcontrol.panel.CardSettingsWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
@@ -44,6 +46,7 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
     private static final int ID_TRANSPARENCY = 6;
     private static final int ID_ROTATELEFT = 7;
     private static final int ID_ROTATERIGHT = 8;
+    private static final int ID_LINES = 9;
 
     private byte activeTab;
     private boolean initialized;
@@ -166,32 +169,9 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
             } else {
                 settingsList = source.getSettingsList();
             }
-            int hy = fontRendererObj.FONT_HEIGHT + 1;
-            int x = guiLeft + 30;
-            int hpos = guiTop + 60;
             if (settingsList != null) {
-                for (int i = 0; i < settingsList.size(); i++) {
-                    PanelSetting panelSetting = settingsList.get(i);
-                    if (i >= 42) break;
-                    // Calculate column and row
-                    int column = i < 24 ? i / 8 : (i - 24) / 6 + 3;
-                    int row = i < 24 ? i % 8 : (i - 24) % 6;
-
-                    // calculate actual positions
-                    int xpos = x + column * 23;
-                    int ypos = i < 24 ? hpos + row * hy : hpos + row * hy + hy * 2;
-
-                    buttonList.add(
-                            new GuiInfoPanelCheckBox(
-                                    0,
-                                    xpos,
-                                    ypos,
-                                    panelSetting,
-                                    container.panel,
-                                    slot,
-                                    fontRendererObj));
-
-                }
+                buttonList.add(
+                        new IconButton(ID_LINES, guiLeft + 32, guiTop + 80, 32, 16, TEXTURE_LOCATION, 192 - 16, 111));
             }
             if (!modified) {
                 textboxTitle = new GuiTextField(fontRendererObj, 7, 16, 162, 18);
@@ -287,6 +267,22 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
             case ID_ROTATERIGHT:
                 ((NetworkManager) IC2.network.get()).initiateClientTileEntityEvent(container.panel, ID_ROTATERIGHT);
                 break;
+            case ID_LINES:
+                card = getActiveCard();
+                IPanelDataSource source = (IPanelDataSource) card.getItem();
+                List<PanelSetting> settingsList;
+                if (card.getItem() instanceof IPanelMultiCard) {
+                    settingsList = ((IPanelMultiCard) source).getSettingsList(new CardWrapperImpl(card, activeTab));
+                } else {
+                    settingsList = source.getSettingsList();
+                }
+                List<String> titles = new ArrayList<>();
+                for (int i = 0; i < settingsList.size(); i++) {
+                    titles.add(settingsList.get(i).title);
+                }
+                GuiScrollableList listGui = new GuiScrollableList(titles);
+                mc.displayGuiScreen(listGui);
+            break;
         }
     }
 
