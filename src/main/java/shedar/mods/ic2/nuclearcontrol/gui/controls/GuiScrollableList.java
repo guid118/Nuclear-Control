@@ -190,9 +190,9 @@ public class GuiScrollableList extends GuiScreen {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         if (mouseButton == 0) {
             // check if click was within general GUI bounds
-            if (mouseX > guiLeft && mouseX < guiRight) {
+            if (mouseX > internalLeft && mouseX < guiRight - PADDING_RIGHT) {
                 //check if click was within CheckBox bounds
-                if (mouseX < guiLeft + TOGGLE_BUTTON_WIDTH) {
+                if (mouseX < internalLeft + TOGGLE_BUTTON_WIDTH) {
                     for (Object o : buttonList) {
                         GuiToggleButton btn = (GuiToggleButton) o;
                         if (mouseY >= btn.yPosition && mouseY < btn.yPosition + BUTTON_HEIGHT) {
