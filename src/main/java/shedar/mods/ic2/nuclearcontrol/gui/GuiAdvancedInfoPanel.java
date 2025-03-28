@@ -266,37 +266,21 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
                 GuiPanelSlope slopeGui = new GuiPanelSlope(this, (TileEntityAdvancedInfoPanel) container.panel);
                 willReturn = true;
                 mc.displayGuiScreen(slopeGui);
-                break;
             }
             case ID_TRANSPARENCY -> {
                 IC2.network.get().initiateClientTileEntityEvent(container.panel, ID_TRANSPARENCY);
-                break;
             }
             case ID_ROTATELEFT -> {
                 IC2.network.get().initiateClientTileEntityEvent(container.panel, ID_ROTATELEFT);
-                break;
             }
             case ID_ROTATERIGHT -> {
                 IC2.network.get().initiateClientTileEntityEvent(container.panel, ID_ROTATERIGHT);
-                break;
             }
             case ID_LINES -> {
                 ItemStack card = getActiveCard();
-                IPanelDataSource source = (IPanelDataSource) card.getItem();
-                List<PanelSetting> settingsList;
-                if (card.getItem() instanceof IPanelMultiCard) {
-                    settingsList = ((IPanelMultiCard) source).getSettingsList(new CardWrapperImpl(card, activeTab));
-                } else {
-                    settingsList = source.getSettingsList();
-                }
-                List<String> titles = new ArrayList<>();
-                for (int i = 0; i < settingsList.size(); i++) {
-                    titles.add(settingsList.get(i).title);
-                }
-                GuiScrollableList listGui = new GuiScrollableList(this, titles);
+                GuiScrollableList listGui = new GuiScrollableList(this, (TileEntityAdvancedInfoPanel) container.panel, card);
                 willReturn = true;
                 mc.displayGuiScreen(listGui);
-                break;
             }
         }
     }

@@ -2,13 +2,24 @@ package shedar.mods.ic2.nuclearcontrol.gui.controls;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import shedar.mods.ic2.nuclearcontrol.api.CardState;
+import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
+import shedar.mods.ic2.nuclearcontrol.api.PanelString;
+import shedar.mods.ic2.nuclearcontrol.gui.GuiAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.gui.GuiInfoPanel;
+import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
+import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GuiScrollableList extends GuiScreen {
     // WARNING: These values are only meant to be edited when the texture is edited as well, you can find the texture
@@ -50,7 +61,7 @@ public class GuiScrollableList extends GuiScreen {
     private int internalBottom = 0;
 
     private List<GuiToggleButton> buttonListFull = new ArrayList<>();
-    private final GuiInfoPanel parentGui;
+    private final GuiAdvancedInfoPanel parentGui;
 
     private int scrollOffset = 0;
     private int thumbLocation = 0;
@@ -59,20 +70,43 @@ public class GuiScrollableList extends GuiScreen {
 
     private GuiToggleButton draggedButton = null;
     private int originalIndex = -1;
-    List<String> buttons;
-
+    private List<PanelString> panelStrings = new ArrayList<>();
+    private int displaySettings;
     /**
      * Constructor for the Scrollable List GUI.
      *
-     * @param buttons a list of the names of the buttons to be shown
+     * @param parentGui the GUI that should be opened when the esc key is pressed.
+     * @param panel the TileEntityAdvancedInfoPanel this is shown in
+     * @param card the specific card ItemStack
      */
-    public GuiScrollableList(GuiInfoPanel parentGui, List<String> buttons) {
+    public GuiScrollableList(GuiAdvancedInfoPanel parentGui, TileEntityAdvancedInfoPanel panel, ItemStack card) {
         this.parentGui = parentGui;
-        this.buttons = buttons;
-        //TODO REMOVE THIS DEBUG CODE
-        for (int i = 3; i < 160; i++) {
-            buttons.add(i + "");
+        this.getSettings(panel, card);
+    }
+
+    /**
+     * get the data to name the buttons.
+     * @param panel the TileEntityAdvancedInfoPanel this is shown in
+     * @param card the specific card ItemStack
+     */
+    private void getSettings(TileEntityAdvancedInfoPanel panel, ItemStack card) {
+        if (card == null || !(card.getItem() instanceof IPanelDataSource)) {
+            return;
         }
+        displaySettings = panel.getDisplaySettingsByCard(card);
+        CardWrapperImpl helper = new CardWrapperImpl(card, -1);
+        CardState state = helper.getState();
+        List<PanelString> data;
+        if (state != CardState.OK && state != CardState.CUSTOM_ERROR) {
+            data = StringUtils.getStateMessage(state);
+        } else {
+            data = ((IPanelDataSource) card.getItem()).getStringData(-1, helper, panel.getShowLabels());
+        }
+        if (data == null) {
+            return;
+        }
+        System.out.println(Arrays.toString(data.toArray()));
+        panelStrings = data;
     }
 
 
@@ -92,8 +126,8 @@ public class GuiScrollableList extends GuiScreen {
 
         this.buttonListFull.clear();
         this.buttonList.clear();
-        for (int i = 0; i < buttons.size(); i++) {
-            buttonListFull.add(new GuiToggleButton(i, internalLeft + 1, 0, buttons.get(i), false));
+        for (int i = 0; i < panelStrings.size(); i++) {
+            buttonListFull.add(new GuiToggleButton(i, internalLeft + 1, 0, panelStrings.get(i).toString(), (displaySettings & (1 << i)) != 0));
         }
         updateVisibleButtons();
     }
