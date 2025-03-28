@@ -9,12 +9,14 @@ public class GuiToggleButton extends GuiButton {
     private static final ResourceLocation TEXTURE = new ResourceLocation("nuclearcontrol:textures/gui/GUIAdvancedInfoPanelLines.png");
 
     private static final int ICON_HEIGHT = 16;
+    final int mask;
     private boolean isChecked;
     int dragOffsetY = 0; // Stores how much offset from mouse click
 
-    public GuiToggleButton(int id, int x, int y, String buttonText, boolean initialState) {
+    public GuiToggleButton(int id, int x, int y, String buttonText, boolean initialState, int slot) {
         super(id, x, y, 140, 20, buttonText);
         this.isChecked = initialState;
+        this.mask = slot;
     }
 
     public boolean isChecked() {

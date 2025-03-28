@@ -10,16 +10,13 @@ import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.gui.GuiAdvancedInfoPanel;
-import shedar.mods.ic2.nuclearcontrol.gui.GuiInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GuiScrollableList extends GuiScreen {
     // WARNING: These values are only meant to be edited when the texture is edited as well, you can find the texture
@@ -71,7 +68,9 @@ public class GuiScrollableList extends GuiScreen {
     private GuiToggleButton draggedButton = null;
     private int originalIndex = -1;
     private List<PanelString> panelStrings = new ArrayList<>();
-    private int displaySettings;
+    private final TileEntityAdvancedInfoPanel panel;
+    private final ItemStack card;
+    private final byte cardSlot;
     /**
      * Constructor for the Scrollable List GUI.
      *
@@ -81,19 +80,19 @@ public class GuiScrollableList extends GuiScreen {
      */
     public GuiScrollableList(GuiAdvancedInfoPanel parentGui, TileEntityAdvancedInfoPanel panel, ItemStack card) {
         this.parentGui = parentGui;
-        this.getSettings(panel, card);
+        this.panel = panel;
+        this.card = card;
+        cardSlot = panel.getIndexOfCard(card);
+        this.getSettings();
     }
 
     /**
      * get the data to name the buttons.
-     * @param panel the TileEntityAdvancedInfoPanel this is shown in
-     * @param card the specific card ItemStack
      */
-    private void getSettings(TileEntityAdvancedInfoPanel panel, ItemStack card) {
+    private void getSettings() {
         if (card == null || !(card.getItem() instanceof IPanelDataSource)) {
             return;
         }
-        displaySettings = panel.getDisplaySettingsByCard(card);
         CardWrapperImpl helper = new CardWrapperImpl(card, -1);
         CardState state = helper.getState();
         List<PanelString> data;
@@ -126,8 +125,9 @@ public class GuiScrollableList extends GuiScreen {
 
         this.buttonListFull.clear();
         this.buttonList.clear();
+        int displaySettings = panel.getDisplaySettingsByCard(card);
         for (int i = 0; i < panelStrings.size(); i++) {
-            buttonListFull.add(new GuiToggleButton(i, internalLeft + 1, 0, panelStrings.get(i).toString(), (displaySettings & (1 << i)) != 0));
+            buttonListFull.add(new GuiToggleButton(i, internalLeft + 1, 0, panelStrings.get(i).toString(), (displaySettings & (1 << i)) != 0, 1 << i));
         }
         updateVisibleButtons();
     }
@@ -197,6 +197,9 @@ public class GuiScrollableList extends GuiScreen {
                         GuiToggleButton btn = (GuiToggleButton) o;
                         if (mouseY >= btn.yPosition && mouseY < btn.yPosition + BUTTON_HEIGHT) {
                             btn.toggle();
+                            int displaySettings = panel.getDisplaySettingsByCard(card);
+                            displaySettings ^= btn.mask;
+                            panel.setDisplaySettings( cardSlot, displaySettings);
                         }
                     }
                     //check if click was within draggable bounds
