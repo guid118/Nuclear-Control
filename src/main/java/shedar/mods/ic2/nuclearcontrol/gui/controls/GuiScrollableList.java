@@ -21,6 +21,7 @@ public class GuiScrollableList extends GuiScreen {
     private static final int SCROLLBAR_PADDING_SIDE = 9;
     private static final int BUTTON_WIDTH = 140;
     private static final int TOGGLE_BUTTON_WIDTH = 20;
+    private static final int THUMB_HEIGHT = 32;
 
     private int guiLeft = 0;
     private int guiTop = 0;
@@ -42,7 +43,7 @@ public class GuiScrollableList extends GuiScreen {
     private int visibleButtons = 7;
     private int buttonHeight = 20;
     private int scrollSpeed = 1;
-    private int scrollbarLocation = internalTop + 1;
+    private int thumbLocation = internalTop + 1;
     private int scrollbarOffset = 0;
 
     private GuiToggleButton draggedButton = null;
@@ -53,8 +54,8 @@ public class GuiScrollableList extends GuiScreen {
     public GuiScrollableList(List<String> buttons) {
         this.buttons = buttons;
         //TODO REMOVE THIS DEBUG CODE
-        for (int i = 3; i < 20; i++) {
-            buttons.add( i + "");
+        for (int i = 3; i < 160; i++) {
+            buttons.add(i + "");
         }
     }
 
@@ -72,7 +73,7 @@ public class GuiScrollableList extends GuiScreen {
         listRight = internalLeft + BUTTON_WIDTH;
         scrollbarLeft = guiRight - SCROLLBAR_PADDING_SIDE;
         scrollbarRight = scrollbarLeft + SCROLLBAR_WIDTH;
-
+        thumbLocation = internalTop;
 
         this.buttonListFull.clear();
         this.buttonList.clear();
@@ -92,6 +93,8 @@ public class GuiScrollableList extends GuiScreen {
         }
     }
 
+
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
@@ -99,7 +102,7 @@ public class GuiScrollableList extends GuiScreen {
 
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, GUI_WIDTH, GUI_HEIGHT);
 
-        drawTexturedModalRect(scrollbarLeft + 1, scrollbarLocation, 176,0,12,32);
+        drawTexturedModalRect(scrollbarLeft + 1, thumbLocation, 176, 0, SCROLLBAR_WIDTH, THUMB_HEIGHT);
 
 
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
@@ -124,8 +127,6 @@ public class GuiScrollableList extends GuiScreen {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         if (mouseButton == 0) {
-            // Determine bounds
-
             // check if click was within general GUI bounds
             if (mouseX > guiLeft && mouseX < guiRight) {
                 //check if click was within CheckBox bounds
@@ -148,10 +149,13 @@ public class GuiScrollableList extends GuiScreen {
                         }
                     }
                     // check if click was within scrollbar bounds.
-                } else if (mouseX > scrollbarLeft && mouseX < scrollbarRight) {
-                    //TODO do scrolling if dragged
-                    scrollbarOffset = mouseY - internalTop;
-                    System.out.println(scrollbarOffset);
+                } else {
+                    scrollbarOffset = mouseY - thumbLocation;
+                    if (scrollbarOffset > THUMB_HEIGHT)
+                        scrollbarOffset = THUMB_HEIGHT;
+                    else if (scrollbarOffset < 0)
+                        scrollbarOffset = 0;
+                    moveScrollbar(mouseX, mouseY);
                 }
             }
         }
@@ -171,16 +175,25 @@ public class GuiScrollableList extends GuiScreen {
                 scrollDown();
             }
             draggedButton.setPosition(adjustedY);
-        } else if (mouseX > scrollbarLeft && mouseX < scrollbarRight) {
-            //TODO fix the scrollbar
+        } else {
+            moveScrollbar(mouseX, mouseY);
+        }
+    }
+
+    private void moveScrollbar(int mouseX, int mouseY) {
+        if (mouseX > scrollbarLeft && mouseX < scrollbarRight) {
             int adjustedY = mouseY - scrollbarOffset;
-            scrollbarLocation = adjustedY;
+            thumbLocation = adjustedY;
             if (adjustedY < internalTop) {
-                scrollbarLocation = internalTop;
-            } else if (adjustedY > internalBottom) {
-                scrollbarLocation = internalBottom - 32; // 32 is scrollbar height
+                thumbLocation = internalTop;
+            } else if (adjustedY > internalBottom - THUMB_HEIGHT) {
+                thumbLocation = internalBottom - THUMB_HEIGHT;
             }
         }
+        double offsetRatio = (double) (thumbLocation- internalTop) / (internalBottom - internalTop - THUMB_HEIGHT);
+        int newScrollOffset = (int) (offsetRatio * (buttonListFull.size() - visibleButtons));
+        scrollOffset = Math.max(0, Math.min(newScrollOffset, buttonListFull.size() - visibleButtons));
+        updateVisibleButtons();
     }
 
     @Override
@@ -199,6 +212,8 @@ public class GuiScrollableList extends GuiScreen {
             draggedButton = null;
             updateVisibleButtons(); // Refresh button list after drag
             //TODO update the settingsList to reflect changes
+        } else {
+            moveScrollbar(mouseX, mouseY);
         }
     }
 
@@ -214,15 +229,27 @@ public class GuiScrollableList extends GuiScreen {
     private void scrollUp() {
         if (scrollOffset > 0) {
             scrollOffset -= scrollSpeed;
-            updateVisibleButtons();
+            updateThumbLocation();
         }
     }
 
     private void scrollDown() {
         if (scrollOffset + visibleButtons < buttonListFull.size()) {
             scrollOffset += scrollSpeed;
-            updateVisibleButtons();
+            updateThumbLocation();
         }
+    }
+
+    private void updateThumbLocation() {
+        double locationRatio = (double) scrollOffset / (buttonListFull.size() - visibleButtons);
+        int newThumbLocation = (int) (locationRatio * (internalBottom - internalTop - THUMB_HEIGHT) + internalTop);
+        if (newThumbLocation < internalTop + 1) {
+            newThumbLocation = internalTop;
+        } else if (newThumbLocation > internalBottom - THUMB_HEIGHT) {
+            newThumbLocation = internalBottom - THUMB_HEIGHT;
+        }
+        thumbLocation = newThumbLocation;
+        updateVisibleButtons();
     }
 
 
