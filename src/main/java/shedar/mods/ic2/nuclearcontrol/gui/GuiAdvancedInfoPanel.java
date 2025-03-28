@@ -50,6 +50,7 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
 
     private byte activeTab;
     private boolean initialized;
+    private boolean willReturn = false;
 
     public GuiAdvancedInfoPanel(Container container) {
         super(container);
@@ -79,7 +80,9 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
     @Override
     protected void initControls() {
         ItemStack card = getActiveCard();
-        if ((card == null && prevCard == null && initialized) || (card != null && card.equals(prevCard))) return;
+        if (((card == null && prevCard == null && initialized) || (card != null && card.equals(prevCard))) && !willReturn)
+            return;
+        willReturn = false;
         initialized = true;
         int h = fontRendererObj.FONT_HEIGHT + 1;
         buttonList.clear();
@@ -216,11 +219,13 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
     @Override
     protected void actionPerformed(GuiButton button) {
         switch (button.id) {
-            case ID_COLORS:
+            case ID_COLORS -> {
                 GuiScreen colorGui = new GuiScreenColor(this, container.panel);
+                willReturn = true;
                 mc.displayGuiScreen(colorGui);
-                break;
-            case ID_SETTINGS:
+
+            }
+            case ID_SETTINGS -> {
                 ItemStack card = getActiveCard();
                 if (card == null) return;
                 if (card.getItem() instanceof IAdvancedCardSettings) {
@@ -233,10 +238,12 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
                     }
                     ICardSettingsWrapper wrapper = new CardSettingsWrapperImpl(card, container.panel, this, activeTab);
                     ((ICardGui) gui).setCardSettingsHelper(wrapper);
+                    willReturn = true;
                     mc.displayGuiScreen(gui);
                 }
-                break;
-            case ID_LABELS:
+
+            }
+            case ID_LABELS -> {
                 boolean checked = !container.panel.getShowLabels();
                 if (button instanceof IconButton) {
                     IconButton iButton = (IconButton) button;
@@ -244,31 +251,37 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
                 }
                 int value = checked ? -1 : -2;
                 container.panel.setShowLabels(checked);
-                ((NetworkManager) IC2.network.get()).initiateClientTileEntityEvent(container.panel, value);
-                break;
-            case ID_POWER:
+                IC2.network.get().initiateClientTileEntityEvent(container.panel, value);
+                willReturn = true;
+            }
+            case ID_POWER -> {
                 byte mode = ((TileEntityAdvancedInfoPanel) container.panel).getNextPowerMode();
                 if (button instanceof IconButton) {
                     IconButton iButton = (IconButton) button;
                     iButton.textureTop = getIconPowerTopOffset(mode);
                 }
-                ((NetworkManager) IC2.network.get()).initiateClientTileEntityEvent(container.panel, mode);
-                break;
-            case ID_SLOPE:
+                IC2.network.get().initiateClientTileEntityEvent(container.panel, mode);
+                }
+            case ID_SLOPE -> {
                 GuiPanelSlope slopeGui = new GuiPanelSlope(this, (TileEntityAdvancedInfoPanel) container.panel);
+                willReturn = true;
                 mc.displayGuiScreen(slopeGui);
                 break;
-            case ID_TRANSPARENCY:
-                ((NetworkManager) IC2.network.get()).initiateClientTileEntityEvent(container.panel, ID_TRANSPARENCY);
+            }
+            case ID_TRANSPARENCY -> {
+                IC2.network.get().initiateClientTileEntityEvent(container.panel, ID_TRANSPARENCY);
                 break;
-            case ID_ROTATELEFT:
-                ((NetworkManager) IC2.network.get()).initiateClientTileEntityEvent(container.panel, ID_ROTATELEFT);
+            }
+            case ID_ROTATELEFT -> {
+                IC2.network.get().initiateClientTileEntityEvent(container.panel, ID_ROTATELEFT);
                 break;
-            case ID_ROTATERIGHT:
-                ((NetworkManager) IC2.network.get()).initiateClientTileEntityEvent(container.panel, ID_ROTATERIGHT);
+            }
+            case ID_ROTATERIGHT -> {
+                IC2.network.get().initiateClientTileEntityEvent(container.panel, ID_ROTATERIGHT);
                 break;
-            case ID_LINES:
-                card = getActiveCard();
+            }
+            case ID_LINES -> {
+                ItemStack card = getActiveCard();
                 IPanelDataSource source = (IPanelDataSource) card.getItem();
                 List<PanelSetting> settingsList;
                 if (card.getItem() instanceof IPanelMultiCard) {
@@ -280,9 +293,11 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
                 for (int i = 0; i < settingsList.size(); i++) {
                     titles.add(settingsList.get(i).title);
                 }
-                GuiScrollableList listGui = new GuiScrollableList(titles);
+                GuiScrollableList listGui = new GuiScrollableList(this, titles);
+                willReturn = true;
                 mc.displayGuiScreen(listGui);
-            break;
+                break;
+            }
         }
     }
 
@@ -294,7 +309,6 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
             if (newTab > 2) newTab = 2;
             if (newTab != activeTab && modified) updateTitle();
             activeTab = newTab;
-
         }
     }
 }

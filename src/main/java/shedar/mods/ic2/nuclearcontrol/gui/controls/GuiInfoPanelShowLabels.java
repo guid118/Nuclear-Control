@@ -49,9 +49,7 @@ public class GuiInfoPanelShowLabels extends GuiButton {
         if (super.mousePressed(minecraft, i, j)) {
             checked = !checked;
             int value = checked ? -1 : -2;
-            // panel.setShowLabels(checked);
-
-            ((NetworkManager) IC2.network.get()).initiateClientTileEntityEvent(panel, value);
+            (IC2.network.get()).initiateClientTileEntityEvent(panel, value);
             return true;
         } else {
             return false;

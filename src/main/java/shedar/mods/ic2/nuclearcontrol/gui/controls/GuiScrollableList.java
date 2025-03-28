@@ -1,27 +1,42 @@
 package shedar.mods.ic2.nuclearcontrol.gui.controls;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+import shedar.mods.ic2.nuclearcontrol.gui.GuiInfoPanel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuiScrollableList extends GuiScreen {
-    private static final int GUI_WIDTH = 173;
-    private static final int GUI_HEIGHT = 153;
+    // WARNING: These values are only meant to be edited when the texture is edited as well, you can find the texture
+    // location at the TEXTURE variable further below.
+    // General dimensions and paddings
+    static final int GUI_WIDTH = 173;
+    static final int GUI_HEIGHT = 213;
     private static final int PADDING_LEFT = 6;
     private static final int PADDING_TOP = 6;
-    private static final int PADDING_BOTTOM = 6;
-    private static final int LIST_WIDTH = 163;
-    private static final int LIST_HEIGHT = 152;
-    private static final int SCROLLBAR_PADDING_MIDDLE = 7;
-    private static final int SCROLLBAR_WIDTH = 12;
-    private static final int SCROLLBAR_PADDING_SIDE = 9;
+    private static final int PADDING_BOTTOM = 7;
+    private static final int PADDING_MIDDLE = 7;
+    private static final int PADDING_RIGHT = 7;
+
+    // Internal sizes
+    static final int THUMB_WIDTH = 12;
+
+    //Button sizes and amounts, some of these can be calculated from earlier values
+    static final int BUTTON_HEIGHT = 20;
     private static final int BUTTON_WIDTH = 140;
+    private static final int VISIBLE_BUTTONS = (GUI_HEIGHT - PADDING_TOP - PADDING_BOTTOM) / BUTTON_HEIGHT;
+    private static final int LIST_HEIGHT = VISIBLE_BUTTONS * BUTTON_HEIGHT;
     private static final int TOGGLE_BUTTON_WIDTH = 20;
     private static final int THUMB_HEIGHT = 32;
+
+    private static final int SCROLL_SPEED = 1;
+
+    private static final ResourceLocation TEXTURE = new ResourceLocation("nuclearcontrol:textures/gui/GUIAdvancedInfoPanelLines.png");
+
 
     private int guiLeft = 0;
     private int guiTop = 0;
@@ -34,24 +49,25 @@ public class GuiScrollableList extends GuiScreen {
     private int scrollbarRight = 0;
     private int internalBottom = 0;
 
-
-    private static final ResourceLocation TEXTURE = new ResourceLocation("nuclearcontrol:textures/gui/GUIAdvancedInfoPanelLines.png");
-
-
     private List<GuiToggleButton> buttonListFull = new ArrayList<>();
+    private final GuiInfoPanel parentGui;
+
     private int scrollOffset = 0;
-    private int visibleButtons = 7;
-    private int buttonHeight = 20;
-    private int scrollSpeed = 1;
-    private int thumbLocation = internalTop + 1;
-    private int scrollbarOffset = 0;
+    private int thumbLocation = 0;
+    private int scrollbarOffset = -1;
+
 
     private GuiToggleButton draggedButton = null;
     private int originalIndex = -1;
     List<String> buttons;
 
-
-    public GuiScrollableList(List<String> buttons) {
+    /**
+     * Constructor for the Scrollable List GUI.
+     *
+     * @param buttons a list of the names of the buttons to be shown
+     */
+    public GuiScrollableList(GuiInfoPanel parentGui, List<String> buttons) {
+        this.parentGui = parentGui;
         this.buttons = buttons;
         //TODO REMOVE THIS DEBUG CODE
         for (int i = 3; i < 160; i++) {
@@ -62,17 +78,16 @@ public class GuiScrollableList extends GuiScreen {
 
     @Override
     public void initGui() {
-
         guiLeft = (width - GUI_WIDTH) / 2;
         guiTop = (height - GUI_HEIGHT) / 2;
-        guiRight = (width + GUI_HEIGHT) / 2;
+        guiRight = (width + GUI_WIDTH) / 2;
         guiBottom = (height + GUI_HEIGHT) / 2;
         internalLeft = guiLeft + PADDING_LEFT + 1;
         internalTop = guiTop + PADDING_TOP + 1;
         internalBottom = guiBottom - PADDING_BOTTOM;
         listRight = internalLeft + BUTTON_WIDTH;
-        scrollbarLeft = guiRight - SCROLLBAR_PADDING_SIDE;
-        scrollbarRight = scrollbarLeft + SCROLLBAR_WIDTH;
+        scrollbarLeft = guiRight - THUMB_WIDTH - PADDING_RIGHT;
+        scrollbarRight = scrollbarLeft + THUMB_WIDTH;
         thumbLocation = internalTop;
 
         this.buttonListFull.clear();
@@ -83,41 +98,54 @@ public class GuiScrollableList extends GuiScreen {
         updateVisibleButtons();
     }
 
-    private void updateVisibleButtons() {
-        buttonList.clear();
-
-        for (int i = scrollOffset; i < scrollOffset + visibleButtons && i < buttonListFull.size(); i++) {
-            GuiToggleButton btn = buttonListFull.get(i);
-            btn.yPosition = PADDING_TOP + (i - scrollOffset) * buttonHeight + guiTop;
-            buttonList.add(btn);
-        }
-    }
-
-
-
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
         mc.getTextureManager().bindTexture(TEXTURE);
 
+        // The background texture should always be in the top left of the png
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, GUI_WIDTH, GUI_HEIGHT);
 
-        drawTexturedModalRect(scrollbarLeft + 1, thumbLocation, 176, 0, SCROLLBAR_WIDTH, THUMB_HEIGHT);
+        // the scrollbar should be directly to the right of the background texture
+        drawTexturedModalRect(scrollbarLeft + 1, thumbLocation, GUI_WIDTH + 1, 0, THUMB_WIDTH, THUMB_HEIGHT);
 
 
+        // Cut off any buttons being drawn outside the list.
+        // (technically redundant, but if one were to want to display half of a button, that is possible)
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        setScissor(internalLeft, PADDING_TOP + guiTop, LIST_WIDTH, LIST_HEIGHT);
-
+        setScissor(internalLeft, internalTop, BUTTON_WIDTH, LIST_HEIGHT);
         super.drawScreen(mouseX, mouseY, partialTicks);
-
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
+        // if we're dragging a button, show it at the mouse position
         if (draggedButton != null) {
             draggedButton.drawButton(mc, mouseX, mouseY);
         }
 
     }
 
+    /**
+     * method to update visible buttons based off of scrollOffset.
+     * the scrollOffset variable should be changed before calling this method
+     */
+    private void updateVisibleButtons() {
+        buttonList.clear();
+        scrollOffset = Math.max(0, Math.min(scrollOffset, buttonListFull.size() - VISIBLE_BUTTONS));
+        for (int i = scrollOffset; i < scrollOffset + VISIBLE_BUTTONS && i < buttonListFull.size(); i++) {
+            GuiToggleButton btn = buttonListFull.get(i);
+            btn.yPosition = PADDING_TOP + (i - scrollOffset) * BUTTON_HEIGHT + guiTop;
+            buttonList.add(btn);
+        }
+    }
+
+    /**
+     * set an openGL scissor
+     *
+     * @param x      left
+     * @param y      top
+     * @param width  width
+     * @param height height
+     */
     private void setScissor(int x, int y, int width, int height) {
         int scaleFactor = 2;
         GL11.glScissor(x * scaleFactor, (mc.displayHeight - (y + height) * scaleFactor), width * scaleFactor, height * scaleFactor);
@@ -133,7 +161,7 @@ public class GuiScrollableList extends GuiScreen {
                 if (mouseX < guiLeft + TOGGLE_BUTTON_WIDTH) {
                     for (Object o : buttonList) {
                         GuiToggleButton btn = (GuiToggleButton) o;
-                        if (mouseY >= btn.yPosition && mouseY < btn.yPosition + buttonHeight) {
+                        if (mouseY >= btn.yPosition && mouseY < btn.yPosition + BUTTON_HEIGHT) {
                             btn.toggle();
                         }
                     }
@@ -141,21 +169,17 @@ public class GuiScrollableList extends GuiScreen {
                 } else if (mouseX < listRight) {
                     for (Object o : buttonList) {
                         GuiToggleButton btn = (GuiToggleButton) o;
-                        if (mouseY >= btn.yPosition && mouseY < btn.yPosition + buttonHeight) {
+                        if (mouseY >= btn.yPosition && mouseY < btn.yPosition + BUTTON_HEIGHT) {
                             draggedButton = btn;
                             originalIndex = buttonListFull.indexOf(draggedButton);
                             btn.dragOffsetY = mouseY - btn.yPosition;
                             break;
                         }
                     }
-                    // check if click was within scrollbar bounds.
-                } else {
-                    scrollbarOffset = mouseY - thumbLocation;
-                    if (scrollbarOffset > THUMB_HEIGHT)
-                        scrollbarOffset = THUMB_HEIGHT;
-                    else if (scrollbarOffset < 0)
-                        scrollbarOffset = 0;
-                    moveScrollbar(mouseX, mouseY);
+                    // check if the click was within scrollbar bounds
+                } else if (mouseX > scrollbarLeft && mouseX < scrollbarRight) {
+                    scrollbarOffset = Math.max(0, Math.min(mouseY - thumbLocation, THUMB_HEIGHT));
+                    moveScrollbar(mouseY);
                 }
             }
         }
@@ -164,7 +188,7 @@ public class GuiScrollableList extends GuiScreen {
     @Override
     protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
         super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
-
+        // check if a button is being dragged
         if (draggedButton != null) {
             int adjustedY = mouseY - draggedButton.dragOffsetY;
             if (adjustedY < internalTop) {
@@ -175,33 +199,18 @@ public class GuiScrollableList extends GuiScreen {
                 scrollDown();
             }
             draggedButton.setPosition(adjustedY);
-        } else {
-            moveScrollbar(mouseX, mouseY);
+            // no button is being dragged, but the player might be scrolling.
+        } else if (scrollbarOffset != -1) {
+            moveScrollbar(mouseY);
         }
-    }
-
-    private void moveScrollbar(int mouseX, int mouseY) {
-        if (mouseX > scrollbarLeft && mouseX < scrollbarRight) {
-            int adjustedY = mouseY - scrollbarOffset;
-            thumbLocation = adjustedY;
-            if (adjustedY < internalTop) {
-                thumbLocation = internalTop;
-            } else if (adjustedY > internalBottom - THUMB_HEIGHT) {
-                thumbLocation = internalBottom - THUMB_HEIGHT;
-            }
-        }
-        double offsetRatio = (double) (thumbLocation- internalTop) / (internalBottom - internalTop - THUMB_HEIGHT);
-        int newScrollOffset = (int) (offsetRatio * (buttonListFull.size() - visibleButtons));
-        scrollOffset = Math.max(0, Math.min(newScrollOffset, buttonListFull.size() - visibleButtons));
-        updateVisibleButtons();
     }
 
     @Override
     protected void mouseMovedOrUp(int mouseX, int mouseY, int state) {
         super.mouseMovedOrUp(mouseX, mouseY, state);
-
+        // check if there is a button being dragged
         if (draggedButton != null) {
-            int newIndex = (mouseY - guiTop + PADDING_TOP) / buttonHeight + scrollOffset - 1;
+            int newIndex = (mouseY - guiTop + PADDING_TOP) / BUTTON_HEIGHT + scrollOffset - 1;
             newIndex = Math.max(0, Math.min(buttonListFull.size() - 1, newIndex));
 
             if (newIndex != originalIndex) {
@@ -210,38 +219,40 @@ public class GuiScrollableList extends GuiScreen {
             }
 
             draggedButton = null;
-            updateVisibleButtons(); // Refresh button list after drag
+            updateVisibleButtons();
             //TODO update the settingsList to reflect changes
-        } else {
-            moveScrollbar(mouseX, mouseY);
+
+            // check if the scrollbar is being used
+        } else if (scrollbarOffset != -1) {
+            moveScrollbar(mouseY);
+            scrollbarOffset = -1;
         }
     }
 
-    @Override
-    public void handleMouseInput() {
-        super.handleMouseInput();
-        int scroll = Mouse.getDWheel();
-
-        if (scroll > 0) scrollUp();
-        else if (scroll < 0) scrollDown();
-    }
-
-    private void scrollUp() {
-        if (scrollOffset > 0) {
-            scrollOffset -= scrollSpeed;
-            updateThumbLocation();
+    /**
+     * move the scrollbar to the mouseY position, keeping it within bounds.
+     *
+     * @param mouseY new Y position of the mouse
+     */
+    private void moveScrollbar(int mouseY) {
+        int adjustedY = mouseY - scrollbarOffset;
+        thumbLocation = adjustedY;
+        if (adjustedY < internalTop) {
+            thumbLocation = internalTop;
+        } else if (adjustedY > internalBottom - THUMB_HEIGHT) {
+            thumbLocation = internalBottom - THUMB_HEIGHT;
         }
+        double offsetRatio = (double) (thumbLocation - internalTop) / (internalBottom - internalTop - THUMB_HEIGHT);
+        int newScrollOffset = (int) (offsetRatio * (buttonListFull.size() - VISIBLE_BUTTONS));
+        scrollOffset = Math.max(0, Math.min(newScrollOffset, buttonListFull.size() - VISIBLE_BUTTONS));
+        updateVisibleButtons();
     }
 
-    private void scrollDown() {
-        if (scrollOffset + visibleButtons < buttonListFull.size()) {
-            scrollOffset += scrollSpeed;
-            updateThumbLocation();
-        }
-    }
-
+    /**
+     * Update the scrollbar's thumb location by the currently visible buttons
+     */
     private void updateThumbLocation() {
-        double locationRatio = (double) scrollOffset / (buttonListFull.size() - visibleButtons);
+        double locationRatio = (double) scrollOffset / (buttonListFull.size() - VISIBLE_BUTTONS);
         int newThumbLocation = (int) (locationRatio * (internalBottom - internalTop - THUMB_HEIGHT) + internalTop);
         if (newThumbLocation < internalTop + 1) {
             newThumbLocation = internalTop;
@@ -252,9 +263,47 @@ public class GuiScrollableList extends GuiScreen {
         updateVisibleButtons();
     }
 
+    // Handle scrolling with the mouse wheel
+    @Override
+    public void handleMouseInput() {
+        super.handleMouseInput();
+        int scroll = Mouse.getDWheel();
 
+        if (scroll > 0) scrollUp();
+        else if (scroll < 0) scrollDown();
+    }
+
+    /**
+     * Scroll up by one SCROLL_SPEED
+     */
+    private void scrollUp() {
+        if (scrollOffset > 0) {
+            scrollOffset -= SCROLL_SPEED;
+            updateThumbLocation();
+        }
+    }
+
+    /**
+     * Scroll down by one SCROLL_SPEED
+     */
+    private void scrollDown() {
+        if (scrollOffset + VISIBLE_BUTTONS < buttonListFull.size()) {
+            scrollOffset += SCROLL_SPEED;
+            updateThumbLocation();
+        }
+    }
+
+    // This GUI should not pause the game
     @Override
     public boolean doesGuiPauseGame() {
         return false;
+    }
+
+    // Return to the AdvancedInfoPanel when the esc button is pressed
+    @Override
+    protected void keyTyped(char par1, int par2) {
+        if (par2 == 1) {
+            FMLClientHandler.instance().getClient().displayGuiScreen(parentGui);
+        } else super.keyTyped(par1, par2);
     }
 }
