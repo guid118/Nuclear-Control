@@ -29,7 +29,7 @@ public class GuiScrollableList extends GuiScreen {
     private static final int PADDING_TOP = 6;
     private static final int PADDING_BOTTOM = 7;
     private static final int PADDING_MIDDLE = 7;
-    private static final int PADDING_RIGHT = 7;
+    static final int PADDING_RIGHT = 7;
 
     // Internal sizes
     static final int THUMB_WIDTH = 12;
@@ -306,6 +306,7 @@ public class GuiScrollableList extends GuiScreen {
         if (scroll > 0) scrollUp();
         else if (scroll < 0) scrollDown();
     }
+
 
     /**
      * Scroll up by one SCROLL_SPEED
