@@ -4,17 +4,17 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
+
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
-import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
-import java.util.Collections;
-import java.util.List;
-
 public class GuiToggleButton extends GuiButton {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("nuclearcontrol:textures/gui/GUIAdvancedInfoPanelLines.png");
+
+    private static final ResourceLocation TEXTURE = new ResourceLocation(
+            "nuclearcontrol:textures/gui/GUIAdvancedInfoPanelLines.png");
 
     private static final int ICON_HEIGHT = 16;
     final byte slot;
@@ -24,17 +24,20 @@ public class GuiToggleButton extends GuiButton {
     private TileEntityAdvancedInfoPanel panel;
     private String fullTitle;
 
-    public GuiToggleButton(int id, int x, int y, String title, PanelSetting setting, TileEntityAdvancedInfoPanel panel, byte slot) {
+    public GuiToggleButton(int id, int x, int y, String title, PanelSetting setting, TileEntityAdvancedInfoPanel panel,
+            byte slot) {
         super(id, x, y, GuiScrollableList.BUTTON_WIDTH, GuiScrollableList.BUTTON_HEIGHT, title);
         this.setting = setting;
         this.panel = panel;
         this.slot = slot;
         this.fullTitle = title;
         // Ensure the title fits within the button
-        int maxWidth = GuiScrollableList.BUTTON_WIDTH - GuiScrollableList.TOGGLE_BUTTON_WIDTH - GuiScrollableList.PADDING_RIGHT;
+        int maxWidth = GuiScrollableList.BUTTON_WIDTH - GuiScrollableList.TOGGLE_BUTTON_WIDTH
+                - GuiScrollableList.PADDING_RIGHT;
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         if (fontRenderer.getStringWidth(title) > maxWidth) {
-            this.displayString = fontRenderer.trimStringToWidth(title, maxWidth - fontRenderer.getStringWidth("...")) + "...";
+            this.displayString = fontRenderer.trimStringToWidth(title, maxWidth - fontRenderer.getStringWidth("..."))
+                    + "...";
         } else {
             this.displayString = title;
         }
@@ -47,7 +50,6 @@ public class GuiToggleButton extends GuiButton {
     public void toggle() {
         isChecked = !isChecked;
     }
-
 
     public void setPosition(int y) {
         this.yPosition = y;
@@ -65,11 +67,13 @@ public class GuiToggleButton extends GuiButton {
         mc.getTextureManager().bindTexture(TEXTURE);
         GL11.glColor4f(1, 1, 1, 1);
 
-        boolean hovered = mouseX >= xPosition && mouseX < xPosition + width &&
-                mouseY >= yPosition && mouseY < yPosition + height;
+        boolean hovered = mouseX >= xPosition && mouseX < xPosition + width
+                && mouseY >= yPosition
+                && mouseY < yPosition + height;
 
-        int textureY = hovered ? GuiScrollableList.BUTTON_HEIGHT + GuiScrollableList.GUI_HEIGHT + 1 : GuiScrollableList.GUI_HEIGHT + 1;
-        drawTexturedModalRect(xPosition-1, yPosition + 1, 0, textureY, 140, 20);
+        int textureY = hovered ? GuiScrollableList.BUTTON_HEIGHT + GuiScrollableList.GUI_HEIGHT + 1
+                : GuiScrollableList.GUI_HEIGHT + 1;
+        drawTexturedModalRect(xPosition - 1, yPosition + 1, 0, textureY, 140, 20);
 
         int iconX = GuiScrollableList.GUI_WIDTH + GuiScrollableList.THUMB_WIDTH + 1;
         int iconY = isChecked ? 0 : ICON_HEIGHT;

@@ -37,14 +37,10 @@ import shedar.mods.ic2.nuclearcontrol.api.IPanelMultiCard;
 import shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.InfoPanel;
-import shedar.mods.ic2.nuclearcontrol.items.ItemCardBase;
 import shedar.mods.ic2.nuclearcontrol.items.ItemUpgrade;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.panel.Screen;
-import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
-import shedar.mods.ic2.nuclearcontrol.utils.ColorUtil;
-import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
-import shedar.mods.ic2.nuclearcontrol.utils.RedstoneHelper;
+import shedar.mods.ic2.nuclearcontrol.utils.*;
 
 public class TileEntityInfoPanel extends TileEntity
         implements ISlotItemFilter, INetworkDataProvider, INetworkUpdateListener, INetworkClientTileEntityEventListener,
@@ -372,9 +368,10 @@ public class TileEntityInfoPanel extends TileEntity
 
     /**
      * get a list of PanelStrings to display on the screen
-     * @param settings displaySettings of the screen, used as a bitmask
+     * 
+     * @param settings  displaySettings of the screen, used as a bitmask
      * @param cardStack ItemStack that contains the card
-     * @param helper Wrapper object, to access field values.
+     * @param helper    Wrapper object, to access field values.
      * @return a list of PanelStrings to display
      */
     public List<PanelString> getCardData(int settings, ItemStack cardStack, ICardWrapper helper) {
@@ -963,14 +960,15 @@ public class TileEntityInfoPanel extends TileEntity
 
     /**
      * get a sorted list of PanelStrings to display on the screen
-     * @param settings displaySettings of the screen, used as a bitmask
+     * 
+     * @param settings  displaySettings of the screen, used as a bitmask
      * @param cardStack ItemStack that contains the card
-     * @param helper Wrapper object, to access field values.
+     * @param helper    Wrapper object, to access field values.
      * @return a list of PanelStrings to display
      */
     public List<PanelString> getSortedCardData(int settings, ItemStack cardStack, CardWrapperImpl helper) {
         List<PanelString> data = new ArrayList<>(this.getCardData(settings, cardStack, helper));
-        ((ItemCardBase) cardStack.getItem()).getDataSorter().sortList(data);
+        DataSorter.getDataSorter(cardStack).sortList(data);
         return data;
     }
 }

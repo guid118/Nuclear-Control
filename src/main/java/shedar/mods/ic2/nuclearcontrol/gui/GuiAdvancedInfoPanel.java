@@ -1,15 +1,12 @@
 package shedar.mods.ic2.nuclearcontrol.gui;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -20,7 +17,6 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ic2.core.IC2;
-import ic2.core.network.NetworkManager;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.api.IAdvancedCardSettings;
 import shedar.mods.ic2.nuclearcontrol.api.ICardGui;
@@ -82,7 +78,9 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
-        if (mouseX > guiLeft + 80 + 18 && mouseX < guiLeft + 80 + 18 * 5 && mouseY > guiTop + 42 && mouseY < guiTop + 42 + 18 * 2) {
+        if (mouseX > guiLeft + 80 + 18 && mouseX < guiLeft + 80 + 18 * 5
+                && mouseY > guiTop + 42
+                && mouseY < guiTop + 42 + 18 * 2) {
             int buttonX = (mouseX - guiLeft - 79) / 18 - 1;
             int buttonY = (mouseY - guiTop - 41) / 18;
             if (buttonX == previousButtonX && buttonY == previousButtonY) {
@@ -96,23 +94,31 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
                 previousButtonX = buttonX;
                 previousButtonY = buttonY;
             }
-        } else if (mouseX > guiLeft + 32 && mouseX < guiLeft + 64 && mouseY > guiTop + 80 && mouseY < guiTop + 80 + 16 && getActiveCard() != null) {
-            if (previousButtonX == -2 && previousButtonY == -2) {
-                if (hoverDelayLeft <= 0) {
-                    drawTooltip(mc, mouseX, mouseY, Collections.singletonList(StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.LineConfig")));
+        } else if (mouseX > guiLeft + 32 && mouseX < guiLeft + 64
+                && mouseY > guiTop + 80
+                && mouseY < guiTop + 80 + 16
+                && getActiveCard() != null) {
+                    if (previousButtonX == -2 && previousButtonY == -2) {
+                        if (hoverDelayLeft <= 0) {
+                            drawTooltip(
+                                    mc,
+                                    mouseX,
+                                    mouseY,
+                                    Collections.singletonList(
+                                            StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.LineConfig")));
+                        } else {
+                            hoverDelayLeft--;
+                        }
+                    } else {
+                        hoverDelayLeft = HOVER_DELAY;
+                        previousButtonX = -2;
+                        previousButtonY = -2;
+                    }
                 } else {
-                    hoverDelayLeft--;
+                    hoverDelayLeft = HOVER_DELAY;
+                    previousButtonX = -1;
+                    previousButtonY = -1;
                 }
-            } else {
-                hoverDelayLeft = HOVER_DELAY;
-                previousButtonX = -2;
-                previousButtonY = -2;
-            }
-        } else {
-            hoverDelayLeft = HOVER_DELAY;
-            previousButtonX = -1;
-            previousButtonY = -1;
-        }
     }
 
     private void drawButtonTooltip(int mouseX, int mouseY, int buttonX, int buttonY) {
@@ -141,11 +147,9 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
         drawTooltip(mc, mouseX, mouseY, Collections.singletonList(tooltipText));
     }
 
-
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         super.drawGuiContainerForegroundLayer(par1, par2);
-
 
     }
 
@@ -153,7 +157,8 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
     @Override
     protected void initControls() {
         ItemStack card = getActiveCard();
-        if (((card == null && prevCard == null && initialized) || (card != null && card.equals(prevCard))) && !willReturn)
+        if (((card == null && prevCard == null && initialized) || (card != null && card.equals(prevCard)))
+                && !willReturn)
             return;
         willReturn = false;
         initialized = true;
@@ -365,7 +370,10 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
             }
             case ID_LINES -> {
                 ItemStack card = getActiveCard();
-                GuiScrollableList listGui = new GuiScrollableList(this, (TileEntityAdvancedInfoPanel) container.panel, card);
+                GuiScrollableList listGui = new GuiScrollableList(
+                        this,
+                        (TileEntityAdvancedInfoPanel) container.panel,
+                        card);
                 willReturn = true;
                 mc.displayGuiScreen(listGui);
             }

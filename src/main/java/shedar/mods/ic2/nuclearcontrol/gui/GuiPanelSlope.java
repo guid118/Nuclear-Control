@@ -7,7 +7,6 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import ic2.core.IC2;
-import ic2.core.network.NetworkManager;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
 
 public class GuiPanelSlope extends GuiScreen {
@@ -36,7 +35,7 @@ public class GuiPanelSlope extends GuiScreen {
     @Override
     protected void mouseClicked(int x, int y, int par3) {
         super.mouseClicked(x, y, par3);
-        updateValue(x,y);
+        updateValue(x, y);
     }
 
     @Override
@@ -44,7 +43,6 @@ public class GuiPanelSlope extends GuiScreen {
         super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
         updateValue(mouseX, mouseY);
     }
-
 
     private void updateValue(int mouseX, int mouseY) {
         mouseX -= guiLeft;

@@ -1,23 +1,25 @@
 package shedar.mods.ic2.nuclearcontrol.gui.controls;
 
-import com.google.common.collect.ImmutableList;
-import cpw.mods.fml.client.FMLClientHandler;
+import java.util.*;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.client.FMLClientHandler;
 import shedar.mods.ic2.nuclearcontrol.api.*;
 import shedar.mods.ic2.nuclearcontrol.gui.GuiAdvancedInfoPanel;
-import shedar.mods.ic2.nuclearcontrol.items.ItemCardBase;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
+import shedar.mods.ic2.nuclearcontrol.utils.DataSorter;
 import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 
-import java.util.*;
-
 public class GuiScrollableList extends GuiScreen {
+
     // WARNING: These values are only meant to be edited when the texture is edited as well, you can find the texture
     // location at the TEXTURE variable further below.
     // General dimensions and paddings
@@ -32,7 +34,7 @@ public class GuiScrollableList extends GuiScreen {
     // Internal sizes
     static final int THUMB_WIDTH = 12;
 
-    //Button sizes and amounts, some of these can be calculated from earlier values
+    // Button sizes and amounts, some of these can be calculated from earlier values
     static final int BUTTON_HEIGHT = 20;
     static final int BUTTON_WIDTH = 140;
     private static final int VISIBLE_BUTTONS = (GUI_HEIGHT - PADDING_TOP - PADDING_BOTTOM) / BUTTON_HEIGHT;
@@ -42,9 +44,9 @@ public class GuiScrollableList extends GuiScreen {
 
     private static final int SCROLL_SPEED = 1;
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation("nuclearcontrol:textures/gui/GUIAdvancedInfoPanelLines.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(
+            "nuclearcontrol:textures/gui/GUIAdvancedInfoPanelLines.png");
     private static final int HOVER_DELAY = 5;
-
 
     private int guiLeft = 0;
     private int guiTop = 0;
@@ -67,19 +69,19 @@ public class GuiScrollableList extends GuiScreen {
     private int hoverDelayLeft = HOVER_DELAY;
     private int previouslyHoveredButton = -1;
 
-
     private GuiToggleButton draggedButton = null;
     private int originalIndex = -1;
     private List<PanelString> panelStrings = new ArrayList<>();
     private final TileEntityAdvancedInfoPanel panel;
     private final ItemStack card;
     private final byte cardSlot;
+
     /**
      * Constructor for the Scrollable List GUI.
      *
      * @param parentGui the GUI that should be opened when the esc key is pressed.
-     * @param panel the TileEntityAdvancedInfoPanel this is shown in
-     * @param card the specific card ItemStack
+     * @param panel     the TileEntityAdvancedInfoPanel this is shown in
+     * @param card      the specific card ItemStack
      */
     public GuiScrollableList(GuiAdvancedInfoPanel parentGui, TileEntityAdvancedInfoPanel panel, ItemStack card) {
         this.parentGui = parentGui;
@@ -109,7 +111,6 @@ public class GuiScrollableList extends GuiScreen {
         return data;
     }
 
-
     @Override
     public void initGui() {
         guiLeft = (width - GUI_WIDTH) / 2;
@@ -135,11 +136,19 @@ public class GuiScrollableList extends GuiScreen {
             settingsList = source.getSettingsList();
         }
         panelStrings = getSettings();
-        for (int i = 0; i < settingsList.size(); i++) {
-            buttonListFull.add(new GuiToggleButton(i, internalLeft + 1, 0, panelStrings.get(i).toString(), settingsList.get(i), panel, cardSlot));
+        for (int i = 0; i < settingsList.size() && i < panelStrings.size(); i++) {
+            buttonListFull.add(
+                    new GuiToggleButton(
+                            i,
+                            internalLeft + 1,
+                            0,
+                            panelStrings.get(i).toString(),
+                            settingsList.get(i),
+                            panel,
+                            cardSlot));
         }
         originalButtonList = new ArrayList<>(buttonListFull);
-        ((ItemCardBase) Objects.requireNonNull(card.getItem())).getDataSorter().sortList(buttonListFull);
+        DataSorter.getDataSorter(card).sortList(buttonListFull);
         updateVisibleButtons();
     }
 
@@ -153,7 +162,6 @@ public class GuiScrollableList extends GuiScreen {
 
         // the scrollbar should be directly to the right of the background texture
         drawTexturedModalRect(scrollbarLeft + 1, thumbLocation, GUI_WIDTH + 1, 0, THUMB_WIDTH, THUMB_HEIGHT);
-
 
         // Cut off any buttons being drawn outside the list.
         // (technically redundant, but if one were to want to display half of a button, that is possible)
@@ -172,13 +180,15 @@ public class GuiScrollableList extends GuiScreen {
 
     /**
      * draw a tooltip for the button over which the mouse is hovering (if the delay has passed)
-     * @param mc Minecraft instance
+     * 
+     * @param mc     Minecraft instance
      * @param mouseX X location of the mouse
      * @param mouseY Y location of the mouse
      */
     private void drawButtonTooltip(Minecraft mc, int mouseX, int mouseY) {
         if (mouseX >= this.internalLeft + TOGGLE_BUTTON_WIDTH && mouseY >= this.internalTop
-                && mouseX < this.listRight && mouseY < this.internalTop + (buttonList.size() * BUTTON_HEIGHT)){
+                && mouseX < this.listRight
+                && mouseY < this.internalTop + (buttonList.size() * BUTTON_HEIGHT)) {
             int buttonIndex = (mouseY - internalTop) / BUTTON_HEIGHT + scrollOffset;
             if (buttonIndex == previouslyHoveredButton) {
                 GuiToggleButton button = buttonListFull.get(buttonIndex);
@@ -199,9 +209,10 @@ public class GuiScrollableList extends GuiScreen {
 
     /**
      * draw a tooltip at the given location with the given text.
-     * @param mc Minecraft instance.
-     * @param mouseX X location of the mouse
-     * @param mouseY Y location of the mouse
+     * 
+     * @param mc        Minecraft instance.
+     * @param mouseX    X location of the mouse
+     * @param mouseY    Y location of the mouse
      * @param textLines lines of text to draw
      */
     private void drawTooltip(Minecraft mc, int mouseX, int mouseY, List<String> textLines) {
@@ -211,8 +222,8 @@ public class GuiScrollableList extends GuiScreen {
     }
 
     /**
-     * method to update visible buttons based off of scrollOffset.
-     * the scrollOffset variable should be changed before calling this method
+     * method to update visible buttons based off of scrollOffset. the scrollOffset variable should be changed before
+     * calling this method
      */
     private void updateVisibleButtons() {
         buttonList.clear();
@@ -234,7 +245,11 @@ public class GuiScrollableList extends GuiScreen {
      */
     private void setScissor(int x, int y, int width, int height) {
         int scaleFactor = 2;
-        GL11.glScissor(x * scaleFactor, (mc.displayHeight - (y + height) * scaleFactor), width * scaleFactor, height * scaleFactor);
+        GL11.glScissor(
+                x * scaleFactor,
+                (mc.displayHeight - (y + height) * scaleFactor),
+                width * scaleFactor,
+                height * scaleFactor);
     }
 
     @Override
@@ -297,7 +312,9 @@ public class GuiScrollableList extends GuiScreen {
 
             draggedButton = null;
             updateVisibleButtons();
-            ((ItemCardBase ) card.getItem()).getDataSorter().computeSortOrder(originalButtonList, buttonListFull);
+            DataSorter dataSorter = DataSorter.getDataSorter(card);
+            dataSorter.computeSortOrder(originalButtonList, buttonListFull);
+            DataSorter.setDataSorter(card, dataSorter);
             // check if the scrollbar is being used
         } else if (scrollbarOffset != -1) {
             moveScrollbar(mouseY);
@@ -348,7 +365,6 @@ public class GuiScrollableList extends GuiScreen {
         if (scroll > 0) scrollUp();
         else if (scroll < 0) scrollDown();
     }
-
 
     /**
      * Scroll up by one SCROLL_SPEED

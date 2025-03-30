@@ -1,6 +1,10 @@
 package shedar.mods.ic2.nuclearcontrol.utils;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DataSorter {
     private List<Integer> customOrder;
@@ -14,14 +18,22 @@ public class DataSorter {
 
     /**
      * Default constructor. If you don't know the size of the list, use the constructor without parameters.
+     *
      * @param size size of the list to be sorted
      */
     public DataSorter(int size) {
         resetOrder(size);
     }
 
+    public DataSorter(int[] order) {
+        if (order != null)
+            this.customOrder = Arrays.stream(order).boxed().collect(Collectors.toList());
+        else this.customOrder = new ArrayList<>();
+    }
+
     /**
      * Save a custom order, and completely overwrite the one currently stored.
+     *
      * @param newOrder the new custom order
      */
     public void saveCustomOrder(List<Integer> newOrder) {
@@ -41,6 +53,7 @@ public class DataSorter {
 
     /**
      * Reset the order and set it to a specific size.
+     *
      * @param size size to be set
      */
     public void resetOrder(int size) {
@@ -54,8 +67,9 @@ public class DataSorter {
      * Sort a list that is of equal or greater size to the custom order.
      * If the size of the given list is greater than the stored order,
      * it will not touch any indexes above the stored order's size
+     *
      * @param data to be sorted
-     * @param <T> any type
+     * @param <T>  any type
      */
     public <T> void sortList(List<T> data) {
         if (customOrder.isEmpty()) {
@@ -103,4 +117,17 @@ public class DataSorter {
         this.customOrder = sortOrder;
     }
 
+    public int[] getArray() {
+        return this.customOrder.stream().mapToInt(Integer::intValue).toArray();
+    }
+
+    public static void setDataSorter(ItemStack stack, DataSorter dataSorter) {
+        NBTTagCompound compound = stack.getTagCompound();
+        compound.setIntArray("DataSorter", dataSorter.getArray());
+    }
+
+    public static DataSorter getDataSorter(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        return new DataSorter(compound.getIntArray("DataSorter"));
+    }
 }
