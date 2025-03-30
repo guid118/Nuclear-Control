@@ -37,6 +37,7 @@ import shedar.mods.ic2.nuclearcontrol.api.IPanelMultiCard;
 import shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.InfoPanel;
+import shedar.mods.ic2.nuclearcontrol.items.ItemCardBase;
 import shedar.mods.ic2.nuclearcontrol.items.ItemUpgrade;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.panel.Screen;
@@ -369,6 +370,13 @@ public class TileEntityInfoPanel extends TileEntity
         cardData.clear();
     }
 
+    /**
+     * get a list of PanelStrings to display on the screen
+     * @param settings displaySettings of the screen, used as a bitmask
+     * @param cardStack ItemStack that contains the card
+     * @param helper Wrapper object, to access field values.
+     * @return a list of PanelStrings to display
+     */
     public List<PanelString> getCardData(int settings, ItemStack cardStack, ICardWrapper helper) {
         IPanelDataSource card = (IPanelDataSource) cardStack.getItem();
         int slot = getIndexOfCard(cardStack);
@@ -951,5 +959,18 @@ public class TileEntityInfoPanel extends TileEntity
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
         return isItemValid(slot, itemstack);
+    }
+
+    /**
+     * get a sorted list of PanelStrings to display on the screen
+     * @param settings displaySettings of the screen, used as a bitmask
+     * @param cardStack ItemStack that contains the card
+     * @param helper Wrapper object, to access field values.
+     * @return a list of PanelStrings to display
+     */
+    public List<PanelString> getSortedCardData(int settings, ItemStack cardStack, CardWrapperImpl helper) {
+        List<PanelString> data = new ArrayList<>(this.getCardData(settings, cardStack, helper));
+        ((ItemCardBase) cardStack.getItem()).getDataSorter().sortList(data);
+        return data;
     }
 }

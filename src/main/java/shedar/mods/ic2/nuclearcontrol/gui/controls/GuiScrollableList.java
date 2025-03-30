@@ -1,5 +1,6 @@
 package shedar.mods.ic2.nuclearcontrol.gui.controls;
 
+import com.google.common.collect.ImmutableList;
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
@@ -10,6 +11,7 @@ import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.gui.GuiAdvancedInfoPanel;
+import shedar.mods.ic2.nuclearcontrol.items.ItemCardBase;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
@@ -17,6 +19,7 @@ import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class GuiScrollableList extends GuiScreen {
     // WARNING: These values are only meant to be edited when the texture is edited as well, you can find the texture
@@ -58,6 +61,7 @@ public class GuiScrollableList extends GuiScreen {
     private int internalBottom = 0;
 
     private List<GuiToggleButton> buttonListFull = new ArrayList<>();
+    private List<GuiToggleButton> originalButtonList = new ArrayList<>();
     private final GuiAdvancedInfoPanel parentGui;
 
     private int scrollOffset = 0;
@@ -93,18 +97,17 @@ public class GuiScrollableList extends GuiScreen {
         if (card == null || !(card.getItem() instanceof IPanelDataSource)) {
             return;
         }
-        CardWrapperImpl helper = new CardWrapperImpl(card, -1);
+        CardWrapperImpl helper = new CardWrapperImpl(card, cardSlot);
         CardState state = helper.getState();
         List<PanelString> data;
         if (state != CardState.OK && state != CardState.CUSTOM_ERROR) {
             data = StringUtils.getStateMessage(state);
         } else {
-            data = ((IPanelDataSource) card.getItem()).getStringData(-1, helper, panel.getShowLabels());
+            data = ((IPanelDataSource) card.getItem()).getStringData(Integer.MAX_VALUE, helper, panel.getShowLabels());
         }
         if (data == null) {
             return;
         }
-        System.out.println(Arrays.toString(data.toArray()));
         panelStrings = data;
     }
 
@@ -129,6 +132,8 @@ public class GuiScrollableList extends GuiScreen {
         for (int i = 0; i < panelStrings.size(); i++) {
             buttonListFull.add(new GuiToggleButton(i, internalLeft + 1, 0, panelStrings.get(i).toString(), (displaySettings & (1 << i)) != 0, 1 << i));
         }
+        originalButtonList = new ArrayList<>(buttonListFull);
+        ((ItemCardBase) Objects.requireNonNull(card.getItem())).getDataSorter().sortList(buttonListFull);
         updateVisibleButtons();
     }
 
@@ -257,8 +262,7 @@ public class GuiScrollableList extends GuiScreen {
 
             draggedButton = null;
             updateVisibleButtons();
-            //TODO update the settingsList to reflect changes
-
+            ((ItemCardBase ) card.getItem()).getDataSorter().computeSortOrder(originalButtonList, buttonListFull);
             // check if the scrollbar is being used
         } else if (scrollbarOffset != -1) {
             moveScrollbar(mouseY);

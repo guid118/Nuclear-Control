@@ -13,9 +13,12 @@ import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
+import shedar.mods.ic2.nuclearcontrol.utils.DataSorter;
 import shedar.mods.ic2.nuclearcontrol.utils.TextureResolver;
 
 public abstract class ItemCardBase extends Item implements IPanelDataSource {
+
+    protected DataSorter dataSorter = new DataSorter();
 
     public ItemCardBase(String textureItemName) {
         super();
@@ -50,4 +53,12 @@ public abstract class ItemCardBase extends Item implements IPanelDataSource {
 
     @Override
     abstract public List<PanelSetting> getSettingsList();
+
+    public void setDataSorter(DataSorter dataSorter) {
+        this.dataSorter = dataSorter;
+    }
+
+    public DataSorter getDataSorter() {
+        return this.dataSorter;
+    }
 }

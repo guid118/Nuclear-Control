@@ -17,6 +17,7 @@ import shedar.mods.ic2.nuclearcontrol.IScreenPart;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
+import shedar.mods.ic2.nuclearcontrol.items.ItemCardBase;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.panel.Screen;
 import shedar.mods.ic2.nuclearcontrol.renderers.model.ModelInfoPanel;
@@ -80,7 +81,11 @@ public class TileEntityInfoPanelRenderer extends TileEntitySpecialRenderer {
                 if (state != CardState.OK && state != CardState.CUSTOM_ERROR) {
                     data = StringUtils.getStateMessage(state);
                 } else {
-                    data = panel.getCardData(displaySettings, card, helper);
+                    if (panel instanceof  TileEntityAdvancedInfoPanel) {
+                        data = panel.getSortedCardData(displaySettings, card, helper);
+                    } else {
+                        data = panel.getCardData(displaySettings, card, helper);
+                    }
                 }
                 if (data == null) {
                     continue;
