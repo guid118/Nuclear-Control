@@ -1,6 +1,7 @@
 package shedar.mods.ic2.nuclearcontrol.gui.controls;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -8,6 +9,9 @@ import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
+
+import java.util.Collections;
+import java.util.List;
 
 public class GuiToggleButton extends GuiButton {
     private static final ResourceLocation TEXTURE = new ResourceLocation("nuclearcontrol:textures/gui/GUIAdvancedInfoPanelLines.png");
@@ -24,6 +28,14 @@ public class GuiToggleButton extends GuiButton {
         this.setting = setting;
         this.panel = panel;
         this.slot = slot;
+        // Ensure the title fits within the button
+        int maxWidth = GuiScrollableList.BUTTON_WIDTH - GuiScrollableList.TOGGLE_BUTTON_WIDTH - GuiScrollableList.PADDING_RIGHT;
+        FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+        if (fontRenderer.getStringWidth(title) > maxWidth) {
+            this.displayString = fontRenderer.trimStringToWidth(title, maxWidth - fontRenderer.getStringWidth("...")) + "...";
+        } else {
+            this.displayString = title;
+        }
     }
 
     public boolean isChecked() {
