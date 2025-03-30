@@ -22,12 +22,14 @@ public class GuiToggleButton extends GuiButton {
     private boolean isChecked;
     int dragOffsetY = 0; // Stores how much offset from mouse click
     private TileEntityAdvancedInfoPanel panel;
+    private String fullTitle;
 
     public GuiToggleButton(int id, int x, int y, String title, PanelSetting setting, TileEntityAdvancedInfoPanel panel, byte slot) {
         super(id, x, y, GuiScrollableList.BUTTON_WIDTH, GuiScrollableList.BUTTON_HEIGHT, title);
         this.setting = setting;
         this.panel = panel;
         this.slot = slot;
+        this.fullTitle = title;
         // Ensure the title fits within the button
         int maxWidth = GuiScrollableList.BUTTON_WIDTH - GuiScrollableList.TOGGLE_BUTTON_WIDTH - GuiScrollableList.PADDING_RIGHT;
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
@@ -49,6 +51,10 @@ public class GuiToggleButton extends GuiButton {
 
     public void setPosition(int y) {
         this.yPosition = y;
+    }
+
+    public String getFullTitle() {
+        return fullTitle;
     }
 
     @Override

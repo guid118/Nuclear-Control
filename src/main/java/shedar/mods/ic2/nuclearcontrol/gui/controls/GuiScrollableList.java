@@ -2,6 +2,7 @@ package shedar.mods.ic2.nuclearcontrol.gui.controls;
 
 import com.google.common.collect.ImmutableList;
 import cpw.mods.fml.client.FMLClientHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -14,10 +15,7 @@ import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class GuiScrollableList extends GuiScreen {
     // WARNING: These values are only meant to be edited when the texture is edited as well, you can find the texture
@@ -45,6 +43,7 @@ public class GuiScrollableList extends GuiScreen {
     private static final int SCROLL_SPEED = 1;
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("nuclearcontrol:textures/gui/GUIAdvancedInfoPanelLines.png");
+    private static final int HOVER_DELAY = 5;
 
 
     private int guiLeft = 0;
@@ -65,6 +64,8 @@ public class GuiScrollableList extends GuiScreen {
     private int scrollOffset = 0;
     private int thumbLocation = 0;
     private int scrollbarOffset = -1;
+    private int hoverDelayLeft = HOVER_DELAY;
+    private int previouslyHoveredButton = -1;
 
 
     private GuiToggleButton draggedButton = null;
@@ -164,8 +165,49 @@ public class GuiScrollableList extends GuiScreen {
         // if we're dragging a button, show it at the mouse position
         if (draggedButton != null) {
             draggedButton.drawButton(mc, mouseX, mouseY);
+        } else {
+            drawButtonTooltip(mc, mouseX, mouseY);
         }
+    }
 
+    /**
+     * draw a tooltip for the button over which the mouse is hovering (if the delay has passed)
+     * @param mc Minecraft instance
+     * @param mouseX X location of the mouse
+     * @param mouseY Y location of the mouse
+     */
+    private void drawButtonTooltip(Minecraft mc, int mouseX, int mouseY) {
+        if (mouseX >= this.internalLeft + TOGGLE_BUTTON_WIDTH && mouseY >= this.internalTop
+                && mouseX < this.listRight && mouseY < this.internalTop + (buttonList.size() * BUTTON_HEIGHT)){
+            int buttonIndex = (mouseY - internalTop) / BUTTON_HEIGHT + scrollOffset;
+            if (buttonIndex == previouslyHoveredButton) {
+                GuiToggleButton button = buttonListFull.get(buttonIndex);
+                if (hoverDelayLeft == 0) {
+                    drawTooltip(mc, mouseX, mouseY, Collections.singletonList(button.getFullTitle()));
+                } else {
+                    hoverDelayLeft--;
+                }
+            } else {
+                hoverDelayLeft = HOVER_DELAY;
+                previouslyHoveredButton = buttonIndex;
+            }
+        } else {
+            hoverDelayLeft = HOVER_DELAY;
+            previouslyHoveredButton = -1;
+        }
+    }
+
+    /**
+     * draw a tooltip at the given location with the given text.
+     * @param mc Minecraft instance.
+     * @param mouseX X location of the mouse
+     * @param mouseY Y location of the mouse
+     * @param textLines lines of text to draw
+     */
+    private void drawTooltip(Minecraft mc, int mouseX, int mouseY, List<String> textLines) {
+        drawHoveringText(textLines, mouseX, mouseY, mc.fontRenderer);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
     }
 
     /**

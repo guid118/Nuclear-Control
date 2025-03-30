@@ -1,12 +1,15 @@
 package shedar.mods.ic2.nuclearcontrol.gui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -48,9 +51,14 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
     private static final int ID_ROTATERIGHT = 8;
     private static final int ID_LINES = 9;
 
+    private static final int HOVER_DELAY = 5;
+
     private byte activeTab;
     private boolean initialized;
     private boolean willReturn = false;
+    private int hoverDelayLeft = HOVER_DELAY;
+    private int previousButtonX = -1;
+    private int previousButtonY = -1;
 
     public GuiAdvancedInfoPanel(Container container) {
         super(container);
@@ -62,7 +70,7 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         mc.renderEngine.bindTexture(TEXTURE_LOCATION);
         int left = (width - xSize) / 2;
@@ -72,8 +80,73 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
     }
 
     @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        if (mouseX > guiLeft + 80 + 18 && mouseX < guiLeft + 80 + 18 * 5 && mouseY > guiTop + 42 && mouseY < guiTop + 42 + 18 * 2) {
+            int buttonX = (mouseX - guiLeft - 79) / 18 - 1;
+            int buttonY = (mouseY - guiTop - 41) / 18;
+            if (buttonX == previousButtonX && buttonY == previousButtonY) {
+                if (hoverDelayLeft <= 0) {
+                    drawButtonTooltip(mouseX, mouseY, buttonX, buttonY);
+                } else {
+                    hoverDelayLeft--;
+                }
+            } else {
+                hoverDelayLeft = HOVER_DELAY;
+                previousButtonX = buttonX;
+                previousButtonY = buttonY;
+            }
+        } else if (mouseX > guiLeft + 32 && mouseX < guiLeft + 64 && mouseY > guiTop + 80 && mouseY < guiTop + 80 + 16 && getActiveCard() != null) {
+            if (previousButtonX == -2 && previousButtonY == -2) {
+                if (hoverDelayLeft <= 0) {
+                    drawTooltip(mc, mouseX, mouseY, Collections.singletonList(StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.LineConfig")));
+                } else {
+                    hoverDelayLeft--;
+                }
+            } else {
+                hoverDelayLeft = HOVER_DELAY;
+                previousButtonX = -2;
+                previousButtonY = -2;
+            }
+        } else {
+            hoverDelayLeft = HOVER_DELAY;
+            previousButtonX = -1;
+            previousButtonY = -1;
+        }
+    }
+
+    private void drawButtonTooltip(int mouseX, int mouseY, int buttonX, int buttonY) {
+        String tooltipText = "";
+        if (buttonY == 0) {
+            if (buttonX == 0) {
+                tooltipText = StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.RotateRight");
+            } else if (buttonX == 1) {
+                tooltipText = StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Colors");
+            } else if (buttonX == 2) {
+                tooltipText = StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Power");
+            } else if (buttonX == 3) {
+                tooltipText = StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Settings");
+            }
+        } else if (buttonY == 1) {
+            if (buttonX == 0) {
+                tooltipText = StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.RotateLeft");
+            } else if (buttonX == 1) {
+                tooltipText = StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Labels");
+            } else if (buttonX == 2) {
+                tooltipText = StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Slope");
+            } else if (buttonX == 3) {
+                tooltipText = StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Transparency");
+            }
+        }
+        drawTooltip(mc, mouseX, mouseY, Collections.singletonList(tooltipText));
+    }
+
+
+    @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         super.drawGuiContainerForegroundLayer(par1, par2);
+
+
     }
 
     @SuppressWarnings("unchecked")
@@ -187,13 +260,27 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
         }
     }
 
+    /**
+     * draw a tooltip at the given location with the given text.
+     *
+     * @param mc        Minecraft instance.
+     * @param mouseX    X location of the mouse
+     * @param mouseY    Y location of the mouse
+     * @param textLines lines of text to draw
+     */
+    private void drawTooltip(Minecraft mc, int mouseX, int mouseY, List<String> textLines) {
+        drawHoveringText(textLines, mouseX, mouseY, mc.fontRenderer);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
+    }
+
     @Override
     protected ItemStack getActiveCard() {
         return container.panel.getCards().get(activeTab);
     }
 
     @Override
-    public void setWorldAndResolution(net.minecraft.client.Minecraft par1Minecraft, int par2, int par3) {
+    public void setWorldAndResolution(Minecraft par1Minecraft, int par2, int par3) {
         initialized = false;
         super.setWorldAndResolution(par1Minecraft, par2, par3);
     }
@@ -261,7 +348,7 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
                     iButton.textureTop = getIconPowerTopOffset(mode);
                 }
                 IC2.network.get().initiateClientTileEntityEvent(container.panel, mode);
-                }
+            }
             case ID_SLOPE -> {
                 GuiPanelSlope slopeGui = new GuiPanelSlope(this, (TileEntityAdvancedInfoPanel) container.panel);
                 willReturn = true;
