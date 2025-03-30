@@ -4,19 +4,26 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
+import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
+import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
 public class GuiToggleButton extends GuiButton {
     private static final ResourceLocation TEXTURE = new ResourceLocation("nuclearcontrol:textures/gui/GUIAdvancedInfoPanelLines.png");
 
     private static final int ICON_HEIGHT = 16;
-    final int mask;
+    final byte slot;
+    private final PanelSetting setting;
     private boolean isChecked;
     int dragOffsetY = 0; // Stores how much offset from mouse click
+    private TileEntityAdvancedInfoPanel panel;
 
-    public GuiToggleButton(int id, int x, int y, String buttonText, boolean initialState, int slot) {
-        super(id, x, y, 140, 20, buttonText);
-        this.isChecked = initialState;
-        this.mask = slot;
+    public GuiToggleButton(int id, int x, int y, String title, PanelSetting setting, TileEntityAdvancedInfoPanel panel, byte slot) {
+        super(id, x, y, GuiScrollableList.BUTTON_WIDTH, GuiScrollableList.BUTTON_HEIGHT, title);
+        this.setting = setting;
+        this.panel = panel;
+        this.slot = slot;
     }
 
     public boolean isChecked() {
@@ -35,6 +42,7 @@ public class GuiToggleButton extends GuiButton {
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         if (!visible) return;
+        isChecked = (panel.getDisplaySettingsForCardInSlot(slot) & setting.displayBit) > 0;
 
         mc.getTextureManager().bindTexture(TEXTURE);
         GL11.glColor4f(1, 1, 1, 1);
@@ -50,5 +58,23 @@ public class GuiToggleButton extends GuiButton {
         drawTexturedModalRect(xPosition + 2, yPosition + 3, iconX, iconY, 16, 14);
 
         mc.fontRenderer.drawString(displayString, xPosition + 24, yPosition + 6, 0xFFFFFF);
+    }
+
+    @Override
+    public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
+        if (mouseX < xPosition + GuiScrollableList.TOGGLE_BUTTON_WIDTH) {
+            if (super.mousePressed(mc, mouseX, mouseY)) {
+                toggle();
+                int value;
+                if (isChecked) value = panel.getDisplaySettingsForCardInSlot(slot) | setting.displayBit;
+                else value = panel.getDisplaySettingsForCardInSlot(slot) & (~setting.displayBit);
+                NuclearNetworkHelper.setDisplaySettings(panel, slot, value);
+                panel.setDisplaySettings(slot, value);
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 }

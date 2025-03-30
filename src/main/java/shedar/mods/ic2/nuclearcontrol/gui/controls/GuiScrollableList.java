@@ -7,9 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
-import shedar.mods.ic2.nuclearcontrol.api.CardState;
-import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
-import shedar.mods.ic2.nuclearcontrol.api.PanelString;
+import shedar.mods.ic2.nuclearcontrol.api.*;
 import shedar.mods.ic2.nuclearcontrol.gui.GuiAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.items.ItemCardBase;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
@@ -38,10 +36,10 @@ public class GuiScrollableList extends GuiScreen {
 
     //Button sizes and amounts, some of these can be calculated from earlier values
     static final int BUTTON_HEIGHT = 20;
-    private static final int BUTTON_WIDTH = 140;
+    static final int BUTTON_WIDTH = 140;
     private static final int VISIBLE_BUTTONS = (GUI_HEIGHT - PADDING_TOP - PADDING_BOTTOM) / BUTTON_HEIGHT;
     private static final int LIST_HEIGHT = VISIBLE_BUTTONS * BUTTON_HEIGHT;
-    private static final int TOGGLE_BUTTON_WIDTH = 20;
+    static final int TOGGLE_BUTTON_WIDTH = 20;
     private static final int THUMB_HEIGHT = 32;
 
     private static final int SCROLL_SPEED = 1;
@@ -87,15 +85,14 @@ public class GuiScrollableList extends GuiScreen {
         this.panel = panel;
         this.card = card;
         cardSlot = panel.getIndexOfCard(card);
-        this.getSettings();
     }
 
     /**
      * get the data to name the buttons.
      */
-    private void getSettings() {
+    private List<PanelString> getSettings() {
         if (card == null || !(card.getItem() instanceof IPanelDataSource)) {
-            return;
+            return new ArrayList<>();
         }
         CardWrapperImpl helper = new CardWrapperImpl(card, cardSlot);
         CardState state = helper.getState();
@@ -106,9 +103,9 @@ public class GuiScrollableList extends GuiScreen {
             data = ((IPanelDataSource) card.getItem()).getStringData(Integer.MAX_VALUE, helper, panel.getShowLabels());
         }
         if (data == null) {
-            return;
+            return new ArrayList<>();
         }
-        panelStrings = data;
+        return data;
     }
 
 
@@ -128,9 +125,17 @@ public class GuiScrollableList extends GuiScreen {
 
         this.buttonListFull.clear();
         this.buttonList.clear();
-        int displaySettings = panel.getDisplaySettingsByCard(card);
-        for (int i = 0; i < panelStrings.size(); i++) {
-            buttonListFull.add(new GuiToggleButton(i, internalLeft + 1, 0, panelStrings.get(i).toString(), (displaySettings & (1 << i)) != 0, 1 << i));
+
+        IPanelDataSource source = (IPanelDataSource) card.getItem();
+        List<PanelSetting> settingsList = null;
+        if (card.getItem() instanceof IPanelMultiCard) {
+            settingsList = ((IPanelMultiCard) source).getSettingsList(new CardWrapperImpl(card, (byte) 0));
+        } else {
+            settingsList = source.getSettingsList();
+        }
+        panelStrings = getSettings();
+        for (int i = 0; i < settingsList.size(); i++) {
+            buttonListFull.add(new GuiToggleButton(i, internalLeft + 1, 0, panelStrings.get(i).toString(), settingsList.get(i), panel, cardSlot));
         }
         originalButtonList = new ArrayList<>(buttonListFull);
         ((ItemCardBase) Objects.requireNonNull(card.getItem())).getDataSorter().sortList(buttonListFull);
@@ -196,19 +201,7 @@ public class GuiScrollableList extends GuiScreen {
         if (mouseButton == 0) {
             // check if click was within general GUI bounds
             if (mouseX > internalLeft && mouseX < guiRight - PADDING_RIGHT) {
-                //check if click was within CheckBox bounds
-                if (mouseX < internalLeft + TOGGLE_BUTTON_WIDTH) {
-                    for (Object o : buttonList) {
-                        GuiToggleButton btn = (GuiToggleButton) o;
-                        if (mouseY >= btn.yPosition && mouseY < btn.yPosition + BUTTON_HEIGHT) {
-                            btn.toggle();
-                            int displaySettings = panel.getDisplaySettingsByCard(card);
-                            displaySettings ^= btn.mask;
-                            panel.setDisplaySettings( cardSlot, displaySettings);
-                        }
-                    }
-                    //check if click was within draggable bounds
-                } else if (mouseX < listRight) {
+                if (mouseX > internalLeft + TOGGLE_BUTTON_WIDTH && mouseX < listRight) {
                     for (Object o : buttonList) {
                         GuiToggleButton btn = (GuiToggleButton) o;
                         if (mouseY >= btn.yPosition && mouseY < btn.yPosition + BUTTON_HEIGHT) {
