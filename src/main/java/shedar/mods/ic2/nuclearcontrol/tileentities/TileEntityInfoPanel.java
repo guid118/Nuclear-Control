@@ -40,7 +40,12 @@ import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.InfoPanel;
 import shedar.mods.ic2.nuclearcontrol.items.ItemUpgrade;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.panel.Screen;
-import shedar.mods.ic2.nuclearcontrol.utils.*;
+import shedar.mods.ic2.nuclearcontrol.utils.ColorUtil;
+import shedar.mods.ic2.nuclearcontrol.utils.DataSorter;
+import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
+import shedar.mods.ic2.nuclearcontrol.utils.RedstoneHelper;
+import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
+
 
 public class TileEntityInfoPanel extends TileEntity
         implements ISlotItemFilter, INetworkDataProvider, INetworkUpdateListener, INetworkClientTileEntityEventListener,

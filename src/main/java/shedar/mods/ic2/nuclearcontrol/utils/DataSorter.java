@@ -1,12 +1,18 @@
 package shedar.mods.ic2.nuclearcontrol.utils;
 
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
 public class DataSorter {
+
     private List<Integer> customOrder;
 
     /**
@@ -26,8 +32,7 @@ public class DataSorter {
     }
 
     public DataSorter(int[] order) {
-        if (order != null)
-            this.customOrder = Arrays.stream(order).boxed().collect(Collectors.toList());
+        if (order != null) this.customOrder = Arrays.stream(order).boxed().collect(Collectors.toList());
         else this.customOrder = new ArrayList<>();
     }
 
@@ -64,9 +69,8 @@ public class DataSorter {
     }
 
     /**
-     * Sort a list that is of equal or greater size to the custom order.
-     * If the size of the given list is greater than the stored order,
-     * it will not touch any indexes above the stored order's size
+     * Sort a list that is of equal or greater size to the custom order. If the size of the given list is greater than
+     * the stored order, it will not touch any indexes above the stored order's size
      *
      * @param data to be sorted
      * @param <T>  any type
@@ -96,8 +100,8 @@ public class DataSorter {
     }
 
     /**
-     * Computes the order needed to sort listB into the order of listA.
-     * Both lists must contain the same elements in a different order.
+     * Computes the order needed to sort listB into the order of listA. Both lists must contain the same elements in a
+     * different order.
      */
     public <T> void computeSortOrder(List<T> listA, List<T> listB) {
         if (listA.size() != listB.size()) {
