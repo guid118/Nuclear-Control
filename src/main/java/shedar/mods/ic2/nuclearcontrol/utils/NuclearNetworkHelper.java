@@ -180,4 +180,14 @@ public class NuclearNetworkHelper {
                 panel.getWorldObj(),
                 new PacketDispSettingsUpdate(panel.xCoord, panel.yCoord, panel.zCoord, slot, key, value));
     }
+
+    public static void sendDisplaySettingsUpdate(TileEntityInfoPanel panel, byte slot, UUID key, String settings) {
+        sendPacketToAllAround(
+                panel.xCoord,
+                panel.yCoord,
+                panel.zCoord,
+                64,
+                panel.getWorldObj(),
+                new PacketDispSettingsUpdate(panel.xCoord, panel.yCoord, panel.zCoord, slot, key, settings));
+    }
 }
