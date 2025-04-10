@@ -10,6 +10,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
+import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
 
 public class PacketDispSettingsUpdate implements IMessage, IMessageHandler<PacketDispSettingsUpdate, IMessage> {
 
@@ -18,19 +19,23 @@ public class PacketDispSettingsUpdate implements IMessage, IMessageHandler<Packe
     private int z;
     private byte slot;
     private UUID key;
-    private int value;
+    private DisplaySettingHelper value;
     private long most;
     private long least;
 
     public PacketDispSettingsUpdate() {}
 
+    /**
+     * @deprecated
+     * TODO make the new constructor
+     */
     public PacketDispSettingsUpdate(int x, int y, int z, byte slot, UUID key, int value) {
         this.x = x;
         this.y = y;
         this.z = z;
         this.slot = slot;
         this.key = key;
-        this.value = value;
+        this.value = new DisplaySettingHelper(value);
     }
 
     @Override
@@ -41,7 +46,7 @@ public class PacketDispSettingsUpdate implements IMessage, IMessageHandler<Packe
         slot = buf.readByte();
         most = buf.readLong();
         least = buf.readLong();
-        value = buf.readInt();
+        value = new DisplaySettingHelper(buf);
     }
 
     @Override
@@ -52,7 +57,7 @@ public class PacketDispSettingsUpdate implements IMessage, IMessageHandler<Packe
         buf.writeByte(slot);
         buf.writeLong(key.getMostSignificantBits());
         buf.writeLong(key.getLeastSignificantBits());
-        buf.writeInt(value);
+        value.writeToByteBuffer(buf);
     }
 
     @Override
@@ -63,7 +68,7 @@ public class PacketDispSettingsUpdate implements IMessage, IMessageHandler<Packe
             return null;
         }
         TileEntityInfoPanel panel = (TileEntityInfoPanel) tileEntity;
-        panel.getDisplaySettingsForSlot(message.slot).put(new UUID(message.most, message.least), message.value);
+        panel.getDisplaySettingsForSlot(message.slot).put(new UUID(message.most, message.least), value.getAsInteger());
         panel.resetCardData();
         return null;
     }

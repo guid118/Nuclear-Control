@@ -40,11 +40,7 @@ import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.InfoPanel;
 import shedar.mods.ic2.nuclearcontrol.items.ItemUpgrade;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.panel.Screen;
-import shedar.mods.ic2.nuclearcontrol.utils.ColorUtil;
-import shedar.mods.ic2.nuclearcontrol.utils.DataSorter;
-import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
-import shedar.mods.ic2.nuclearcontrol.utils.RedstoneHelper;
-import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
+import shedar.mods.ic2.nuclearcontrol.utils.*;
 
 
 public class TileEntityInfoPanel extends TileEntity
@@ -220,6 +216,12 @@ public class TileEntityInfoPanel extends TileEntity
         return slot == SLOT_CARD;
     }
 
+
+    /**
+     * @deprecated use {@link TileEntityInfoPanel#setDisplaySettings(byte, DisplaySettingHelper)}
+     * @param slot
+     * @param settings
+     */
     public void setDisplaySettings(byte slot, int settings) {
         if (!isCardSlot(slot)) return;
         UUID cardType = null;
@@ -245,6 +247,10 @@ public class TileEntityInfoPanel extends TileEntity
         }
     }
 
+    public void setDisplaySettings(byte slot, DisplaySettingHelper settingsHelper) {
+        setDisplaySettings(slot, settingsHelper.getAsInteger());
+        //TODO
+    }
     @Override
     public void onNetworkUpdate(String field) {
         if (field.equals("screenData")) {
