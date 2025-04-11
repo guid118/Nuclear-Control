@@ -27,7 +27,7 @@ public class DisplaySettingHelper {
         for (int i = 31; i >= 0; i--) {
             sb.append(((legacySettings >>> i) & 1) == 1 ? "1" : "0");
         }
-        this.settings = sb.toString();
+        this.settings = sb.reverse().toString();
     }
 
     public DisplaySettingHelper(ByteBuf buf) {
@@ -40,7 +40,7 @@ public class DisplaySettingHelper {
             byte value = buf.readByte();
             sb.append(String.format("%8s", Integer.toBinaryString(value & 0xFF)).replace(' ', '0'));
         }
-        this.settings = sb.substring(0, bytesToRead);
+        this.settings = sb.toString();
     }
 
     /**
