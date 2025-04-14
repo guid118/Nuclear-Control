@@ -67,7 +67,7 @@ public class DisplaySettingHelper {
      * @return the settings as an integer. does not support more than 32 options
      */
     public int getAsInteger() {
-        String s = settings.substring(0, Math.min(32,settings.length()));
+        String s = settings.substring(0, Math.min(31,settings.length()));
         return Integer.parseInt(s, 2);
     }
 
