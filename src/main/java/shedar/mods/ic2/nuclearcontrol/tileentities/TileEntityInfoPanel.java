@@ -461,12 +461,6 @@ public class TileEntityInfoPanel extends TileEntity
 
     protected void readDisplaySettings(NBTTagCompound nbttagcompound) {
         deserializeDisplaySettings(nbttagcompound, "dSettings", SLOT_CARD);
-        if (nbttagcompound.hasKey("dSets")) {// v.1.3.2 compatibility
-            int[] dSets = nbttagcompound.getIntArray("dSets");
-            for (int i = 0; i < dSets.length; i++) {
-                displaySettings.get(SLOT_CARD).put(new UUID(0, i), dSets[i]);
-            }
-        }
     }
 
     public void readDisplaySettingsFromCard(ItemStack item) {
