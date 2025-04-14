@@ -10,12 +10,17 @@ import java.util.List;
 public class DisplaySettingHelper {
 
 
-    private String settings = "";
+    private String settings = "0";
 
     public DisplaySettingHelper() {}
 
     public DisplaySettingHelper(String settings) {
         this.settings = settings;
+        try {
+            getAsInteger();
+        } catch (NumberFormatException ignored) {
+            this.settings = new DisplaySettingHelper(Integer.parseInt(settings)).toString();
+        }
     }
 
     /**
@@ -93,5 +98,11 @@ public class DisplaySettingHelper {
     @Override
     public String toString() {
         return settings;
+    }
+
+    public void setSetting(int index, boolean value) {
+        StringBuilder sb = new StringBuilder(settings);
+        sb.setCharAt(index, value ? '1' : '0');
+        settings = sb.toString();
     }
 }
