@@ -26,8 +26,7 @@ public class PacketDispSettingsUpdate implements IMessage, IMessageHandler<Packe
     public PacketDispSettingsUpdate() {}
 
     /**
-     * @deprecated
-     * TODO make the new constructor
+     * @deprecated use {@link #PacketDispSettingsUpdate(int, int, int, byte, UUID, DisplaySettingHelper)}
      */
     public PacketDispSettingsUpdate(int x, int y, int z, byte slot, UUID key, int value) {
         this.x = x;
@@ -37,6 +36,16 @@ public class PacketDispSettingsUpdate implements IMessage, IMessageHandler<Packe
         this.key = key;
         this.value = new DisplaySettingHelper(value);
     }
+
+    public PacketDispSettingsUpdate(int x, int y, int z, byte slot, UUID key, DisplaySettingHelper value) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.slot = slot;
+        this.key = key;
+        this.value = value;
+    }
+
 
     @Override
     public void fromBytes(ByteBuf buf) {

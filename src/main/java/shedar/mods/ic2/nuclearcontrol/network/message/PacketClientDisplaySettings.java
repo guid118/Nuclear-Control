@@ -17,13 +17,12 @@ public class PacketClientDisplaySettings implements IMessage, IMessageHandler<Pa
     private int y;
     private int z;
     private byte slot;
-    private DisplaySettingHelper settings;
+    private DisplaySettingHelper settings = new DisplaySettingHelper();
 
     public PacketClientDisplaySettings() {}
 
     /**
-     * @deprecated
-     * TODO make the new constructor
+     * @deprecated use {@link #PacketClientDisplaySettings(int, int, int, byte, DisplaySettingHelper)}
      */
     public PacketClientDisplaySettings(int x, int y, int z, byte slot, int settings) {
         this.x = x;
@@ -31,6 +30,15 @@ public class PacketClientDisplaySettings implements IMessage, IMessageHandler<Pa
         this.z = z;
         this.slot = slot;
         this.settings = new DisplaySettingHelper(settings);
+    }
+
+    public PacketClientDisplaySettings(int x, int y, int z, byte slot, DisplaySettingHelper settings) {
+        PacketClientDisplaySettings packet = new PacketClientDisplaySettings();
+        packet.x = x;
+        packet.y = y;
+        packet.z = z;
+        packet.slot = slot;
+        packet.settings = settings;
     }
 
     @Override

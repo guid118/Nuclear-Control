@@ -24,8 +24,8 @@ public class PacketDispSettingsAll implements IMessage, IMessageHandler<PacketDi
     public PacketDispSettingsAll() {}
 
     /**
-     * @deprecated
-     * TODO make the new constructor
+     * @deprecated use {@link #newConstructor(int, int, int, Map)}
+     * unfortunately, due to the nested map, there is no way to make a normal overloaded constructor
      */
     public PacketDispSettingsAll(int x, int y, int z, Map<Byte, Map<UUID, Integer>> settings) {
         this.x = x;
@@ -44,6 +44,15 @@ public class PacketDispSettingsAll implements IMessage, IMessageHandler<PacketDi
 
             this.settings.put(outerEntry.getKey(), innerMap);
         }
+    }
+
+    public static PacketDispSettingsAll newConstructor(int x, int y, int z, Map<Byte, Map<UUID, DisplaySettingHelper>> settings) {
+        PacketDispSettingsAll packet = new PacketDispSettingsAll();
+        packet.x = x;
+        packet.y = y;
+        packet.z = z;
+        packet.settings = settings;
+        return packet;
     }
 
     @Override
