@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
@@ -21,6 +22,7 @@ import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.crossmod.EnergyStorageData;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
+import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.EnergyStorageHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.LangHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
@@ -31,8 +33,8 @@ public class ItemCardEnergySensorLocation extends ItemCardBase implements IRemot
 
     public static final int DISPLAY_ENERGY = 1;
     public static final int DISPLAY_FREE = 2;
-    public static final int DISPLAY_STORAGE = 4;
-    public static final int DISPLAY_PERCENTAGE = 8;
+    public static final int DISPLAY_STORAGE = 3;
+    public static final int DISPLAY_PERCENTAGE = 4;
 
     public static final UUID CARD_TYPE = new UUID(0, 2);
 
@@ -96,29 +98,29 @@ public class ItemCardEnergySensorLocation extends ItemCardBase implements IRemot
     }
 
     @Override
-    public List<PanelString> getStringData(int displaySettings, ICardWrapper card, boolean showLabels) {
+    public List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card, boolean showLabels) {
         List<PanelString> result = new LinkedList<PanelString>();
         PanelString line;
 
         double energy = card.getDouble("energyL");
         double storage = card.getDouble("maxStorageL");
 
-        if ((displaySettings & DISPLAY_ENERGY) > 0) {
+        if (displaySettings.getSetting(DISPLAY_ENERGY)) {
             line = new PanelString();
             line.textLeft = StringUtils.getFormatted("msg.nc.InfoPanelEnergy", energy, showLabels);
             result.add(line);
         }
-        if ((displaySettings & DISPLAY_FREE) > 0) {
+        if (displaySettings.getSetting(DISPLAY_FREE)) {
             line = new PanelString();
             line.textLeft = StringUtils.getFormatted("msg.nc.InfoPanelEnergyFree", storage - energy, showLabels);
             result.add(line);
         }
-        if ((displaySettings & DISPLAY_STORAGE) > 0) {
+        if (displaySettings.getSetting(DISPLAY_STORAGE)) {
             line = new PanelString();
             line.textLeft = StringUtils.getFormatted("msg.nc.InfoPanelEnergyStorage", storage, showLabels);
             result.add(line);
         }
-        if ((displaySettings & DISPLAY_PERCENTAGE) > 0) {
+        if (displaySettings.getSetting(DISPLAY_PERCENTAGE)) {
             line = new PanelString();
             line.textLeft = StringUtils.getFormatted(
                     "msg.nc.InfoPanelEnergyPercentage",
