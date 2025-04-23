@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
+import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
 public class GuiToggleButton extends GuiButton {
@@ -62,7 +63,7 @@ public class GuiToggleButton extends GuiButton {
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         if (!visible) return;
-        isChecked = (panel.getDisplaySettingsForCardInSlot(slot) & setting.displayBit) > 0;
+        isChecked = panel.getNewDisplaySettingsForCardInSlot(slot).getSetting(setting.displayBit);
 
         mc.getTextureManager().bindTexture(TEXTURE);
         GL11.glColor4f(1, 1, 1, 1);
@@ -87,11 +88,10 @@ public class GuiToggleButton extends GuiButton {
         if (mouseX < xPosition + GuiScrollableList.TOGGLE_BUTTON_WIDTH) {
             if (super.mousePressed(mc, mouseX, mouseY)) {
                 toggle();
-                int value;
-                if (isChecked) value = panel.getDisplaySettingsForCardInSlot(slot) | setting.displayBit;
-                else value = panel.getDisplaySettingsForCardInSlot(slot) & (~setting.displayBit);
-                NuclearNetworkHelper.setDisplaySettings(panel, slot, value);
-                panel.setDisplaySettings(slot, value);
+                DisplaySettingHelper settings = panel.getNewDisplaySettingsForCardInSlot(slot);
+                settings.setSetting(setting.displayBit, !settings.getSetting(setting.displayBit));
+                NuclearNetworkHelper.setDisplaySettings(panel, slot, settings);
+                panel.setDisplaySettings(slot, settings);
                 return true;
             } else {
                 return false;

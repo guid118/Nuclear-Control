@@ -23,8 +23,8 @@ import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 
 public class ItemCardInventoryScanner extends ItemCardBase {
 
-    public static final int DISPLAY_NAME = 1;
-    public static final int DISPLAY_TOTAL = 2;
+    public static final int DISPLAY_NAME = 0;
+    public static final int DISPLAY_TOTAL = 1;
 
     public ItemCardInventoryScanner() {
         super("cardVanilla");

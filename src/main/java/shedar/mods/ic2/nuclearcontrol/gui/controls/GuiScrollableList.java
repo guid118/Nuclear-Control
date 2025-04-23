@@ -136,7 +136,7 @@ public class GuiScrollableList extends GuiScreen {
         this.buttonList.clear();
 
         IPanelDataSource source = (IPanelDataSource) card.getItem();
-        List<PanelSetting> settingsList = null;
+        List<PanelSetting> settingsList = new ArrayList<>();
         if (card.getItem() instanceof IPanelMultiCard) {
             settingsList = ((IPanelMultiCard) source).getSettingsList(new CardWrapperImpl(card, (byte) 0));
         } else {

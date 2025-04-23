@@ -54,7 +54,10 @@ public class DisplaySettingHelper {
      * @return value of the index
      */
     public boolean getSetting(int index) {
-        return settings.charAt(index) == '1';
+        if (index >= 0 && index < settings.length()) {
+            return settings.charAt(index) == '1';
+        }
+        return false;
     }
 
     /**
@@ -72,7 +75,7 @@ public class DisplaySettingHelper {
      * @return the settings as an integer. does not support more than 32 options
      */
     public int getAsInteger() {
-        String s = settings.substring(0, Math.min(31,settings.length()));
+        String s = new StringBuilder(settings.substring(0, Math.min(31,settings.length()))).reverse().toString();
         return Integer.parseInt(s, 2);
     }
 
@@ -102,7 +105,15 @@ public class DisplaySettingHelper {
 
     public void setSetting(int index, boolean value) {
         StringBuilder sb = new StringBuilder(settings);
-        sb.setCharAt(index, value ? '1' : '0');
+        if (settings.length() > index) {
+            sb.setCharAt(index, value ? '1' : '0');
+        } else {
+            while (sb.length() < index) {
+                sb.append('0');
+            }
+            sb.append(value ? '1' : '0');
+
+        }
         settings = sb.toString();
     }
 }
