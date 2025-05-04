@@ -121,7 +121,8 @@ public class ItemCardAppeng extends ItemCardEnergySensorLocation {
     }
 
     @Override
-    public List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card, boolean showLabels) {
+    public List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card,
+            boolean showLabels) {
         List<PanelString> result = new LinkedList<PanelString>();
         PanelString line;
         int TYPE = card.getInt("targetType");

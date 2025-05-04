@@ -1,16 +1,14 @@
 package shedar.mods.ic2.nuclearcontrol.api;
 
+import java.util.List;
 
 import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
 
-import java.util.List;
-
 /**
- * This class is mostly a placeholder to give mods that depend on this API the time to adjust, without breaking instantly.
- * Functionality will be pulled down to {@link IPanelAdvDataSource} at some point.
+ * This class is mostly a placeholder to give mods that depend on this API the time to adjust, without breaking
+ * instantly. Functionality will be pulled down to {@link IPanelAdvDataSource} at some point.
  */
 public interface IPanelAdvDataSource extends IPanelDataSource {
-
 
     /**
      * Method returns text representation of card's data. Each line is presented by {@link PanelString} object. Method

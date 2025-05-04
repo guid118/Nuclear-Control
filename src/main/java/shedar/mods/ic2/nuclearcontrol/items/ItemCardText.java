@@ -45,7 +45,8 @@ public class ItemCardText extends ItemCardBase implements IAdvancedCardSettings 
     }
 
     @Override
-    public List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card, boolean showLabels) {
+    public List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card,
+            boolean showLabels) {
         List<PanelString> result = new LinkedList<PanelString>();
         boolean started = false;
         for (int i = 9; i >= 0; i--) {

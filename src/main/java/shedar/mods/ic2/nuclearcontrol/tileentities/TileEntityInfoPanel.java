@@ -37,7 +37,6 @@ import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.panel.Screen;
 import shedar.mods.ic2.nuclearcontrol.utils.*;
 
-
 public class TileEntityInfoPanel extends TileEntity
         implements ISlotItemFilter, INetworkDataProvider, INetworkUpdateListener, INetworkClientTileEntityEventListener,
         IWrenchable, IRedstoneConsumer, ITextureHelper, IScreenPart, /* ISidedInventory, */IRotation, IInventory {
@@ -211,7 +210,6 @@ public class TileEntityInfoPanel extends TileEntity
         return slot == SLOT_CARD;
     }
 
-
     /**
      * @param slot
      * @param settings
@@ -240,8 +238,9 @@ public class TileEntityInfoPanel extends TileEntity
 
     public void setDisplaySettings(byte slot, DisplaySettingHelper settingsHelper) {
         setDisplaySettings(slot, settingsHelper.getAsInteger());
-        //TODO
+        // TODO
     }
+
     @Override
     public void onNetworkUpdate(String field) {
         if (field.equals("screenData")) {
@@ -396,8 +395,7 @@ public class TileEntityInfoPanel extends TileEntity
         if (data == null) {
             if (card instanceof IPanelAdvDataSource)
                 data = ((IPanelAdvDataSource) card).getStringData(settings, helper, getShowLabels());
-            else
-                data = card.getStringData(settings.getAsInteger(), helper, getShowLabels());
+            else data = card.getStringData(settings.getAsInteger(), helper, getShowLabels());
             String title = helper.getTitle();
             if (data != null && title != null && !title.isEmpty()) {
                 PanelString titleString = new PanelString();
@@ -998,7 +996,8 @@ public class TileEntityInfoPanel extends TileEntity
      * @param helper    Wrapper object, to access field values.
      * @return a list of PanelStrings to display
      */
-    public List<PanelString> getSortedCardData(DisplaySettingHelper settings, ItemStack cardStack, CardWrapperImpl helper) {
+    public List<PanelString> getSortedCardData(DisplaySettingHelper settings, ItemStack cardStack,
+            CardWrapperImpl helper) {
         List<PanelString> data = new ArrayList<>(this.getCardData(settings, cardStack, helper));
         DataSorter.getDataSorter(cardStack).sortList(data);
         return data;

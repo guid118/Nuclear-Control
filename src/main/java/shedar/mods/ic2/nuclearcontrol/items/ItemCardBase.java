@@ -43,7 +43,8 @@ public abstract class ItemCardBase extends Item implements IPanelAdvDataSource {
     abstract public UUID getCardType();
 
     @Override
-    abstract public List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card, boolean showLabels);
+    abstract public List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card,
+            boolean showLabels);
 
     public List<PanelString> getStringData(int displaySettings, ICardWrapper card, boolean showLabels) {
         return getStringData(new DisplaySettingHelper(displaySettings), card, true);

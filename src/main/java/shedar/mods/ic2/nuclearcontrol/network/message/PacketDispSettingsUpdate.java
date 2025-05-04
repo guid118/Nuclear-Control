@@ -46,7 +46,6 @@ public class PacketDispSettingsUpdate implements IMessage, IMessageHandler<Packe
         this.value = value;
     }
 
-
     @Override
     public void fromBytes(ByteBuf buf) {
         x = buf.readInt();
@@ -77,7 +76,8 @@ public class PacketDispSettingsUpdate implements IMessage, IMessageHandler<Packe
             return null;
         }
         TileEntityInfoPanel panel = (TileEntityInfoPanel) tileEntity;
-        panel.getDisplaySettingsForSlot(message.slot).put(new UUID(message.most, message.least), message.value.getAsInteger());
+        panel.getDisplaySettingsForSlot(message.slot)
+                .put(new UUID(message.most, message.least), message.value.getAsInteger());
         panel.resetCardData();
         return null;
     }

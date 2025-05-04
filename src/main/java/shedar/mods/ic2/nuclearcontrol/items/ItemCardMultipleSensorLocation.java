@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Direction;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -206,7 +205,8 @@ public class ItemCardMultipleSensorLocation extends ItemCardBase
     }
 
     @Override
-    public List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card, boolean showLabels) {
+    public List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card,
+            boolean showLabels) {
         int damage = card.getItemStack().getItemDamage();
         switch (damage) {
             case ItemKitMultipleSensor.TYPE_COUNTER:
@@ -219,7 +219,8 @@ public class ItemCardMultipleSensorLocation extends ItemCardBase
         return null;
     }
 
-    public List<PanelString> getStringDataLiquid(DisplaySettingHelper displaySettings, ICardWrapper card, boolean showLabels) {
+    public List<PanelString> getStringDataLiquid(DisplaySettingHelper displaySettings, ICardWrapper card,
+            boolean showLabels) {
         List<PanelString> result = new LinkedList<PanelString>();
         PanelString line;
 
@@ -261,7 +262,8 @@ public class ItemCardMultipleSensorLocation extends ItemCardBase
         return result;
     }
 
-    public List<PanelString> getStringDataCounter(DisplaySettingHelper displaySettings, ICardWrapper card, boolean showLabels) {
+    public List<PanelString> getStringDataCounter(DisplaySettingHelper displaySettings, ICardWrapper card,
+            boolean showLabels) {
         List<PanelString> result = new LinkedList<PanelString>();
         PanelString line;
         if (card.hasField("average")) {// average counter
@@ -286,7 +288,8 @@ public class ItemCardMultipleSensorLocation extends ItemCardBase
         return result;
     }
 
-    public List<PanelString> getStringDataGenerator(DisplaySettingHelper displaySettings, ICardWrapper card, boolean showLabels) {
+    public List<PanelString> getStringDataGenerator(DisplaySettingHelper displaySettings, ICardWrapper card,
+            boolean showLabels) {
         List<PanelString> result = new LinkedList<PanelString>();
         PanelString line = new PanelString();
         line.textLeft = StringUtils.getFormatted("msg.nc.InfoPanelOutput", card.getInt("production"), showLabels);

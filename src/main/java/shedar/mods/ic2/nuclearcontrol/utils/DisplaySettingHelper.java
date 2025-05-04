@@ -1,14 +1,8 @@
 package shedar.mods.ic2.nuclearcontrol.utils;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagString;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DisplaySettingHelper {
-
 
     private String settings = "0";
 
@@ -50,6 +44,7 @@ public class DisplaySettingHelper {
 
     /**
      * get the current state of the setting at the given index
+     * 
      * @param index index of the setting
      * @return value of the index
      */
@@ -62,6 +57,7 @@ public class DisplaySettingHelper {
 
     /**
      * add a setting to this DisplaySettingHelper
+     * 
      * @param value current status
      * @return index
      */
@@ -75,13 +71,13 @@ public class DisplaySettingHelper {
      * @return the settings as an integer. does not support more than 32 options
      */
     public int getAsInteger() {
-        String s = new StringBuilder(settings.substring(0, Math.min(31,settings.length()))).reverse().toString();
+        String s = new StringBuilder(settings.substring(0, Math.min(31, settings.length()))).reverse().toString();
         return Integer.parseInt(s, 2);
     }
 
-
     /**
      * Write the current settings to the given ByteBuf
+     * 
      * @param buf ByteBuf to write to
      */
     public void writeToByteBuffer(ByteBuf buf) {
@@ -96,7 +92,6 @@ public class DisplaySettingHelper {
             buf.writeByte(value);
         }
     }
-
 
     @Override
     public String toString() {

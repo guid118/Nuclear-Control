@@ -41,7 +41,8 @@ public class ItemTimeCard extends ItemCardBase {
     }
 
     @Override
-    public List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card, boolean showLabels) {
+    public List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card,
+            boolean showLabels) {
         List<PanelString> result = new ArrayList<PanelString>(1);
         PanelString item = new PanelString();
         result.add(item);

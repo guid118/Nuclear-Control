@@ -100,7 +100,6 @@ public class NuclearNetworkHelper {
                 new PacketClientDisplaySettings(panel.xCoord, panel.yCoord, panel.zCoord, slot, settings));
     }
 
-
     public static void setDisplaySettings(TileEntityInfoPanel panel, byte slot, DisplaySettingHelper settings) {
         if (panel == null) return;
 
