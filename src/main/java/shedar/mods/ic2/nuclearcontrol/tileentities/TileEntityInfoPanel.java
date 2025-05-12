@@ -71,7 +71,7 @@ public class TileEntityInfoPanel extends TileEntity
     private boolean prevIsWeb = false;
     protected boolean isWeb = false;
 
-    protected final Map<Byte, Map<UUID, Integer>> displaySettings;
+    protected final Map<Byte, Map<UUID, DisplaySettingHelper>> displaySettings;
 
     private int prevRotation;
     public int rotation;
@@ -227,10 +227,9 @@ public class TileEntityInfoPanel extends TileEntity
             }
         }
         if (cardType != null) {
-            if (!displaySettings.containsKey(slot)) displaySettings.put(slot, new HashMap<UUID, Integer>());
-            boolean update = true;
-            displaySettings.get(slot).put(cardType, settings);
-            if (update && FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+            if (!displaySettings.containsKey(slot)) displaySettings.put(slot, new HashMap<UUID, DisplaySettingHelper>());
+            displaySettings.get(slot).put(cardType, new DisplaySettingHelper(settings));
+            if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
                 NuclearNetworkHelper.sendDisplaySettingsUpdate(this, slot, cardType, settings);
             }
         }
@@ -311,8 +310,8 @@ public class TileEntityInfoPanel extends TileEntity
         dt = IC2NuclearControl.instance.dataRefreshPeriod;
         dataTicker = (dt > tickRate) ? tickRate : dt;
         updatedataTicker = dataTicker;
-        displaySettings = new HashMap<Byte, Map<UUID, Integer>>(1);
-        displaySettings.put((byte) 0, new HashMap<UUID, Integer>());
+        displaySettings = new HashMap<>(1);
+        displaySettings.put((byte) 0, new HashMap<>());
         powered = false;
         prevPowered = false;
         facing = 0;
@@ -438,10 +437,10 @@ public class TileEntityInfoPanel extends TileEntity
                 NBTTagCompound compound = settingsList.getCompoundTagAt(i);
                 try {
                     UUID key = UUID.fromString(compound.getString("key"));
-                    int value = compound.getInteger("value");
-                    getDisplaySettingsForSlot(slot).put(key, value);
+                    String value = compound.getString("value");
+                    getDisplaySettingsForSlot(slot).put(key, new DisplaySettingHelper(value));
                 } catch (IllegalArgumentException e) {
-                    IC2NuclearControl.logger.warn("Ivalid display settings for Information Panel");
+                    IC2NuclearControl.logger.warn("Invalid display settings for Information Panel");
                 }
             }
         }
@@ -458,7 +457,7 @@ public class TileEntityInfoPanel extends TileEntity
                     int value = compound.getInteger("value");
                     setDisplaySettings(slot, value);
                 } catch (IllegalArgumentException e) {
-                    IC2NuclearControl.logger.warn("Ivalid display settings for Information Panel");
+                    IC2NuclearControl.logger.warn("Invalid display settings for Information Panel");
                 }
             }
         }
@@ -526,12 +525,13 @@ public class TileEntityInfoPanel extends TileEntity
         super.invalidate();
     }
 
+    //TODO add sorting to this
     protected NBTTagList serializeSlotSettings(byte slot) {
         NBTTagList settingsList = new NBTTagList();
-        for (Map.Entry<UUID, Integer> item : getDisplaySettingsForSlot(slot).entrySet()) {
+        for (Map.Entry<UUID, DisplaySettingHelper> item : getDisplaySettingsForSlot(slot).entrySet()) {
             NBTTagCompound compound = new NBTTagCompound();
             compound.setString("key", item.getKey().toString());
-            compound.setInteger("value", item.getValue());
+            compound.setString("value", item.getValue().toString());
             settingsList.appendTag(compound);
         }
         return settingsList;
@@ -900,13 +900,14 @@ public class TileEntityInfoPanel extends TileEntity
         prevRotation = rotation;
     }
 
-    public Map<Byte, Map<UUID, Integer>> getDisplaySettings() {
+    public Map<Byte, Map<UUID, DisplaySettingHelper>> getDisplaySettings() {
         return displaySettings;
     }
 
-    public Map<UUID, Integer> getDisplaySettingsForSlot(byte slot) {
+    //TODO move to new displaySettingHelper
+    public Map<UUID, DisplaySettingHelper> getDisplaySettingsForSlot(byte slot) {
         if (!displaySettings.containsKey(slot)) {
-            displaySettings.put(slot, new HashMap<UUID, Integer>());
+            displaySettings.put(slot, new HashMap<>());
         }
         return displaySettings.get(slot);
     }
@@ -938,7 +939,7 @@ public class TileEntityInfoPanel extends TileEntity
             cardType = ((IPanelDataSource) card.getItem()).getCardType();
         }
         if (displaySettings.get(slot).containsKey(cardType)) {
-            return new DisplaySettingHelper(displaySettings.get(slot).get(cardType));
+            return displaySettings.get(slot).get(cardType);
         }
         return new DisplaySettingHelper();
     }

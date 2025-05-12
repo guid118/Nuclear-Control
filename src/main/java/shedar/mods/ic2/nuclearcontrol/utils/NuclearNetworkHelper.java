@@ -174,9 +174,9 @@ public class NuclearNetworkHelper {
 
         TileEntity tileEntity = player.worldObj.getTileEntity(x, y, z);
         if (!(tileEntity instanceof TileEntityInfoPanel)) return;
-        Map<Byte, Map<UUID, Integer>> settings = ((TileEntityInfoPanel) tileEntity).getDisplaySettings();
+        Map<Byte, Map<UUID, DisplaySettingHelper>> settings = ((TileEntityInfoPanel) tileEntity).getDisplaySettings();
         if (settings == null) return;
-        ChannelHandler.network.sendTo(new PacketDispSettingsAll(x, y, z, settings), player);
+        ChannelHandler.network.sendTo(PacketDispSettingsAll.newConstructor(x, y, z, settings), player);
     }
 
     // server

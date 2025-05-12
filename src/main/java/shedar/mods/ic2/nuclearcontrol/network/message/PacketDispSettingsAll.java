@@ -106,7 +106,7 @@ public class PacketDispSettingsAll implements IMessage, IMessageHandler<PacketDi
         }
         TileEntityInfoPanel panel = (TileEntityInfoPanel) tileEntity;
         for (Map.Entry<Byte, Map<UUID, DisplaySettingHelper>> slotData : message.settings.entrySet()) {
-            Map<UUID, Integer> setting = panel.getDisplaySettingsForSlot(slotData.getKey());
+            Map<UUID, DisplaySettingHelper> setting = panel.getDisplaySettingsForSlot(slotData.getKey());
             for (Map.Entry<UUID, DisplaySettingHelper> item : slotData.getValue().entrySet()) {
                 UUID key = item.getKey();
                 if (key == null) {
@@ -114,7 +114,7 @@ public class PacketDispSettingsAll implements IMessage, IMessageHandler<PacketDi
                 }
                 setting.put(
                         new UUID(key.getMostSignificantBits(), key.getLeastSignificantBits()),
-                        item.getValue().getAsInteger());
+                        item.getValue());
             }
         }
         panel.resetCardData();
