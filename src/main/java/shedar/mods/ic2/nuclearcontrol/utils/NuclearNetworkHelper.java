@@ -91,15 +91,6 @@ public class NuclearNetworkHelper {
     }
 
     // client
-    public static void setDisplaySettings(TileEntityInfoPanel panel, byte slot, int settings) {
-        if (panel == null) return;
-
-        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) return;
-
-        ChannelHandler.network.sendToServer(
-                new PacketClientDisplaySettings(panel.xCoord, panel.yCoord, panel.zCoord, slot, settings));
-    }
-
     public static void setDisplaySettings(TileEntityInfoPanel panel, byte slot, DisplaySettingHelper settings) {
         if (panel == null) return;
 
@@ -180,7 +171,7 @@ public class NuclearNetworkHelper {
     }
 
     // server
-    public static void sendDisplaySettingsUpdate(TileEntityInfoPanel panel, byte slot, UUID key, int value) {
+    public static void sendDisplaySettingsUpdate(TileEntityInfoPanel panel, byte slot, UUID key, DisplaySettingHelper value) {
         sendPacketToAllAround(
                 panel.xCoord,
                 panel.yCoord,

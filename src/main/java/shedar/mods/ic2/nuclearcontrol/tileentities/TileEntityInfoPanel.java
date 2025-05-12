@@ -210,12 +210,7 @@ public class TileEntityInfoPanel extends TileEntity
         return slot == SLOT_CARD;
     }
 
-    /**
-     * @param slot
-     * @param settings
-     * @deprecated use {@link TileEntityInfoPanel#setDisplaySettings(byte, DisplaySettingHelper)}
-     */
-    public void setDisplaySettings(byte slot, int settings) {
+    public void setDisplaySettings(byte slot, DisplaySettingHelper settings) {
         if (!isCardSlot(slot)) return;
         UUID cardType = null;
         ItemStack stack = inventory[slot];
@@ -227,17 +222,12 @@ public class TileEntityInfoPanel extends TileEntity
             }
         }
         if (cardType != null) {
-            if (!displaySettings.containsKey(slot)) displaySettings.put(slot, new HashMap<UUID, DisplaySettingHelper>());
-            displaySettings.get(slot).put(cardType, new DisplaySettingHelper(settings));
+            if (!displaySettings.containsKey(slot)) displaySettings.put(slot, new HashMap<>());
+            displaySettings.get(slot).put(cardType, settings);
             if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
                 NuclearNetworkHelper.sendDisplaySettingsUpdate(this, slot, cardType, settings);
             }
         }
-    }
-
-    public void setDisplaySettings(byte slot, DisplaySettingHelper settingsHelper) {
-        setDisplaySettings(slot, settingsHelper.getAsInteger());
-        // TODO
     }
 
     @Override
@@ -366,17 +356,6 @@ public class TileEntityInfoPanel extends TileEntity
         cardData.clear();
     }
 
-    /**
-     * get a list of PanelStrings to display on the screen
-     * 
-     * @param settings  displaySettings of the screen, used as a bitmask
-     * @param cardStack ItemStack that contains the card
-     * @param helper    Wrapper object, to access field values.
-     * @return a list of PanelStrings to display
-     */
-    public List<PanelString> getCardData(int settings, ItemStack cardStack, ICardWrapper helper) {
-        return getCardData(new DisplaySettingHelper(settings), cardStack, helper);
-    }
 
     /**
      * get a list of PanelStrings to display on the screen
@@ -454,8 +433,8 @@ public class TileEntityInfoPanel extends TileEntity
             for (int i = 0; i < settingsList.tagCount(); i++) {
                 NBTTagCompound compound = settingsList.getCompoundTagAt(i);
                 try {
-                    int value = compound.getInteger("value");
-                    setDisplaySettings(slot, value);
+                    String value = compound.getString("value");
+                    setDisplaySettings(slot, new DisplaySettingHelper(value));
                 } catch (IllegalArgumentException e) {
                     IC2NuclearControl.logger.warn("Invalid display settings for Information Panel");
                 }
@@ -904,7 +883,6 @@ public class TileEntityInfoPanel extends TileEntity
         return displaySettings;
     }
 
-    //TODO move to new displaySettingHelper
     public Map<UUID, DisplaySettingHelper> getDisplaySettingsForSlot(byte slot) {
         if (!displaySettings.containsKey(slot)) {
             displaySettings.put(slot, new HashMap<>());
@@ -924,7 +902,7 @@ public class TileEntityInfoPanel extends TileEntity
         return getNewDisplaySettingsByCard(card);
     }
 
-    private DisplaySettingHelper getNewDisplaySettingsByCard(ItemStack card) {
+    public DisplaySettingHelper getNewDisplaySettingsByCard(ItemStack card) {
         byte slot = getIndexOfCard(card);
         if (card == null) {
             return new DisplaySettingHelper();
@@ -975,18 +953,6 @@ public class TileEntityInfoPanel extends TileEntity
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
         return isItemValid(slot, itemstack);
-    }
-
-    /**
-     * get a sorted list of PanelStrings to display on the screen
-     *
-     * @param settings  displaySettings of the screen, used as a bitmask
-     * @param cardStack ItemStack that contains the card
-     * @param helper    Wrapper object, to access field values.
-     * @return a list of PanelStrings to display
-     */
-    public List<PanelString> getSortedCardData(int settings, ItemStack cardStack, CardWrapperImpl helper) {
-        return this.getSortedCardData(new DisplaySettingHelper(settings), cardStack, helper);
     }
 
     /**

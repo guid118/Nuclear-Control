@@ -10,11 +10,6 @@ public class DisplaySettingHelper {
 
     public DisplaySettingHelper(String settings) {
         this.settings = settings;
-        try {
-            getAsInteger();
-        } catch (NumberFormatException ignored) {
-            this.settings = new DisplaySettingHelper(Integer.parseInt(settings)).toString();
-        }
     }
 
     /**
