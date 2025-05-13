@@ -35,6 +35,21 @@ public class DataSorter {
         else this.customOrder = new ArrayList<>();
     }
 
+    public DataSorter(NBTTagCompound compound) {
+        if (compound != null)
+            if (compound.hasKey("DataSorter")) {
+                this.customOrder = new DataSorter(compound.getIntArray("DataSorter")).customOrder;
+                return;
+            }
+        this.customOrder = new ArrayList<>();
+    }
+
+    public DataSorter(ItemStack stack) {
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound != null) this.customOrder = new DataSorter(compound).customOrder;
+    }
+
+
     /**
      * Save a custom order, and completely overwrite the one currently stored.
      *
@@ -127,10 +142,5 @@ public class DataSorter {
     public static void setDataSorter(ItemStack stack, DataSorter dataSorter) {
         NBTTagCompound compound = stack.getTagCompound();
         compound.setIntArray("DataSorter", dataSorter.getArray());
-    }
-
-    public static DataSorter getDataSorter(ItemStack stack) {
-        NBTTagCompound compound = stack.getTagCompound();
-        return new DataSorter(compound.getIntArray("DataSorter"));
     }
 }

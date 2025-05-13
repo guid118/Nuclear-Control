@@ -154,7 +154,7 @@ public class GuiScrollableList extends GuiScreen {
                             cardSlot));
         }
         originalButtonList = new ArrayList<>(buttonListFull);
-        DataSorter.getDataSorter(card).sortList(buttonListFull);
+        new DataSorter(card).sortList(buttonListFull);
         updateVisibleButtons();
     }
 
@@ -318,7 +318,7 @@ public class GuiScrollableList extends GuiScreen {
 
             draggedButton = null;
             updateVisibleButtons();
-            DataSorter dataSorter = DataSorter.getDataSorter(card);
+            DataSorter dataSorter = new DataSorter(card);
             dataSorter.computeSortOrder(originalButtonList, buttonListFull);
             DataSorter.setDataSorter(card, dataSorter);
             // check if the scrollbar is being used

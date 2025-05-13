@@ -966,7 +966,7 @@ public class TileEntityInfoPanel extends TileEntity
     public List<PanelString> getSortedCardData(DisplaySettingHelper settings, ItemStack cardStack,
             CardWrapperImpl helper) {
         List<PanelString> data = new ArrayList<>(this.getCardData(settings, cardStack, helper));
-        DataSorter.getDataSorter(cardStack).sortList(data);
+        new DataSorter(cardStack).sortList(data);
         return data;
     }
 }
