@@ -15,27 +15,7 @@ import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
 
 public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 
-    private byte prevPowerMode;
-    public byte powerMode;
-
-    private byte prevtransparencyMode;
-    public byte transparencyMode;
-
-    private byte prevThickness;
-    public byte thickness;
-
-    private byte prevRotateHor;
-    public byte rotateHor;
-
-    private byte prevRotateVert;
-    public byte rotateVert;
-
-    private byte prevTextRotation;
-    public byte textRotation;
-
-    public ItemStack card2;
-    public ItemStack card3;
-
+    // <editor-fold desc="Constants">
     private static final byte SLOT_CARD1 = 0;
     private static final byte SLOT_CARD2 = 1;
     private static final byte SLOT_CARD3 = 2;
@@ -53,18 +33,88 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
     public static final int OFFSET_THICKNESS = 100;
     public static final int OFFSET_ROTATE_HOR = 200;
     public static final int OFFSET_ROTATE_VERT = 300;
+    // </editor-fold>
 
+    // <editor-fold desc="State Fields">
+    public byte powerMode;
+    public byte transparencyMode;
+    public byte thickness;
+    public byte rotateHor;
+    public byte rotateVert;
+    public byte textRotation;
+
+    private byte prevPowerMode;
+    private byte prevtransparencyMode;
+    private byte prevThickness;
+    private byte prevRotateHor;
+    private byte prevRotateVert;
+    private byte prevTextRotation;
+
+    public ItemStack card2;
+    public ItemStack card3;
+    // </editor-fold>
+
+    // <editor-fold desc="Constructor">
+    /**
+     * Default constructor for the Advanced Information Panel.
+     */
     public TileEntityAdvancedInfoPanel() {
         super(4); // 3 cards + range/web upgrade
         colored = true;
         thickness = 16;
     }
+    // </editor-fold>
 
+    // <editor-fold desc="Inventory Handling">
     @Override
     public int getCardSlotsCount() {
         return 3;
     }
 
+    @Override
+    public List<ItemStack> getCards() {
+        List<ItemStack> data = new ArrayList<>(3);
+        data.add(inventory[SLOT_CARD1]);
+        data.add(inventory[SLOT_CARD2]);
+        data.add(inventory[SLOT_CARD3]);
+        return data;
+    }
+
+    @Override
+    protected boolean isCardSlot(int slot) {
+        return slot == SLOT_CARD1 || slot == SLOT_CARD2 || slot == SLOT_CARD3;
+    }
+
+    @Override
+    public boolean isItemValid(int slotIndex, ItemStack itemstack) {
+        switch (slotIndex) {
+            case SLOT_CARD1:
+            case SLOT_CARD2:
+            case SLOT_CARD3:
+                return itemstack.getItem() instanceof IPanelDataSource;
+            case SLOT_UPGRADE_RANGE:
+                return itemstack.getItem() instanceof ItemUpgrade
+                        && (itemstack.getItemDamage() == ItemUpgrade.DAMAGE_RANGE
+                        || itemstack.getItemDamage() == ItemUpgrade.DAMAGE_WEB);
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    protected ItemStack getRangeUpgrade() {
+        return inventory[SLOT_UPGRADE_RANGE];
+    }
+
+    @Override
+    protected boolean isWebEval() {
+        ItemStack itemStack = inventory[SLOT_UPGRADE_WEB];
+        return itemStack != null && itemStack.getItem() instanceof ItemUpgrade
+                && itemStack.getItemDamage() == ItemUpgrade.DAMAGE_WEB;
+    }
+    // </editor-fold>
+
+    // <editor-fold desc="Power and Display Settings">
     public byte getPowerMode() {
         return powerMode;
     }
@@ -82,32 +132,12 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
     }
 
     public void setTransparencyMode(byte b) {
-        if (b == 2) {
-            b = 0;
-        }
+        if (b == 2) b = 0;
         transparencyMode = b;
         if (prevtransparencyMode != b) {
             IC2.network.get().updateTileEntityField(this, "transparencyMode");
         }
         prevtransparencyMode = transparencyMode;
-    }
-
-    @Override
-    public byte getTextRotation() {
-        return textRotation;
-    }
-
-    public void setTextRotation(byte r) {
-        if (r == -1) {
-            r = 3;
-        } else if (r == 4) {
-            r = 0;
-        }
-        textRotation = r;
-        if (prevTextRotation != r) {
-            IC2.network.get().updateTileEntityField(this, "textRotation");
-        }
-        prevTextRotation = textRotation;
     }
 
     public void setThickness(byte p) {
@@ -147,6 +177,44 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
     }
 
     @Override
+    public byte getTextRotation() {
+        return textRotation;
+    }
+
+    public void setTextRotation(byte r) {
+        if (r == -1) r = 3;
+        else if (r == 4) r = 0;
+        textRotation = r;
+        if (prevTextRotation != r) {
+            IC2.network.get().updateTileEntityField(this, "textRotation");
+        }
+        prevTextRotation = textRotation;
+    }
+
+    public byte getNextPowerMode() {
+        switch (powerMode) {
+            case POWER_REDSTONE: return POWER_INVERTED;
+            case POWER_INVERTED: return POWER_ON;
+            case POWER_ON:       return POWER_OFF;
+            case POWER_OFF:      return POWER_REDSTONE;
+        }
+        return POWER_REDSTONE;
+    }
+
+    @Override
+    public boolean getPowered() {
+        switch (powerMode) {
+            case POWER_ON:       return true;
+            case POWER_OFF:      return false;
+            case POWER_REDSTONE: return powered;
+            case POWER_INVERTED: return !powered;
+        }
+        return false;
+    }
+    // </editor-fold>
+
+    // <editor-fold desc="Networking">
+    @Override
     public List<String> getNetworkedFields() {
         List<String> list = super.getNetworkedFields();
         list.add("card2");
@@ -175,154 +243,13 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
                 worldObj.func_147451_t(xCoord, yCoord, zCoord);
             }
             prevPowerMode = powerMode;
-        } else if (field.equals("thickness") || field.equals("rotateHor") || field.equals("rotateVert")) {
+        } else if (field.equals("thickness") || field.equals("rotateHor") || field.equals("rotateVert")
+                || field.equals("textRotation") || field.equals("transparencyMode")) {
             worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        } else if (field.equals("transparencyMode")) {
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            worldObj.func_147451_t(xCoord, yCoord, zCoord);
-        } else if (field.equals("textRotation")) {
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            if (field.equals("transparencyMode")) {
+                worldObj.func_147451_t(xCoord, yCoord, zCoord);
+            }
         }
-
-    }
-
-    @Override
-    public boolean isItemValid(int slotIndex, ItemStack itemstack) {
-        switch (slotIndex) {
-            case SLOT_CARD1:
-            case SLOT_CARD2:
-            case SLOT_CARD3:
-                return itemstack.getItem() instanceof IPanelDataSource;
-            case SLOT_UPGRADE_RANGE:
-                return itemstack.getItem() instanceof ItemUpgrade
-                        && (itemstack.getItemDamage() == ItemUpgrade.DAMAGE_RANGE
-                                || itemstack.getItemDamage() == ItemUpgrade.DAMAGE_WEB);
-            default:
-                return false;
-        }
-    }
-
-    @Override
-    protected boolean isColoredEval() {
-        return true;
-    }
-
-    @Override
-    protected boolean isWebEval() {
-        ItemStack itemStack = inventory[SLOT_UPGRADE_WEB];
-        return itemStack != null && itemStack.getItem() instanceof ItemUpgrade
-                && itemStack.getItemDamage() == ItemUpgrade.DAMAGE_WEB;
-    }
-
-    @Override
-    protected ItemStack getRangeUpgrade() {
-        return inventory[SLOT_UPGRADE_RANGE];
-    }
-
-    @Override
-    public List<ItemStack> getCards() {
-        List<ItemStack> data = new ArrayList<ItemStack>(3);
-        data.add(inventory[SLOT_CARD1]);
-        data.add(inventory[SLOT_CARD2]);
-        data.add(inventory[SLOT_CARD3]);
-        return data;
-    }
-
-    @Override
-    protected boolean isCardSlot(int slot) {
-        return slot == SLOT_CARD1 || slot == SLOT_CARD2 || slot == SLOT_CARD3;
-    }
-
-    @Override
-    protected void saveDisplaySettings(NBTTagCompound nbttagcompound) {
-        nbttagcompound.setTag("dSettings1", serializeSlotSettings(SLOT_CARD1));
-        nbttagcompound.setTag("dSettings2", serializeSlotSettings(SLOT_CARD2));
-        nbttagcompound.setTag("dSettings3", serializeSlotSettings(SLOT_CARD3));
-        nbttagcompound.setByte("rotateHor", rotateHor);
-        nbttagcompound.setByte("rotateVert", rotateVert);
-        nbttagcompound.setByte("thickness", thickness);
-        nbttagcompound.setByte("powerMode", powerMode);
-        nbttagcompound.setByte("transparencyMode", transparencyMode);
-        nbttagcompound.setByte("textRotation", textRotation);
-    }
-
-    @Override
-    protected void readDisplaySettings(NBTTagCompound nbttagcompound) {
-        deserializeDisplaySettings(nbttagcompound, "dSettings1", SLOT_CARD1);
-        deserializeDisplaySettings(nbttagcompound, "dSettings2", SLOT_CARD2);
-        deserializeDisplaySettings(nbttagcompound, "dSettings3", SLOT_CARD3);
-        rotateHor = nbttagcompound.getByte("rotateHor");
-        rotateVert = nbttagcompound.getByte("rotateVert");
-        thickness = nbttagcompound.getByte("thickness");
-        powerMode = nbttagcompound.getByte("powerMode");
-        transparencyMode = nbttagcompound.getByte("transparencyMode");
-        textRotation = nbttagcompound.getByte("textRotation");
-    }
-
-    @Override
-    public void readDisplaySettingsFromCard(ItemStack item) {
-        NBTTagCompound nbt = item.getTagCompound();
-
-        setDeserializedDisplaySettings(nbt, "dSettings1", SLOT_CARD1);
-        setDeserializedDisplaySettings(nbt, "dSettings2", SLOT_CARD2);
-        setDeserializedDisplaySettings(nbt, "dSettings3", SLOT_CARD3);
-
-        // Compat for settings for one card from normal panel
-        setDeserializedDisplaySettings(nbt, "dSettings", SLOT_CARD1);
-
-        // If one of these keys exists, all should
-        if (nbt.hasKey("rotateHor")) {
-            setRotateHor(nbt.getByte("rotateHor"));
-            setRotateVert(nbt.getByte("rotateVert"));
-            setThickness(nbt.getByte("thickness"));
-            setPowerMode(nbt.getByte("powerMode"));
-            setTransparencyMode(nbt.getByte("transparencyMode"));
-            setTextRotation(nbt.getByte("textRotation"));
-            setColorText(nbt.getInteger("colorText"));
-            setColorBackground(nbt.getInteger("colorBackground"));
-        }
-    }
-
-    @Override
-    protected void postReadFromNBT() {
-        if (inventory[SLOT_CARD1] != null) {
-            card = inventory[SLOT_CARD1];
-        }
-        if (inventory[SLOT_CARD2] != null) {
-            card2 = inventory[SLOT_CARD2];
-        }
-        if (inventory[SLOT_CARD3] != null) {
-            card3 = inventory[SLOT_CARD3];
-        }
-    }
-
-    public byte getNextPowerMode() {
-        switch (powerMode) {
-            case POWER_REDSTONE:
-                return POWER_INVERTED;
-            case POWER_INVERTED:
-                return POWER_ON;
-            case POWER_ON:
-                return POWER_OFF;
-            case POWER_OFF:
-                return POWER_REDSTONE;
-        }
-        return POWER_REDSTONE;
-    }
-
-    @Override
-    public boolean getPowered() {
-        switch (powerMode) {
-            case POWER_ON:
-                return true;
-            case POWER_OFF:
-                return false;
-            case POWER_REDSTONE:
-                return powered;
-            case POWER_INVERTED:
-                return !powered;
-        }
-        return false;
     }
 
     @Override
@@ -347,21 +274,81 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
                     break;
             }
         } else if (i >= OFFSET_THICKNESS && i < OFFSET_THICKNESS + 100) {
-            i -= OFFSET_THICKNESS;
-            setThickness((byte) i);
+            setThickness((byte) (i - OFFSET_THICKNESS));
         } else if (i >= OFFSET_ROTATE_HOR && i < OFFSET_ROTATE_HOR + 100) {
             i -= OFFSET_ROTATE_HOR + 8;
-            i = -(i * 7);
-            setRotateHor((byte) i);
+            setRotateHor((byte) (-(i * 7)));
         } else if (i >= OFFSET_ROTATE_VERT && i < OFFSET_ROTATE_VERT + 100) {
             i -= OFFSET_ROTATE_VERT + 8;
-            i = -(i * 7);
-            setRotateVert((byte) i);
+            setRotateVert((byte) (-(i * 7)));
         }
+    }
+    // </editor-fold>
+
+    // <editor-fold desc="NBT and Display Settings">
+    @Override
+    protected void saveDisplaySettings(NBTTagCompound nbt) {
+        nbt.setTag("dSettings1", serializeSlotSettings(SLOT_CARD1));
+        nbt.setTag("dSettings2", serializeSlotSettings(SLOT_CARD2));
+        nbt.setTag("dSettings3", serializeSlotSettings(SLOT_CARD3));
+        nbt.setByte("rotateHor", rotateHor);
+        nbt.setByte("rotateVert", rotateVert);
+        nbt.setByte("thickness", thickness);
+        nbt.setByte("powerMode", powerMode);
+        nbt.setByte("transparencyMode", transparencyMode);
+        nbt.setByte("textRotation", textRotation);
+    }
+
+    @Override
+    protected void readDisplaySettings(NBTTagCompound nbt) {
+        deserializeDisplaySettings(nbt, "dSettings1", SLOT_CARD1);
+        deserializeDisplaySettings(nbt, "dSettings2", SLOT_CARD2);
+        deserializeDisplaySettings(nbt, "dSettings3", SLOT_CARD3);
+        rotateHor = nbt.getByte("rotateHor");
+        rotateVert = nbt.getByte("rotateVert");
+        thickness = nbt.getByte("thickness");
+        powerMode = nbt.getByte("powerMode");
+        transparencyMode = nbt.getByte("transparencyMode");
+        textRotation = nbt.getByte("textRotation");
+    }
+
+    @Override
+    public void readDisplaySettingsFromCard(ItemStack item) {
+        NBTTagCompound nbt = item.getTagCompound();
+        setDeserializedDisplaySettings(nbt, "dSettings1", SLOT_CARD1);
+        setDeserializedDisplaySettings(nbt, "dSettings2", SLOT_CARD2);
+        setDeserializedDisplaySettings(nbt, "dSettings3", SLOT_CARD3);
+        setDeserializedDisplaySettings(nbt, "dSettings", SLOT_CARD1); // Compatibility
+
+        if (nbt.hasKey("rotateHor")) {
+            setRotateHor(nbt.getByte("rotateHor"));
+            setRotateVert(nbt.getByte("rotateVert"));
+            setThickness(nbt.getByte("thickness"));
+            setPowerMode(nbt.getByte("powerMode"));
+            setTransparencyMode(nbt.getByte("transparencyMode"));
+            setTextRotation(nbt.getByte("textRotation"));
+            setColorText(nbt.getInteger("colorText"));
+            setColorBackground(nbt.getInteger("colorBackground"));
+        }
+    }
+
+    @Override
+    protected void postReadFromNBT() {
+        if (inventory[SLOT_CARD1] != null) card = inventory[SLOT_CARD1];
+        if (inventory[SLOT_CARD2] != null) card2 = inventory[SLOT_CARD2];
+        if (inventory[SLOT_CARD3] != null) card3 = inventory[SLOT_CARD3];
+    }
+    // </editor-fold>
+
+    // <editor-fold desc="Miscellaneous">
+    @Override
+    protected boolean isColoredEval() {
+        return true;
     }
 
     @Override
     public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
         return new ItemStack(IC2NuclearControl.blockNuclearControlMain, 1, BlockDamages.DAMAGE_ADVANCED_PANEL);
     }
+    // </editor-fold>
 }
