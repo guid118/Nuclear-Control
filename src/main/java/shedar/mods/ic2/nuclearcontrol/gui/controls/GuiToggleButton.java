@@ -89,7 +89,7 @@ public class GuiToggleButton extends GuiButton {
             if (super.mousePressed(mc, mouseX, mouseY)) {
                 toggle();
                 DisplaySettingHelper settings = panel.getNewDisplaySettingsForCardInSlot(slot);
-                settings.setSetting(setting.displayBit, !settings.getSetting(setting.displayBit));
+                settings.toggleSetting(setting.displayBit);
                 NuclearNetworkHelper.setDisplaySettings(panel, slot, settings);
                 panel.setDisplaySettings(slot, settings);
                 return true;

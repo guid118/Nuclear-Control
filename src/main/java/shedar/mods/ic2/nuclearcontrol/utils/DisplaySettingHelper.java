@@ -106,4 +106,8 @@ public class DisplaySettingHelper {
         }
         settings = sb.toString();
     }
+
+    public void toggleSetting(int index) {
+        setSetting(index, !getSetting(index));
+    }
 }
