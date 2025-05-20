@@ -13,7 +13,9 @@ import net.minecraftforge.common.config.Property;
 import net.minecraftforge.common.util.Constants;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
+import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.items.ItemUpgrade;
+import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
 import shedar.mods.ic2.nuclearcontrol.utils.DataSorter;
 import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
@@ -391,6 +393,27 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
         return rv;
     }
 
+    /**
+     * get a sorted list of PanelStrings to display on the screen
+     *
+     * @param settings  displaySettings of the screen, used as a bitmask
+     * @param cardStack ItemStack that contains the card
+     * @param helper    Wrapper object, to access field values.
+     * @return a list of PanelStrings to display
+     */
+    public List<PanelString> getSortedCardData(DisplaySettingHelper settings, ItemStack cardStack,
+                                               CardWrapperImpl helper) {
+        List<PanelString> data = new ArrayList<>(this.getCardData(settings, cardStack, helper));
+        if (helper.getTitle() != null) {
+            PanelString title = data.remove(0);
+            new DataSorter(this, cardStack).sortList(data);
+            data.add(0, title);
+        } else {
+            new DataSorter(this, cardStack).sortList(data);
+        }
+        return data;
+    }
+
     // </editor-fold>
 
     // <editor-fold desc="Miscellaneous">
@@ -402,6 +425,13 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
     @Override
     public ItemStack getWrenchDrop(EntityPlayer entityPlayer) {
         return new ItemStack(IC2NuclearControl.blockNuclearControlMain, 1, BlockDamages.DAMAGE_ADVANCED_PANEL);
+    }
+
+    public Map<Byte, Map<UUID, DataSorter>> getDataSorters() {
+        if (dataSorters == null) {
+            return Collections.emptyMap();
+        }
+        return dataSorters;
     }
     // </editor-fold>
 }

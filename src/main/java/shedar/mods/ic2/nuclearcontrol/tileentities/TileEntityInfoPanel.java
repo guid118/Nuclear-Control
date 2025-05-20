@@ -947,25 +947,4 @@ public class TileEntityInfoPanel extends TileEntity
     public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
         return isItemValid(slot, itemstack);
     }
-
-    /**
-     * get a sorted list of PanelStrings to display on the screen
-     *
-     * @param settings  displaySettings of the screen, used as a bitmask
-     * @param cardStack ItemStack that contains the card
-     * @param helper    Wrapper object, to access field values.
-     * @return a list of PanelStrings to display
-     */
-    public List<PanelString> getSortedCardData(DisplaySettingHelper settings, ItemStack cardStack,
-            CardWrapperImpl helper) {
-        List<PanelString> data = new ArrayList<>(this.getCardData(settings, cardStack, helper));
-        if (helper.getTitle() != null) {
-            PanelString title = data.remove(0);
-            new DataSorter(cardStack).sortList(data);
-            data.add(0, title);
-        } else {
-            new DataSorter(cardStack).sortList(data);
-        }
-        return data;
-    }
 }
