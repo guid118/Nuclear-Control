@@ -228,7 +228,6 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
         List<String> list = super.getNetworkedFields();
         list.add("card2");
         list.add("card3");
-        list.add("dataSorters");
         list.add("powerMode");
         list.add("transparencyMode");
         list.add("thickness");
@@ -361,11 +360,13 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 
     private NBTTagList getDataSorterForSlot(byte slot) {
         NBTTagList settingsList = new NBTTagList();
-        for (Map.Entry<UUID, DataSorter> item : dataSorters.get(slot).entrySet()) {
-            NBTTagCompound compound = new NBTTagCompound();
-            compound.setString("key", item.getKey().toString());
-            compound.setString("value", item.getValue().toString());
-            settingsList.appendTag(compound);
+        if (dataSorters.containsKey(slot)) {
+            for (Map.Entry<UUID, DataSorter> item : dataSorters.get(slot).entrySet()) {
+                NBTTagCompound compound = new NBTTagCompound();
+                compound.setString("key", item.getKey().toString());
+                compound.setString("value", item.getValue().toString());
+                settingsList.appendTag(compound);
+            }
         }
         return settingsList;
     }

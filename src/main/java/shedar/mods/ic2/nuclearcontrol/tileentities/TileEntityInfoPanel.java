@@ -32,6 +32,7 @@ import shedar.mods.ic2.nuclearcontrol.ISlotItemFilter;
 import shedar.mods.ic2.nuclearcontrol.ITextureHelper;
 import shedar.mods.ic2.nuclearcontrol.api.*;
 import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.InfoPanel;
+import shedar.mods.ic2.nuclearcontrol.items.ItemCardBase;
 import shedar.mods.ic2.nuclearcontrol.items.ItemUpgrade;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.panel.Screen;
@@ -958,7 +959,13 @@ public class TileEntityInfoPanel extends TileEntity
     public List<PanelString> getSortedCardData(DisplaySettingHelper settings, ItemStack cardStack,
             CardWrapperImpl helper) {
         List<PanelString> data = new ArrayList<>(this.getCardData(settings, cardStack, helper));
-        new DataSorter(cardStack).sortList(data);
+        if (helper.getTitle() != null) {
+            PanelString title = data.remove(0);
+            new DataSorter(cardStack).sortList(data);
+            data.add(0, title);
+        } else {
+            new DataSorter(cardStack).sortList(data);
+        }
         return data;
     }
 }
