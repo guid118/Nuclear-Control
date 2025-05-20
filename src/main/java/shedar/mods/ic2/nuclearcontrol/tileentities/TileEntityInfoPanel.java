@@ -504,7 +504,6 @@ public class TileEntityInfoPanel extends TileEntity
         super.invalidate();
     }
 
-    //TODO add sorting to this
     protected NBTTagList serializeSlotSettings(byte slot) {
         NBTTagList settingsList = new NBTTagList();
         for (Map.Entry<UUID, DisplaySettingHelper> item : getDisplaySettingsForSlot(slot).entrySet()) {
@@ -834,12 +833,6 @@ public class TileEntityInfoPanel extends TileEntity
         return true;
     }
 
-    /*
-     * @Override //getStartInventorySide public int func_94127_c(int side) { // upgrade slots //DOWN if(side == 0)
-     * return 1; return 0; }
-     * @Override // getSizeInventorySide public int func_94128_d(int side) { //upgrades //DOWN if(side == 0) return 2;
-     * //card //UP if(side == 1) return 1; return inventory.length; }
-     */
 
     @Override
     public void rotate() {
@@ -941,7 +934,6 @@ public class TileEntityInfoPanel extends TileEntity
         } else {
             screenData = screen.toTag();
         }
-        // NetworkHelper.updateTileEntityField(this, "screenData");
         IC2.network.get().updateTileEntityField(this, "screenData");
     }
 
