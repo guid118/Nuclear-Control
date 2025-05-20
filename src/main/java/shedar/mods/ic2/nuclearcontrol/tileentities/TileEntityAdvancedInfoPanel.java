@@ -1,17 +1,24 @@
 package shedar.mods.ic2.nuclearcontrol.tileentities;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 
 import ic2.core.IC2;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.config.Property;
+import net.minecraftforge.common.util.Constants;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
 import shedar.mods.ic2.nuclearcontrol.items.ItemUpgrade;
 import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
+import shedar.mods.ic2.nuclearcontrol.utils.DataSorter;
+import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
+
+import javax.xml.crypto.Data;
 
 public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 
@@ -52,6 +59,8 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 
     public ItemStack card2;
     public ItemStack card3;
+
+    protected final Map<Byte, Map<UUID, DataSorter>> dataSorters = new HashMap<>();
     // </editor-fold>
 
     // <editor-fold desc="Constructor">
@@ -219,6 +228,7 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
         List<String> list = super.getNetworkedFields();
         list.add("card2");
         list.add("card3");
+        list.add("dataSorters");
         list.add("powerMode");
         list.add("transparencyMode");
         list.add("thickness");
@@ -338,6 +348,48 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
         if (inventory[SLOT_CARD2] != null) card2 = inventory[SLOT_CARD2];
         if (inventory[SLOT_CARD3] != null) card3 = inventory[SLOT_CARD3];
     }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        NBTTagCompound settingsList = new NBTTagCompound();
+        settingsList.setTag(String.valueOf(SLOT_CARD1), getDataSorterForSlot(SLOT_CARD1));
+        settingsList.setTag(String.valueOf(SLOT_CARD2), getDataSorterForSlot(SLOT_CARD2));
+        settingsList.setTag(String.valueOf(SLOT_CARD3), getDataSorterForSlot(SLOT_CARD3));
+        nbt.setTag("dataSorters", settingsList);
+    }
+
+    private NBTTagList getDataSorterForSlot(byte slot) {
+        NBTTagList settingsList = new NBTTagList();
+        for (Map.Entry<UUID, DataSorter> item : dataSorters.get(slot).entrySet()) {
+            NBTTagCompound compound = new NBTTagCompound();
+            compound.setString("key", item.getKey().toString());
+            compound.setString("value", item.getValue().toString());
+            settingsList.appendTag(compound);
+        }
+        return settingsList;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        if (nbt.hasKey("dataSorters")) {
+            NBTTagCompound settingsList = nbt.getCompoundTag("dataSorters");
+            dataSorters.put(SLOT_CARD1, deserializeDataSorter(settingsList.getTagList(String.valueOf(SLOT_CARD1), Constants.NBT.TAG_COMPOUND)));
+            dataSorters.put(SLOT_CARD2, deserializeDataSorter(settingsList.getTagList(String.valueOf(SLOT_CARD2), Constants.NBT.TAG_COMPOUND)));
+            dataSorters.put(SLOT_CARD3, deserializeDataSorter(settingsList.getTagList(String.valueOf(SLOT_CARD3), Constants.NBT.TAG_COMPOUND)));
+        }
+    }
+
+    private Map<UUID, DataSorter> deserializeDataSorter(NBTTagList dataSorters) {
+        Map<UUID, DataSorter> rv = new HashMap<>();
+        for (int i = 0; i < dataSorters.tagCount(); i++) {
+            NBTTagCompound compound = dataSorters.getCompoundTagAt(i);
+            rv.put(UUID.fromString(compound.getString("key")), new DataSorter(compound.getIntArray(String.valueOf(SLOT_CARD1))));
+        }
+        return rv;
+    }
+
     // </editor-fold>
 
     // <editor-fold desc="Miscellaneous">
