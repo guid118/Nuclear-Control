@@ -406,10 +406,10 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
         List<PanelString> data = new ArrayList<>(this.getCardData(settings, cardStack, helper));
         if (helper.getTitle() != null) {
             PanelString title = data.remove(0);
-            new DataSorter(this, cardStack).sortList(data);
+            new DataSorter(cardStack).sortList(data);
             data.add(0, title);
         } else {
-            new DataSorter(this, cardStack).sortList(data);
+            new DataSorter(cardStack).sortList(data);
         }
         return data;
     }

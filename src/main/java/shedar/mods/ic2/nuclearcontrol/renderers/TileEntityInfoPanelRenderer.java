@@ -80,7 +80,7 @@ public class TileEntityInfoPanelRenderer extends TileEntitySpecialRenderer {
                     data = StringUtils.getStateMessage(state);
                 } else {
                     if (panel instanceof TileEntityAdvancedInfoPanel) {
-                        data = panel.getSortedCardData(displaySettings, card, helper);
+                        data = ((TileEntityAdvancedInfoPanel) panel).getSortedCardData(displaySettings, card, helper);
                     } else {
                         data = panel.getCardData(displaySettings, card, helper);
                     }
