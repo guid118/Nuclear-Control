@@ -13,11 +13,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import shedar.mods.ic2.nuclearcontrol.api.CardState;
-import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
-import shedar.mods.ic2.nuclearcontrol.api.IPanelMultiCard;
-import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
-import shedar.mods.ic2.nuclearcontrol.api.PanelString;
+import shedar.mods.ic2.nuclearcontrol.api.*;
 import shedar.mods.ic2.nuclearcontrol.gui.GuiAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
@@ -100,7 +96,7 @@ public class GuiScrollableList extends GuiScreen {
      * get the data to name the buttons.
      */
     private List<PanelString> getSettings() {
-        if (card == null || !(card.getItem() instanceof IPanelDataSource)) {
+        if (card == null || !(card.getItem() instanceof IPanelAdvDataSource)) {
             return new ArrayList<>();
         }
         CardWrapperImpl helper = new CardWrapperImpl(card, cardSlot);
@@ -134,8 +130,8 @@ public class GuiScrollableList extends GuiScreen {
         this.buttonListFull.clear();
         this.buttonList.clear();
 
-        IPanelDataSource source = (IPanelDataSource) card.getItem();
-        List<PanelSetting> settingsList = new ArrayList<>();
+        IPanelAdvDataSource source = (IPanelAdvDataSource) card.getItem();
+        List<PanelSetting> settingsList;
         if (card.getItem() instanceof IPanelMultiCard) {
             settingsList = ((IPanelMultiCard) source).getSettingsList(new CardWrapperImpl(card, (byte) 0));
         } else {
@@ -154,7 +150,7 @@ public class GuiScrollableList extends GuiScreen {
                             cardSlot));
         }
         originalButtonList = new ArrayList<>(buttonListFull);
-        new DataSorter(card).sortList(buttonListFull);
+        panel.getDataSorter(cardSlot, card).sortList(buttonListFull);
         updateVisibleButtons();
     }
 
@@ -318,7 +314,7 @@ public class GuiScrollableList extends GuiScreen {
 
             draggedButton = null;
             updateVisibleButtons();
-            DataSorter dataSorter = new DataSorter(card);
+            DataSorter dataSorter = panel.getDataSorter(cardSlot, card);
             dataSorter.computeSortOrder(originalButtonList, buttonListFull);
             DataSorter.setDataSorter(card, dataSorter);
             // check if the scrollbar is being used

@@ -14,6 +14,7 @@ import net.minecraftforge.common.util.Constants;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
+import shedar.mods.ic2.nuclearcontrol.items.ItemCardBase;
 import shedar.mods.ic2.nuclearcontrol.items.ItemUpgrade;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
@@ -406,10 +407,10 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
         List<PanelString> data = new ArrayList<>(this.getCardData(settings, cardStack, helper));
         if (helper.getTitle() != null) {
             PanelString title = data.remove(0);
-            new DataSorter(cardStack).sortList(data);
+            getDataSorter(getIndexOfCard(cardStack), cardStack).sortList(data);
             data.add(0, title);
         } else {
-            new DataSorter(cardStack).sortList(data);
+            getDataSorter(getIndexOfCard(cardStack), cardStack).sortList(data);
         }
         return data;
     }
@@ -432,6 +433,15 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
             return Collections.emptyMap();
         }
         return dataSorters;
+    }
+
+    public DataSorter getDataSorter(byte slot, ItemStack card) {
+        UUID uuid = ((ItemCardBase) card.getItem()).getCardType();
+        if (dataSorters.containsKey(slot)) {
+            return dataSorters.get(slot).get(uuid);
+        }
+        dataSorters.put(slot, Collections.singletonMap(uuid, new DataSorter()));
+        return dataSorters.get(slot).get(uuid);
     }
     // </editor-fold>
 }

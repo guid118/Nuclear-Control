@@ -650,7 +650,7 @@ public class TileEntityInfoPanel extends TileEntity
     }
 
     public List<ItemStack> getCards() {
-        List<ItemStack> data = new ArrayList<ItemStack>(1);
+        List<ItemStack> data = new ArrayList<>(1);
         data.add(inventory[SLOT_CARD]);
         return data;
     }
