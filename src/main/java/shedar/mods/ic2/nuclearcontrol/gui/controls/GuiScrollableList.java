@@ -18,6 +18,7 @@ import shedar.mods.ic2.nuclearcontrol.gui.GuiAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.DataSorter;
+import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 
 public class GuiScrollableList extends GuiScreen {
@@ -77,6 +78,7 @@ public class GuiScrollableList extends GuiScreen {
     private final TileEntityAdvancedInfoPanel panel;
     private final ItemStack card;
     private final byte cardSlot;
+    private boolean dataSorterChanged = false;
 
     /**
      * Constructor for the Scrollable List GUI.
@@ -150,7 +152,7 @@ public class GuiScrollableList extends GuiScreen {
                             cardSlot));
         }
         originalButtonList = new ArrayList<>(buttonListFull);
-        panel.getDataSorter(cardSlot, card).sortList(buttonListFull);
+        panel.getDataSorter(cardSlot).sortList(buttonListFull);
         updateVisibleButtons();
     }
 
@@ -195,7 +197,9 @@ public class GuiScrollableList extends GuiScreen {
             if (buttonIndex == previouslyHoveredButton) {
                 GuiToggleButton button = buttonListFull.get(buttonIndex);
                 if (hoverDelayLeft == 0) {
-                    drawTooltip(mc, mouseX, mouseY, Collections.singletonList(button.getFullTitle()));
+                    List<String> list = new ArrayList<>();
+                    list.add(button.getFullTitle());
+                    drawTooltip(mc, mouseX, mouseY, list);
                 } else {
                     hoverDelayLeft--;
                 }
@@ -314,9 +318,10 @@ public class GuiScrollableList extends GuiScreen {
 
             draggedButton = null;
             updateVisibleButtons();
-            DataSorter dataSorter = panel.getDataSorter(cardSlot, card);
+            DataSorter dataSorter = panel.getDataSorter(cardSlot);
             dataSorter.computeSortOrder(originalButtonList, buttonListFull);
-            DataSorter.setDataSorter(card, dataSorter);
+            panel.setDataSorter(cardSlot, dataSorter, true);
+            dataSorterChanged = true;
             // check if the scrollbar is being used
         } else if (scrollbarOffset != -1) {
             moveScrollbar(mouseY);
@@ -400,5 +405,13 @@ public class GuiScrollableList extends GuiScreen {
         if (par2 == 1) {
             FMLClientHandler.instance().getClient().displayGuiScreen(parentGui);
         } else super.keyTyped(par1, par2);
+    }
+
+    @Override
+    public void onGuiClosed() {
+        super.onGuiClosed();
+        if (dataSorterChanged) {
+            NuclearNetworkHelper.sendDataSorterSync(panel);
+        }
     }
 }

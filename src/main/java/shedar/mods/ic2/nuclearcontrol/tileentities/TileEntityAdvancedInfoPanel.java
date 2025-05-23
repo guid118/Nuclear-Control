@@ -20,6 +20,7 @@ import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
 import shedar.mods.ic2.nuclearcontrol.utils.DataSorter;
 import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
+import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
 import javax.xml.crypto.Data;
 
@@ -263,6 +264,11 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
             }
         }
     }
+    @Override
+    protected void initData() {
+        //TODO figure out why this is run every single tick, instead of once when loading the block
+        NuclearNetworkHelper.requestDataSorters(this);
+    }
 
     @Override
     public void onNetworkEvent(EntityPlayer entityplayer, int i) {
@@ -354,11 +360,7 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
     @Override
     public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
-        NBTTagCompound settingsList = new NBTTagCompound();
-        settingsList.setTag(String.valueOf(SLOT_CARD1), getDataSorterForSlot(SLOT_CARD1));
-        settingsList.setTag(String.valueOf(SLOT_CARD2), getDataSorterForSlot(SLOT_CARD2));
-        settingsList.setTag(String.valueOf(SLOT_CARD3), getDataSorterForSlot(SLOT_CARD3));
-        nbt.setTag("dataSorters", settingsList);
+        writeDataSortersToNBT(nbt);
     }
 
     private NBTTagList getDataSorterForSlot(byte slot) {
@@ -367,7 +369,7 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
             for (Map.Entry<UUID, DataSorter> item : dataSorters.get(slot).entrySet()) {
                 NBTTagCompound compound = new NBTTagCompound();
                 compound.setString("key", item.getKey().toString());
-                compound.setString("value", item.getValue().toString());
+                compound.setIntArray("value", item.getValue().getArray());
                 settingsList.appendTag(compound);
             }
         }
@@ -377,6 +379,18 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
+        readDataSortersFromNBT(nbt);
+    }
+
+    public void writeDataSortersToNBT(NBTTagCompound nbt) {
+        NBTTagCompound settingsList = new NBTTagCompound();
+        settingsList.setTag(String.valueOf(SLOT_CARD1), getDataSorterForSlot(SLOT_CARD1));
+        settingsList.setTag(String.valueOf(SLOT_CARD2), getDataSorterForSlot(SLOT_CARD2));
+        settingsList.setTag(String.valueOf(SLOT_CARD3), getDataSorterForSlot(SLOT_CARD3));
+        nbt.setTag("dataSorters", settingsList);
+    }
+
+    public void readDataSortersFromNBT(NBTTagCompound nbt) {
         if (nbt.hasKey("dataSorters")) {
             NBTTagCompound settingsList = nbt.getCompoundTag("dataSorters");
             dataSorters.put(SLOT_CARD1, deserializeDataSorter(settingsList.getTagList(String.valueOf(SLOT_CARD1), Constants.NBT.TAG_COMPOUND)));
@@ -385,11 +399,13 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
         }
     }
 
+
+
     private Map<UUID, DataSorter> deserializeDataSorter(NBTTagList dataSorters) {
         Map<UUID, DataSorter> rv = new HashMap<>();
         for (int i = 0; i < dataSorters.tagCount(); i++) {
             NBTTagCompound compound = dataSorters.getCompoundTagAt(i);
-            rv.put(UUID.fromString(compound.getString("key")), new DataSorter(compound.getIntArray(String.valueOf(SLOT_CARD1))));
+            rv.put(UUID.fromString(compound.getString("key")), new DataSorter(compound.getIntArray("value")));
         }
         return rv;
     }
@@ -442,6 +458,10 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
         }
         dataSorters.put(slot, Collections.singletonMap(uuid, new DataSorter()));
         return dataSorters.get(slot).get(uuid);
+    }
+
+    public void setDataSorter(byte slot, DataSorter sorter, boolean sendToServer) {
+
     }
     // </editor-fold>
 }

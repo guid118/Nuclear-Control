@@ -3,22 +3,7 @@ package shedar.mods.ic2.nuclearcontrol.network;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketAcounter;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketAlarm;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketChat;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketClientColor;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketClientDisplaySettings;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketClientRangeTrigger;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketClientRemoteMonitor;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketClientRequest;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketClientSensor;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketClientSound;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketDispSettingsAll;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketDispSettingsUpdate;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketEncounter;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketSensor;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketSensorTitle;
-import shedar.mods.ic2.nuclearcontrol.network.message.PacketServerUpdate;
+import shedar.mods.ic2.nuclearcontrol.network.message.*;
 
 public class ChannelHandler {
 
@@ -40,10 +25,10 @@ public class ChannelHandler {
         network.registerMessage(PacketClientColor.class, PacketClientColor.class, 13, Side.SERVER);
         network.registerMessage(PacketClientDisplaySettings.class, PacketClientDisplaySettings.class, 14, Side.SERVER);
         network.registerMessage(PacketServerUpdate.Handler.class, PacketServerUpdate.class, 15, Side.SERVER);
-        network.registerMessage(
-                PacketClientRemoteMonitor.Handler.class,
-                PacketClientRemoteMonitor.class,
-                16,
-                Side.CLIENT);
+        network.registerMessage(PacketClientRemoteMonitor.Handler.class, PacketClientRemoteMonitor.class, 16, Side.CLIENT);
+        network.registerMessage(PacketDataSorter.class, PacketDataSorter.class, 17, Side.CLIENT);
+        network.registerMessage(PacketDataSorter.class, PacketDataSorter.class, 18, Side.SERVER);
+        network.registerMessage(PacketDataSorterSync.class, PacketDataSorterSync.class, 19, Side.CLIENT);
+        network.registerMessage(PacketDataSorterSync.class, PacketDataSorterSync.class, 20, Side.SERVER);
     }
 }

@@ -22,12 +22,11 @@ public class PacketClientDisplaySettings implements IMessage, IMessageHandler<Pa
     public PacketClientDisplaySettings() {}
 
     public PacketClientDisplaySettings(int x, int y, int z, byte slot, DisplaySettingHelper settings) {
-        PacketClientDisplaySettings packet = new PacketClientDisplaySettings();
-        packet.x = x;
-        packet.y = y;
-        packet.z = z;
-        packet.slot = slot;
-        packet.settings = settings;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.slot = slot;
+        this.settings = settings;
     }
 
     @Override
@@ -50,11 +49,6 @@ public class PacketClientDisplaySettings implements IMessage, IMessageHandler<Pa
 
     @Override
     public IMessage onMessage(PacketClientDisplaySettings message, MessageContext ctx) {
-        /*
-         * TileEntity tile = ctx.getServerHandler().playerEntity.worldObj.getTileEntity(message.x, message.y,
-         * message.z); if (tile instanceof TileEntityInfoPanel) ((TileEntityInfoPanel)
-         * tile).setDisplaySettings(message.slot, message.settings);
-         */
         EntityPlayerMP player = ctx.getServerHandler().playerEntity;
         Container openContainer = player.openContainer;
         if (openContainer instanceof ContainerInfoPanel) {
