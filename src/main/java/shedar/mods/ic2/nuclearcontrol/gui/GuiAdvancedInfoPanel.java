@@ -1,5 +1,6 @@
 package shedar.mods.ic2.nuclearcontrol.gui;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -100,12 +101,13 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
                 && getActiveCard() != null) {
                     if (previousButtonX == -2 && previousButtonY == -2) {
                         if (hoverDelayLeft <= 0) {
+                            List<String> list = new ArrayList<>();
+                            list.add(StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.LineConfig"));
                             drawTooltip(
                                     mc,
                                     mouseX,
                                     mouseY,
-                                    Collections.singletonList(
-                                            StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.LineConfig")));
+                                    list);
                         } else {
                             hoverDelayLeft--;
                         }
@@ -144,7 +146,9 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
                 tooltipText = StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Transparency");
             }
         }
-        drawTooltip(mc, mouseX, mouseY, Collections.singletonList(tooltipText));
+        List<String> list = new ArrayList<>();
+        list.add(tooltipText);
+        drawTooltip(mc, mouseX, mouseY, list);
     }
 
     @Override
