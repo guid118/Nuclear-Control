@@ -407,10 +407,10 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
         List<PanelString> data = new ArrayList<>(this.getCardData(settings, cardStack, helper));
         if (helper.getTitle() != null) {
             PanelString title = data.remove(0);
-            getDataSorter(getIndexOfCard(cardStack), cardStack).sortList(data);
+            getDataSorter(getIndexOfCard(cardStack)).sortList(data);
             data.add(0, title);
         } else {
-            getDataSorter(getIndexOfCard(cardStack), cardStack).sortList(data);
+            getDataSorter(getIndexOfCard(cardStack)).sortList(data);
         }
         return data;
     }
@@ -435,8 +435,8 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
         return dataSorters;
     }
 
-    public DataSorter getDataSorter(byte slot, ItemStack card) {
-        UUID uuid = ((ItemCardBase) card.getItem()).getCardType();
+    public DataSorter getDataSorter(byte slot) {
+        UUID uuid = ((ItemCardBase) getStackInSlot(slot).getItem()).getCardType();
         if (dataSorters.containsKey(slot)) {
             return dataSorters.get(slot).get(uuid);
         }
