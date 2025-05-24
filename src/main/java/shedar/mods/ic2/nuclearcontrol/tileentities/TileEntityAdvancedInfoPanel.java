@@ -68,6 +68,7 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
     // </editor-fold>
 
     // <editor-fold desc="Constructor">
+
     /**
      * Default constructor for the Advanced Information Panel.
      */
@@ -206,10 +207,14 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 
     public byte getNextPowerMode() {
         switch (powerMode) {
-            case POWER_REDSTONE: return POWER_INVERTED;
-            case POWER_INVERTED: return POWER_ON;
-            case POWER_ON:       return POWER_OFF;
-            case POWER_OFF:      return POWER_REDSTONE;
+            case POWER_REDSTONE:
+                return POWER_INVERTED;
+            case POWER_INVERTED:
+                return POWER_ON;
+            case POWER_ON:
+                return POWER_OFF;
+            case POWER_OFF:
+                return POWER_REDSTONE;
         }
         return POWER_REDSTONE;
     }
@@ -217,10 +222,14 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
     @Override
     public boolean getPowered() {
         switch (powerMode) {
-            case POWER_ON:       return true;
-            case POWER_OFF:      return false;
-            case POWER_REDSTONE: return powered;
-            case POWER_INVERTED: return !powered;
+            case POWER_ON:
+                return true;
+            case POWER_OFF:
+                return false;
+            case POWER_REDSTONE:
+                return powered;
+            case POWER_INVERTED:
+                return !powered;
         }
         return false;
     }
@@ -264,9 +273,10 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
             }
         }
     }
+
     @Override
     protected void initData() {
-        //TODO figure out why this is run every single tick, instead of once when loading the block
+        super.initData();
         NuclearNetworkHelper.requestDataSorters(this);
     }
 
@@ -398,7 +408,6 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
             dataSorters.put(SLOT_CARD3, deserializeDataSorter(settingsList.getTagList(String.valueOf(SLOT_CARD3), Constants.NBT.TAG_COMPOUND)));
         }
     }
-
 
 
     private Map<UUID, DataSorter> deserializeDataSorter(NBTTagList dataSorters) {
