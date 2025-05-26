@@ -179,27 +179,6 @@ public class GuiScrollableList extends GuiScreen {
         updateVisibleButtons();
     }
 
-    private void onReset() {
-        panel.setDataSorter(cardSlot, new DataSorter(), false);
-        dataSorterChanged = true;
-        buttonListFull = new ArrayList<>(originalButtonList);
-        panel.setDisplaySettings(cardSlot, originalDisplaySettingHelper);
-        updateVisibleButtons();
-    }
-
-    private void onSave() {
-        if (dataSorterChanged) {
-            NuclearNetworkHelper.sendDataSorterSync(panel);
-        }
-        mc.displayGuiScreen(parentGui);
-    }
-
-    private void onCancel() {
-        panel.setDataSorter(cardSlot, originalDataSorter, true);
-        panel.setDisplaySettings(cardSlot, originalDisplaySettingHelper);
-        mc.displayGuiScreen(parentGui);
-    }
-
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
@@ -336,6 +315,7 @@ public class GuiScrollableList extends GuiScreen {
                 }
                 if (mouseX > internalLeft && mouseX < internalLeft + GUI_WIDTH
                         && mouseY > internalBottom - FUNCTION_BUTTON_HEIGHT && mouseY < internalBottom) {
+                    SmallGuiButton button = null;
                     for (SmallGuiButton b : functionButtons) {
                         b.mousePressed(mc, mouseX, mouseY);
                     }
@@ -472,5 +452,26 @@ public class GuiScrollableList extends GuiScreen {
         if (dataSorterChanged) {
             NuclearNetworkHelper.sendDataSorterSync(panel);
         }
+    }
+
+    private void onReset() {
+        panel.setDataSorter(cardSlot, new DataSorter(), false);
+        dataSorterChanged = true;
+        panel.setDisplaySettings(cardSlot, new DisplaySettingHelper());
+        buttonListFull = new ArrayList<>(originalButtonList);
+        updateVisibleButtons();
+    }
+
+    private void onSave() {
+        if (dataSorterChanged) {
+            NuclearNetworkHelper.sendDataSorterSync(panel);
+        }
+        mc.displayGuiScreen(parentGui);
+    }
+
+    private void onCancel() {
+        panel.setDataSorter(cardSlot, originalDataSorter, true);
+        panel.setDisplaySettings(cardSlot, originalDisplaySettingHelper);
+        mc.displayGuiScreen(parentGui);
     }
 }
