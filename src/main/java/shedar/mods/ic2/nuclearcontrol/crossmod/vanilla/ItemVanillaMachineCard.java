@@ -192,7 +192,21 @@ public class ItemVanillaMachineCard extends ItemCardBase {
             boolean isBurning = card.getBoolean("burning");
             int burnTime = card.getInt("burnTime");
             NBTTagCompound tagCompound = card.getTag("Info");
-
+            if (displaySettings.getSetting(DISPLAY_BREWING)) {
+                int txtColour = 0;
+                String text;
+                if (isBurning) {
+                    txtColour = 0x00ff00;
+                    text = LangHelper.translate("msg.nc.InfoPanelOn");
+                } else {
+                    txtColour = 0xff0000;
+                    text = LangHelper.translate("msg.nc.InfoPanelOff");
+                }
+                line = new PanelString();
+                line.textLeft = text;
+                line.colorLeft = txtColour;
+                result.add(line);
+            }
             if (displaySettings.getSetting(DISPLAY_TIME)) {
                 line = new PanelString();
                 line.textLeft = StringUtils.getFormatted("msg.nc.Vanilla.burnTime", burnTime, showLabels);
@@ -232,21 +246,6 @@ public class ItemVanillaMachineCard extends ItemCardBase {
                         StatCollector.translateToLocal("msg.nc.Vanilla.output"),
                         tagCompound.getInteger("Osize"),
                         slot3pre);
-                result.add(line);
-            }
-            if (displaySettings.getSetting(DISPLAY_BREWING)) {
-                int txtColour = 0;
-                String text;
-                if (isBurning) {
-                    txtColour = 0x00ff00;
-                    text = LangHelper.translate("msg.nc.InfoPanelOn");
-                } else {
-                    txtColour = 0xff0000;
-                    text = LangHelper.translate("msg.nc.InfoPanelOff");
-                }
-                line = new PanelString();
-                line.textLeft = text;
-                line.colorLeft = txtColour;
                 result.add(line);
             }
 
