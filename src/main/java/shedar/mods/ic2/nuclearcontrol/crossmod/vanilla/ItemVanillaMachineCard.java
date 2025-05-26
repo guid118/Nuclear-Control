@@ -124,7 +124,7 @@ public class ItemVanillaMachineCard extends ItemCardBase {
 
     @Override
     public List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card,
-            boolean showLabels) {
+                                           boolean showLabels) {
         List<PanelString> result = new LinkedList<PanelString>();
         PanelString line;
         if (card.getString("entity").equals(BREW_STAND)) {
@@ -244,28 +244,11 @@ public class ItemVanillaMachineCard extends ItemCardBase {
                     txtColour = 0xff0000;
                     text = LangHelper.translate("msg.nc.InfoPanelOff");
                 }
-                if (result.size() > 0) {
-                    PanelString firstLine = result.get(0);
-                    firstLine.textRight = text;
-                    firstLine.colorRight = txtColour;
-                } else {
-                    line = new PanelString();
-                    line.textLeft = text;
-                    line.colorLeft = txtColour;
-                    result.add(line);
-                }
+                line = new PanelString();
+                line.textLeft = text;
+                line.colorLeft = txtColour;
+                result.add(line);
             }
-            /*
-             * public static final int DISPLAY_BREWING = 1; public static final int DISPLAY_TIME = 2; public static
-             * final int DISPLAY_SLOT_1 = 4; public static final int DISPLAY_SLOT_2 = 8; public static final int
-             * DISPLAY_SLOT_3 = 16; card.setBoolean("burning", furnace.isBurning()); card.setInt("burnTime",
-             * furnace.furnaceBurnTime); NBTTagCompound tag = new NBTTagCompound(); tag.setString("Cooking",
-             * furnace.getStackInSlot(0).getDisplayName()); tag.setInteger("Csize",
-             * furnace.getStackInSlot(0).stackSize); tag.setString("Fuel", furnace.getStackInSlot(1).getDisplayName());
-             * tag.setInteger("Fsize", furnace.getStackInSlot(1).stackSize); tag.setString("Output",
-             * furnace.getStackInSlot(2).getDisplayName()); tag.setInteger("Osize",
-             * furnace.getStackInSlot(2).stackSize);
-             */
 
         }
         return result;
