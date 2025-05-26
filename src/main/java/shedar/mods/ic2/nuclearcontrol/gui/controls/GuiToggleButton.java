@@ -76,7 +76,8 @@ public class GuiToggleButton extends GuiButton {
         drawTexturedModalRect(xPosition - 1, yPosition + 1, 0, textureY, 140, 20);
 
         int iconX = 0;
-        int iconY = isChecked ? (GuiScrollableList.BUTTON_HEIGHT * 2) : ICON_HEIGHT + (GuiScrollableList.BUTTON_HEIGHT*2) - 1;
+        int iconY = isChecked ? (GuiScrollableList.BUTTON_HEIGHT * 2)
+                : ICON_HEIGHT + (GuiScrollableList.BUTTON_HEIGHT * 2) - 1;
         drawTexturedModalRect(xPosition + 1, yPosition + 3, iconX, iconY, 16, 15);
 
         mc.fontRenderer.drawString(displayString, xPosition + 24, yPosition + 6, 0xFFFFFF);

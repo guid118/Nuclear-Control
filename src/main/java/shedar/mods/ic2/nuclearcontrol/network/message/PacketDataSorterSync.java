@@ -1,22 +1,21 @@
 package shedar.mods.ic2.nuclearcontrol.network.message;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.FMLEmbeddedChannel;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
+
+import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
 import shedar.mods.ic2.nuclearcontrol.containers.ContainerAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
 public class PacketDataSorterSync implements IMessage, IMessageHandler<PacketDataSorterSync, IMessage> {
+
     private int x;
     private int y;
     private int z;
@@ -51,7 +50,8 @@ public class PacketDataSorterSync implements IMessage, IMessageHandler<PacketDat
     @Override
     public IMessage onMessage(PacketDataSorterSync message, MessageContext ctx) {
         if (ctx.side.isClient()) {
-            TileEntityAdvancedInfoPanel panel = (TileEntityAdvancedInfoPanel) Minecraft.getMinecraft().theWorld.getTileEntity(message.x, message.y, message.z);
+            TileEntityAdvancedInfoPanel panel = (TileEntityAdvancedInfoPanel) Minecraft.getMinecraft().theWorld
+                    .getTileEntity(message.x, message.y, message.z);
             if (panel != null) {
                 panel.readDataSortersFromNBT(message.dataSortersTag);
             }

@@ -11,7 +11,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
-import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
 @SideOnly(Side.CLIENT)
 public class GuiInfoPanelCheckBox extends GuiButton {

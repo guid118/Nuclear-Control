@@ -112,9 +112,7 @@ public class PacketDispSettingsAll implements IMessage, IMessageHandler<PacketDi
                 if (key == null) {
                     continue;
                 }
-                setting.put(
-                        new UUID(key.getMostSignificantBits(), key.getLeastSignificantBits()),
-                        item.getValue());
+                setting.put(new UUID(key.getMostSignificantBits(), key.getLeastSignificantBits()), item.getValue());
             }
         }
         panel.resetCardData();

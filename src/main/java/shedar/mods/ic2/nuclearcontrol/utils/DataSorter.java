@@ -35,8 +35,6 @@ public class DataSorter {
         else this.customOrder = new ArrayList<>();
     }
 
-
-
     /**
      * Save a custom order, and completely overwrite the one currently stored.
      *

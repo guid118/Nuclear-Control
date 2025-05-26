@@ -1,35 +1,29 @@
 package shedar.mods.ic2.nuclearcontrol.network.message;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.Container;
+import net.minecraft.tileentity.TileEntity;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import cpw.mods.fml.relauncher.Side;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.Container;
-import net.minecraft.tileentity.TileEntity;
 import shedar.mods.ic2.nuclearcontrol.containers.ContainerAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.containers.ContainerInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
-import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.DataSorter;
-import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PacketDataSorter implements IMessage, IMessageHandler<PacketDataSorter, IMessage> {
+
     private int x;
     private int y;
     private int z;
     private byte slot;
     private DataSorter sorter;
 
-
-    public PacketDataSorter() {
-    }
-
+    public PacketDataSorter() {}
 
     public PacketDataSorter(TileEntityAdvancedInfoPanel panel, byte slot, DataSorter sorter) {
         this.x = panel.xCoord;

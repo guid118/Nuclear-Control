@@ -1,12 +1,13 @@
 package shedar.mods.ic2.nuclearcontrol.network.message;
 
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
@@ -16,8 +17,7 @@ public class PacketClientRequest implements IMessage, IMessageHandler<PacketClie
     private int y;
     private int z;
 
-    public PacketClientRequest() {
-    }
+    public PacketClientRequest() {}
 
     public PacketClientRequest(int x, int y, int z) {
         this.x = x;

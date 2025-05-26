@@ -32,7 +32,6 @@ import shedar.mods.ic2.nuclearcontrol.ISlotItemFilter;
 import shedar.mods.ic2.nuclearcontrol.ITextureHelper;
 import shedar.mods.ic2.nuclearcontrol.api.*;
 import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.InfoPanel;
-import shedar.mods.ic2.nuclearcontrol.items.ItemCardBase;
 import shedar.mods.ic2.nuclearcontrol.items.ItemUpgrade;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.panel.Screen;
@@ -356,7 +355,6 @@ public class TileEntityInfoPanel extends TileEntity
     public void resetCardData() {
         cardData.clear();
     }
-
 
     /**
      * get a list of PanelStrings to display on the screen
@@ -833,7 +831,6 @@ public class TileEntityInfoPanel extends TileEntity
         if (worldObj != other.worldObj) return false;
         return true;
     }
-
 
     @Override
     public void rotate() {

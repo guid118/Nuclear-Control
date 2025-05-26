@@ -160,7 +160,8 @@ public class NuclearNetworkHelper {
     }
 
     // server
-    public static void sendDisplaySettingsUpdate(TileEntityInfoPanel panel, byte slot, UUID key, DisplaySettingHelper value) {
+    public static void sendDisplaySettingsUpdate(TileEntityInfoPanel panel, byte slot, UUID key,
+            DisplaySettingHelper value) {
         sendPacketToAllAround(
                 panel.xCoord,
                 panel.yCoord,
@@ -169,7 +170,6 @@ public class NuclearNetworkHelper {
                 panel.getWorldObj(),
                 new PacketDispSettingsUpdate(panel.xCoord, panel.yCoord, panel.zCoord, slot, key, value));
     }
-
 
     // client and server
     public static void sendDataSorterSync(TileEntityAdvancedInfoPanel panel) {
@@ -183,11 +183,9 @@ public class NuclearNetworkHelper {
                     panel.zCoord,
                     64,
                     panel.getWorldObj(),
-                    new PacketDataSorterSync(panel)
-            );
+                    new PacketDataSorterSync(panel));
         }
     }
-
 
     public static void requestDataSorters(TileEntityInfoPanel panel) {
         ChannelHandler.network.sendToServer(new PacketClientRequest(panel.xCoord, panel.yCoord, panel.zCoord));

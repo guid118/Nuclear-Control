@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
 import net.minecraft.util.StatCollector;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -74,7 +73,6 @@ public class GuiScrollableList extends GuiScreen {
     private List<GuiToggleButton> visibleButtonList = new ArrayList<>();
     private List<SmallGuiButton> functionButtons = new ArrayList<>();
     private final GuiAdvancedInfoPanel parentGui;
-
 
     private int scrollOffset = 0;
     private int thumbLocation = 0;
@@ -151,9 +149,33 @@ public class GuiScrollableList extends GuiScreen {
         this.buttonList.clear();
         this.visibleButtonList.clear();
 
-        functionButtons.add(new SmallGuiButton(0, internalLeft + 1, internalBottom - FUNCTION_BUTTON_HEIGHT, FUNCTION_BUTTON_WIDTH, FUNCTION_BUTTON_HEIGHT, StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Save"), this::onSave));
-        functionButtons.add(new SmallGuiButton(1, internalLeft + 1 + FUNCTION_BUTTON_WIDTH + FUNCTION_BUTTON_PADDING, internalBottom - FUNCTION_BUTTON_HEIGHT, FUNCTION_BUTTON_WIDTH - 1, FUNCTION_BUTTON_HEIGHT, StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Reset"), this::onReset));
-        functionButtons.add(new SmallGuiButton(2, internalLeft + (FUNCTION_BUTTON_WIDTH + FUNCTION_BUTTON_PADDING) * 2, internalBottom - FUNCTION_BUTTON_HEIGHT, FUNCTION_BUTTON_WIDTH, FUNCTION_BUTTON_HEIGHT, StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Cancel"), this::onCancel));
+        functionButtons.add(
+                new SmallGuiButton(
+                        0,
+                        internalLeft + 1,
+                        internalBottom - FUNCTION_BUTTON_HEIGHT,
+                        FUNCTION_BUTTON_WIDTH,
+                        FUNCTION_BUTTON_HEIGHT,
+                        StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Save"),
+                        this::onSave));
+        functionButtons.add(
+                new SmallGuiButton(
+                        1,
+                        internalLeft + 1 + FUNCTION_BUTTON_WIDTH + FUNCTION_BUTTON_PADDING,
+                        internalBottom - FUNCTION_BUTTON_HEIGHT,
+                        FUNCTION_BUTTON_WIDTH - 1,
+                        FUNCTION_BUTTON_HEIGHT,
+                        StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Reset"),
+                        this::onReset));
+        functionButtons.add(
+                new SmallGuiButton(
+                        2,
+                        internalLeft + (FUNCTION_BUTTON_WIDTH + FUNCTION_BUTTON_PADDING) * 2,
+                        internalBottom - FUNCTION_BUTTON_HEIGHT,
+                        FUNCTION_BUTTON_WIDTH,
+                        FUNCTION_BUTTON_HEIGHT,
+                        StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Cancel"),
+                        this::onCancel));
 
         IPanelAdvDataSource source = (IPanelAdvDataSource) card.getItem();
         List<PanelSetting> settingsList;
@@ -186,7 +208,6 @@ public class GuiScrollableList extends GuiScreen {
 
         // The background texture should always be in the top left of the png
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, GUI_WIDTH, GUI_HEIGHT);
-
 
         // the scrollbar should be directly to the right of the background texture
         drawTexturedModalRect(scrollbarLeft + 1, thumbLocation, GUI_WIDTH, 0, THUMB_WIDTH, THUMB_HEIGHT);
@@ -309,12 +330,14 @@ public class GuiScrollableList extends GuiScreen {
                     }
                     // check if the click was within scrollbar bounds
                 } else if (mouseX > scrollbarLeft && mouseX < scrollbarRight
-                        && mouseY > internalTop && mouseY < internalBottom - FUNCTION_BUTTON_HEIGHT - PADDING_BOTTOM + 2) {
-                    scrollbarOffset = Math.max(0, Math.min(mouseY - thumbLocation, THUMB_HEIGHT));
-                    moveScrollbar(mouseY);
-                }
+                        && mouseY > internalTop
+                        && mouseY < internalBottom - FUNCTION_BUTTON_HEIGHT - PADDING_BOTTOM + 2) {
+                            scrollbarOffset = Math.max(0, Math.min(mouseY - thumbLocation, THUMB_HEIGHT));
+                            moveScrollbar(mouseY);
+                        }
                 if (mouseX > internalLeft && mouseX < internalLeft + GUI_WIDTH
-                        && mouseY > internalBottom - FUNCTION_BUTTON_HEIGHT && mouseY < internalBottom) {
+                        && mouseY > internalBottom - FUNCTION_BUTTON_HEIGHT
+                        && mouseY < internalBottom) {
                     SmallGuiButton button = null;
                     for (SmallGuiButton b : functionButtons) {
                         b.mousePressed(mc, mouseX, mouseY);

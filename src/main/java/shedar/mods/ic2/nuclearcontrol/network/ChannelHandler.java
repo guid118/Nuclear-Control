@@ -25,7 +25,11 @@ public class ChannelHandler {
         network.registerMessage(PacketClientColor.class, PacketClientColor.class, 13, Side.SERVER);
         network.registerMessage(PacketClientDisplaySettings.class, PacketClientDisplaySettings.class, 14, Side.SERVER);
         network.registerMessage(PacketServerUpdate.Handler.class, PacketServerUpdate.class, 15, Side.SERVER);
-        network.registerMessage(PacketClientRemoteMonitor.Handler.class, PacketClientRemoteMonitor.class, 16, Side.CLIENT);
+        network.registerMessage(
+                PacketClientRemoteMonitor.Handler.class,
+                PacketClientRemoteMonitor.class,
+                16,
+                Side.CLIENT);
         network.registerMessage(PacketDataSorter.class, PacketDataSorter.class, 17, Side.CLIENT);
         network.registerMessage(PacketDataSorter.class, PacketDataSorter.class, 18, Side.SERVER);
         network.registerMessage(PacketDataSorterSync.class, PacketDataSorterSync.class, 19, Side.CLIENT);

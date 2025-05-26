@@ -1,14 +1,12 @@
 package shedar.mods.ic2.nuclearcontrol.gui.controls;
 
+import static shedar.mods.ic2.nuclearcontrol.gui.controls.GuiScrollableList.BUTTON_WIDTH;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
-import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
-import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
-import static shedar.mods.ic2.nuclearcontrol.gui.controls.GuiScrollableList.BUTTON_WIDTH;
-import static shedar.mods.ic2.nuclearcontrol.gui.controls.GuiScrollableList.FUNCTION_BUTTON_WIDTH;
+import org.lwjgl.opengl.GL11;
 
 public class SmallGuiButton extends GuiButton {
 
@@ -17,13 +15,10 @@ public class SmallGuiButton extends GuiButton {
     private static final ResourceLocation TEXTURE = new ResourceLocation(
             "nuclearcontrol:textures/gui/GUIAdvancedInfoPanelLinesButtons.png");
 
-
     public SmallGuiButton(int id, int x, int y, int width, int height, String displayString, Runnable onClick) {
         super(id, x, y, width, height, displayString);
         this.onClick = onClick;
     }
-
-
 
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         mc.getTextureManager().bindTexture(TEXTURE);

@@ -4,13 +4,11 @@ import java.util.*;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
 
 import ic2.core.IC2;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.config.Property;
-import net.minecraftforge.common.util.Constants;
 import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
@@ -21,8 +19,6 @@ import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
 import shedar.mods.ic2.nuclearcontrol.utils.DataSorter;
 import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
-
-import javax.xml.crypto.Data;
 
 public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 
@@ -109,7 +105,7 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
             case SLOT_UPGRADE_RANGE:
                 return itemstack.getItem() instanceof ItemUpgrade
                         && (itemstack.getItemDamage() == ItemUpgrade.DAMAGE_RANGE
-                        || itemstack.getItemDamage() == ItemUpgrade.DAMAGE_WEB);
+                                || itemstack.getItemDamage() == ItemUpgrade.DAMAGE_WEB);
             default:
                 return false;
         }
@@ -265,13 +261,15 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
                 worldObj.func_147451_t(xCoord, yCoord, zCoord);
             }
             prevPowerMode = powerMode;
-        } else if (field.equals("thickness") || field.equals("rotateHor") || field.equals("rotateVert")
-                || field.equals("textRotation") || field.equals("transparencyMode")) {
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            if (field.equals("transparencyMode")) {
-                worldObj.func_147451_t(xCoord, yCoord, zCoord);
-            }
-        }
+        } else if (field.equals("thickness") || field.equals("rotateHor")
+                || field.equals("rotateVert")
+                || field.equals("textRotation")
+                || field.equals("transparencyMode")) {
+                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    if (field.equals("transparencyMode")) {
+                        worldObj.func_147451_t(xCoord, yCoord, zCoord);
+                    }
+                }
     }
 
     @Override
@@ -403,12 +401,20 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
     public void readDataSortersFromNBT(NBTTagCompound nbt) {
         if (nbt.hasKey("dataSorters")) {
             NBTTagCompound settingsList = nbt.getCompoundTag("dataSorters");
-            dataSorters.put(SLOT_CARD1, deserializeDataSorter(settingsList.getTagList(String.valueOf(SLOT_CARD1), Constants.NBT.TAG_COMPOUND)));
-            dataSorters.put(SLOT_CARD2, deserializeDataSorter(settingsList.getTagList(String.valueOf(SLOT_CARD2), Constants.NBT.TAG_COMPOUND)));
-            dataSorters.put(SLOT_CARD3, deserializeDataSorter(settingsList.getTagList(String.valueOf(SLOT_CARD3), Constants.NBT.TAG_COMPOUND)));
+            dataSorters.put(
+                    SLOT_CARD1,
+                    deserializeDataSorter(
+                            settingsList.getTagList(String.valueOf(SLOT_CARD1), Constants.NBT.TAG_COMPOUND)));
+            dataSorters.put(
+                    SLOT_CARD2,
+                    deserializeDataSorter(
+                            settingsList.getTagList(String.valueOf(SLOT_CARD2), Constants.NBT.TAG_COMPOUND)));
+            dataSorters.put(
+                    SLOT_CARD3,
+                    deserializeDataSorter(
+                            settingsList.getTagList(String.valueOf(SLOT_CARD3), Constants.NBT.TAG_COMPOUND)));
         }
     }
-
 
     private Map<UUID, DataSorter> deserializeDataSorter(NBTTagList dataSorters) {
         Map<UUID, DataSorter> rv = new HashMap<>();
@@ -428,7 +434,7 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
      * @return a list of PanelStrings to display
      */
     public List<PanelString> getSortedCardData(DisplaySettingHelper settings, ItemStack cardStack,
-                                               CardWrapperImpl helper) {
+            CardWrapperImpl helper) {
         List<PanelString> data = new ArrayList<>(this.getCardData(settings, cardStack, helper));
         if (!Objects.equals(helper.getTitle(), "")) {
             PanelString title = data.remove(0);

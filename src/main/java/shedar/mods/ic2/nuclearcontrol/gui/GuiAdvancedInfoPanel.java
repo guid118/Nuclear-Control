@@ -1,7 +1,6 @@
 package shedar.mods.ic2.nuclearcontrol.gui;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
@@ -103,11 +102,7 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
                         if (hoverDelayLeft <= 0) {
                             List<String> list = new ArrayList<>();
                             list.add(StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.LineConfig"));
-                            drawTooltip(
-                                    mc,
-                                    mouseX,
-                                    mouseY,
-                                    list);
+                            drawTooltip(mc, mouseX, mouseY, list);
                         } else {
                             hoverDelayLeft--;
                         }
