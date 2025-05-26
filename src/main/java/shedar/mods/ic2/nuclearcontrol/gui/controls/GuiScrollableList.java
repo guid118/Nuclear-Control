@@ -1,14 +1,15 @@
 package shedar.mods.ic2.nuclearcontrol.gui.controls;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import net.minecraft.util.StatCollector;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -18,6 +19,7 @@ import shedar.mods.ic2.nuclearcontrol.gui.GuiAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.DataSorter;
+import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 
@@ -26,45 +28,53 @@ public class GuiScrollableList extends GuiScreen {
     // WARNING: These values are only meant to be edited when the texture is edited as well, you can find the texture
     // location at the TEXTURE variable further below.
     // General dimensions and paddings
-    static final int GUI_WIDTH = 173;
-    static final int GUI_HEIGHT = 213;
+    static final int GUI_WIDTH = 174;
+    static final int GUI_HEIGHT = 233;
     private static final int PADDING_LEFT = 6;
     private static final int PADDING_TOP = 6;
     private static final int PADDING_BOTTOM = 7;
-    private static final int PADDING_MIDDLE = 7;
+    static final int PADDING_MIDDLE = 7;
     static final int PADDING_RIGHT = 7;
 
     // Internal sizes
     static final int THUMB_WIDTH = 12;
+    private static final int THUMB_HEIGHT = 32;
 
     // Button sizes and amounts, some of these can be calculated from earlier values
     static final int BUTTON_HEIGHT = 20;
     static final int BUTTON_WIDTH = 140;
+    static final int FUNCTION_BUTTON_HEIGHT = 15;
+    static final int FUNCTION_BUTTON_WIDTH = 49;
+    static final int FUNCTION_BUTTON_PADDING = 7;
     private static final int VISIBLE_BUTTONS = (GUI_HEIGHT - PADDING_TOP - PADDING_BOTTOM) / BUTTON_HEIGHT;
     private static final int LIST_HEIGHT = VISIBLE_BUTTONS * BUTTON_HEIGHT;
     static final int TOGGLE_BUTTON_WIDTH = 20;
-    private static final int THUMB_HEIGHT = 32;
 
     private static final int SCROLL_SPEED = 1;
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(
-            "nuclearcontrol:textures/gui/GUIAdvancedInfoPanelLines.png");
+    private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(
+            "nuclearcontrol:textures/gui/GUIAdvancedInfoPanelLinesBackground.png");
+    private static final ResourceLocation BUTTON_TEXTURE = new ResourceLocation(
+            "nuclearcontrol:textures/gui/GUIAdvancedInfoPanelLinesButtons.png");
     private static final int HOVER_DELAY = 5;
 
     private int guiLeft = 0;
     private int guiTop = 0;
     private int guiRight = 0;
     private int guiBottom = 0;
-    private int internalLeft = 0;
+    int internalLeft = 0;
     private int internalTop = 0;
     private int listRight = 0;
     private int scrollbarLeft = 0;
     private int scrollbarRight = 0;
-    private int internalBottom = 0;
+    int internalBottom = 0;
 
     private List<GuiToggleButton> buttonListFull = new ArrayList<>();
     private List<GuiToggleButton> originalButtonList = new ArrayList<>();
+    private List<GuiToggleButton> visibleButtonList = new ArrayList<>();
+    private List<SmallGuiButton> functionButtons = new ArrayList<>();
     private final GuiAdvancedInfoPanel parentGui;
+
 
     private int scrollOffset = 0;
     private int thumbLocation = 0;
@@ -79,6 +89,9 @@ public class GuiScrollableList extends GuiScreen {
     private final ItemStack card;
     private final byte cardSlot;
     private boolean dataSorterChanged = false;
+    private DataSorter newDataSorter = null;
+    private DataSorter originalDataSorter = null;
+    private DisplaySettingHelper originalDisplaySettingHelper = null;
 
     /**
      * Constructor for the Scrollable List GUI.
@@ -129,8 +142,18 @@ public class GuiScrollableList extends GuiScreen {
         scrollbarRight = scrollbarLeft + THUMB_WIDTH;
         thumbLocation = internalTop;
 
+        newDataSorter = panel.getDataSorter(cardSlot);
+        originalDataSorter = new DataSorter(panel.getDataSorter(cardSlot).getArray());
+
+        originalDisplaySettingHelper = panel.getNewDisplaySettingsForCardInSlot(cardSlot);
+
         this.buttonListFull.clear();
         this.buttonList.clear();
+        this.visibleButtonList.clear();
+
+        functionButtons.add(new SmallGuiButton(0, internalLeft + 1, internalBottom - FUNCTION_BUTTON_HEIGHT, FUNCTION_BUTTON_WIDTH, FUNCTION_BUTTON_HEIGHT, StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Save"), this::onSave));
+        functionButtons.add(new SmallGuiButton(1, internalLeft + 1 + FUNCTION_BUTTON_WIDTH + FUNCTION_BUTTON_PADDING, internalBottom - FUNCTION_BUTTON_HEIGHT, FUNCTION_BUTTON_WIDTH - 1, FUNCTION_BUTTON_HEIGHT, StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Reset"), this::onReset));
+        functionButtons.add(new SmallGuiButton(2, internalLeft + (FUNCTION_BUTTON_WIDTH + FUNCTION_BUTTON_PADDING) * 2, internalBottom - FUNCTION_BUTTON_HEIGHT, FUNCTION_BUTTON_WIDTH, FUNCTION_BUTTON_HEIGHT, StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Cancel"), this::onCancel));
 
         IPanelAdvDataSource source = (IPanelAdvDataSource) card.getItem();
         List<PanelSetting> settingsList;
@@ -143,7 +166,7 @@ public class GuiScrollableList extends GuiScreen {
         for (int i = 0; i < settingsList.size() && i < panelStrings.size(); i++) {
             buttonListFull.add(
                     new GuiToggleButton(
-                            i,
+                            i + 3,
                             internalLeft + 1,
                             0,
                             panelStrings.get(i).toString(),
@@ -156,21 +179,49 @@ public class GuiScrollableList extends GuiScreen {
         updateVisibleButtons();
     }
 
+    private void onReset() {
+        panel.setDataSorter(cardSlot, new DataSorter(), false);
+        dataSorterChanged = true;
+        buttonListFull = new ArrayList<>(originalButtonList);
+        panel.setDisplaySettings(cardSlot, originalDisplaySettingHelper);
+        updateVisibleButtons();
+    }
+
+    private void onSave() {
+        if (dataSorterChanged) {
+            NuclearNetworkHelper.sendDataSorterSync(panel);
+        }
+        mc.displayGuiScreen(parentGui);
+    }
+
+    private void onCancel() {
+        panel.setDataSorter(cardSlot, originalDataSorter, true);
+        panel.setDisplaySettings(cardSlot, originalDisplaySettingHelper);
+        mc.displayGuiScreen(parentGui);
+    }
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
-        mc.getTextureManager().bindTexture(TEXTURE);
+        mc.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
 
         // The background texture should always be in the top left of the png
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, GUI_WIDTH, GUI_HEIGHT);
 
+
         // the scrollbar should be directly to the right of the background texture
-        drawTexturedModalRect(scrollbarLeft + 1, thumbLocation, GUI_WIDTH + 1, 0, THUMB_WIDTH, THUMB_HEIGHT);
+        drawTexturedModalRect(scrollbarLeft + 1, thumbLocation, GUI_WIDTH, 0, THUMB_WIDTH, THUMB_HEIGHT);
+
+        mc.getTextureManager().bindTexture(BUTTON_TEXTURE);
+
+        for (SmallGuiButton functionButton : functionButtons) {
+            functionButton.drawButton(mc, mouseX, mouseY);
+        }
 
         // Cut off any buttons being drawn outside the list.
         // (technically redundant, but if one were to want to display half of a button, that is possible)
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        setScissor(internalLeft, internalTop, BUTTON_WIDTH, LIST_HEIGHT);
+        setScissor(internalLeft, internalTop, BUTTON_WIDTH + PADDING_MIDDLE + THUMB_WIDTH + PADDING_RIGHT, LIST_HEIGHT);
         super.drawScreen(mouseX, mouseY, partialTicks);
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
@@ -184,7 +235,7 @@ public class GuiScrollableList extends GuiScreen {
 
     /**
      * draw a tooltip for the button over which the mouse is hovering (if the delay has passed)
-     * 
+     *
      * @param mc     Minecraft instance
      * @param mouseX X location of the mouse
      * @param mouseY Y location of the mouse
@@ -192,7 +243,7 @@ public class GuiScrollableList extends GuiScreen {
     private void drawButtonTooltip(Minecraft mc, int mouseX, int mouseY) {
         if (mouseX >= this.internalLeft + TOGGLE_BUTTON_WIDTH && mouseY >= this.internalTop
                 && mouseX < this.listRight
-                && mouseY < this.internalTop + (buttonList.size() * BUTTON_HEIGHT)) {
+                && mouseY < this.internalTop + (visibleButtonList.size() * BUTTON_HEIGHT)) {
             int buttonIndex = (mouseY - internalTop) / BUTTON_HEIGHT + scrollOffset;
             if (buttonIndex == previouslyHoveredButton) {
                 GuiToggleButton button = buttonListFull.get(buttonIndex);
@@ -215,7 +266,7 @@ public class GuiScrollableList extends GuiScreen {
 
     /**
      * draw a tooltip at the given location with the given text.
-     * 
+     *
      * @param mc        Minecraft instance.
      * @param mouseX    X location of the mouse
      * @param mouseY    Y location of the mouse
@@ -232,13 +283,15 @@ public class GuiScrollableList extends GuiScreen {
      * calling this method
      */
     private void updateVisibleButtons() {
-        buttonList.clear();
+        buttonList.removeAll(buttonListFull);
+        visibleButtonList.clear();
         scrollOffset = Math.max(0, Math.min(scrollOffset, buttonListFull.size() - VISIBLE_BUTTONS));
         for (int i = scrollOffset; i < scrollOffset + VISIBLE_BUTTONS && i < buttonListFull.size(); i++) {
             GuiToggleButton btn = buttonListFull.get(i);
             btn.yPosition = PADDING_TOP + (i - scrollOffset) * BUTTON_HEIGHT + guiTop;
-            buttonList.add(btn);
+            visibleButtonList.add(btn);
         }
+        buttonList.addAll(visibleButtonList);
     }
 
     /**
@@ -265,19 +318,27 @@ public class GuiScrollableList extends GuiScreen {
             // check if click was within general GUI bounds
             if (mouseX > internalLeft && mouseX < guiRight - PADDING_RIGHT) {
                 if (mouseX > internalLeft + TOGGLE_BUTTON_WIDTH && mouseX < listRight) {
-                    for (Object o : buttonList) {
-                        GuiToggleButton btn = (GuiToggleButton) o;
-                        if (mouseY >= btn.yPosition && mouseY < btn.yPosition + BUTTON_HEIGHT) {
-                            draggedButton = btn;
-                            originalIndex = buttonListFull.indexOf(draggedButton);
-                            btn.dragOffsetY = mouseY - btn.yPosition;
-                            break;
+                    if (mouseY > internalTop && mouseY < internalBottom - FUNCTION_BUTTON_HEIGHT) {
+                        for (GuiToggleButton o : visibleButtonList) {
+                            if (mouseY >= o.yPosition && mouseY < o.yPosition + BUTTON_HEIGHT) {
+                                draggedButton = o;
+                                originalIndex = buttonListFull.indexOf(draggedButton);
+                                o.dragOffsetY = mouseY - o.yPosition;
+                                break;
+                            }
                         }
                     }
                     // check if the click was within scrollbar bounds
-                } else if (mouseX > scrollbarLeft && mouseX < scrollbarRight) {
+                } else if (mouseX > scrollbarLeft && mouseX < scrollbarRight
+                        && mouseY > internalTop && mouseY < internalBottom - FUNCTION_BUTTON_HEIGHT - PADDING_BOTTOM + 2) {
                     scrollbarOffset = Math.max(0, Math.min(mouseY - thumbLocation, THUMB_HEIGHT));
                     moveScrollbar(mouseY);
+                }
+                if (mouseX > internalLeft && mouseX < internalLeft + GUI_WIDTH
+                        && mouseY > internalBottom - FUNCTION_BUTTON_HEIGHT && mouseY < internalBottom) {
+                    for (SmallGuiButton b : functionButtons) {
+                        b.mousePressed(mc, mouseX, mouseY);
+                    }
                 }
             }
         }
@@ -318,9 +379,7 @@ public class GuiScrollableList extends GuiScreen {
 
             draggedButton = null;
             updateVisibleButtons();
-            DataSorter dataSorter = panel.getDataSorter(cardSlot);
-            dataSorter.computeSortOrder(originalButtonList, buttonListFull);
-            panel.setDataSorter(cardSlot, dataSorter, true);
+            newDataSorter.computeSortOrder(originalButtonList, buttonListFull);
             dataSorterChanged = true;
             // check if the scrollbar is being used
         } else if (scrollbarOffset != -1) {
@@ -339,8 +398,8 @@ public class GuiScrollableList extends GuiScreen {
         thumbLocation = adjustedY;
         if (adjustedY < internalTop) {
             thumbLocation = internalTop;
-        } else if (adjustedY > internalBottom - THUMB_HEIGHT) {
-            thumbLocation = internalBottom - THUMB_HEIGHT;
+        } else if (adjustedY > internalBottom - THUMB_HEIGHT - PADDING_BOTTOM - FUNCTION_BUTTON_HEIGHT + 1) {
+            thumbLocation = internalBottom - THUMB_HEIGHT - PADDING_BOTTOM - FUNCTION_BUTTON_HEIGHT + 1;
         }
         double offsetRatio = (double) (thumbLocation - internalTop) / (internalBottom - internalTop - THUMB_HEIGHT);
         int newScrollOffset = (int) (offsetRatio * (buttonListFull.size() - VISIBLE_BUTTONS));

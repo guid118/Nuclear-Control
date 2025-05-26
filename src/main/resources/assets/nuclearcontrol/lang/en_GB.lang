@@ -48,6 +48,9 @@ tile.blockAdvancedInfoPanel.Slope=Change slope settings
 tile.blockAdvancedInfoPanel.Settings=Settings
 tile.blockAdvancedInfoPanel.Transparency=Switch transparency
 tile.blockAdvancedInfoPanel.LineConfig=Open line configuration
+tile.blockAdvancedInfoPanel.Save=Save
+tile.blockAdvancedInfoPanel.Reset=Reset
+tile.blockAdvancedInfoPanel.Cancel=Cancel
 
 tile.nclight0.name=White Lamp
 tile.nclight1.name=White Lamp

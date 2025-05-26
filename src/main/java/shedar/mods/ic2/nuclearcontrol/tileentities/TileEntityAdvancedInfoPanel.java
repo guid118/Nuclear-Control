@@ -430,7 +430,7 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
     public List<PanelString> getSortedCardData(DisplaySettingHelper settings, ItemStack cardStack,
                                                CardWrapperImpl helper) {
         List<PanelString> data = new ArrayList<>(this.getCardData(settings, cardStack, helper));
-        if (helper.getTitle() != null) {
+        if (!Objects.equals(helper.getTitle(), "")) {
             PanelString title = data.remove(0);
             getDataSorter(getIndexOfCard(cardStack)).sortList(data);
             data.add(0, title);
@@ -463,14 +463,30 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
     public DataSorter getDataSorter(byte slot) {
         UUID uuid = ((ItemCardBase) getStackInSlot(slot).getItem()).getCardType();
         if (dataSorters.containsKey(slot)) {
-            return dataSorters.get(slot).get(uuid);
+            if (!dataSorters.get(slot).containsKey(uuid)) {
+                dataSorters.get(slot).put(uuid, new DataSorter());
+            }
+        } else {
+            Map<UUID, DataSorter> newMap = new HashMap<>();
+            newMap.put(uuid, new DataSorter());
+            dataSorters.put(slot, newMap);
         }
-        dataSorters.put(slot, Collections.singletonMap(uuid, new DataSorter()));
         return dataSorters.get(slot).get(uuid);
     }
 
     public void setDataSorter(byte slot, DataSorter sorter, boolean sendToServer) {
+        UUID uuid = ((ItemCardBase) getStackInSlot(slot).getItem()).getCardType();
+        if (!dataSorters.containsKey(slot)) {
+            Map<UUID, DataSorter> newMap = new HashMap<>();
+            newMap.put(uuid, sorter);
+            dataSorters.put(slot, newMap);
+        } else {
+            dataSorters.get(slot).put(uuid, sorter);
+        }
 
+        if (sendToServer) {
+            NuclearNetworkHelper.sendDataSorterSync(this);
+        }
     }
     // </editor-fold>
 }
