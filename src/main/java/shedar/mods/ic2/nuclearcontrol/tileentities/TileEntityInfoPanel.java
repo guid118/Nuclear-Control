@@ -30,12 +30,22 @@ import shedar.mods.ic2.nuclearcontrol.IRotation;
 import shedar.mods.ic2.nuclearcontrol.IScreenPart;
 import shedar.mods.ic2.nuclearcontrol.ISlotItemFilter;
 import shedar.mods.ic2.nuclearcontrol.ITextureHelper;
-import shedar.mods.ic2.nuclearcontrol.api.*;
+import shedar.mods.ic2.nuclearcontrol.api.CardState;
+import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
+import shedar.mods.ic2.nuclearcontrol.api.IPanelAdvDataSource;
+import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
+import shedar.mods.ic2.nuclearcontrol.api.IPanelMultiCard;
+import shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor;
+import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.blocks.subblocks.InfoPanel;
 import shedar.mods.ic2.nuclearcontrol.items.ItemUpgrade;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.panel.Screen;
-import shedar.mods.ic2.nuclearcontrol.utils.*;
+import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
+import shedar.mods.ic2.nuclearcontrol.utils.ColorUtil;
+import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
+import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
+import shedar.mods.ic2.nuclearcontrol.utils.RedstoneHelper;
 
 public class TileEntityInfoPanel extends TileEntity
         implements ISlotItemFilter, INetworkDataProvider, INetworkUpdateListener, INetworkClientTileEntityEventListener,

@@ -1,6 +1,5 @@
 package shedar.mods.ic2.nuclearcontrol.tileentities;
 
-import java.util.*;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,6 +18,14 @@ import shedar.mods.ic2.nuclearcontrol.utils.BlockDamages;
 import shedar.mods.ic2.nuclearcontrol.utils.DataSorter;
 import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 
@@ -461,7 +468,7 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
 
     public Map<Byte, Map<UUID, DataSorter>> getDataSorters() {
         if (dataSorters == null) {
-            return Collections.emptyMap();
+            return new HashMap<>();
         }
         return dataSorters;
     }
