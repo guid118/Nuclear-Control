@@ -77,6 +77,12 @@ public class DisplaySettingHelper {
      */
     public void writeToByteBuffer(ByteBuf buf) {
         buf.writeShort(settings.length());
+        try {
+        Integer.parseInt(settings, 2);
+        } catch (NumberFormatException e) {
+            int value = Integer.parseInt(settings);
+            settings = Integer.toBinaryString(value);
+        }
         for (int i = 0; i < settings.length(); i += 8) {
             String chunk = settings.substring(i, Math.min(i + 8, settings.length()));
             // Pad if less than 8 bits
