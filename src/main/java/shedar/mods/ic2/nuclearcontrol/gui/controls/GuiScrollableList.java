@@ -114,7 +114,7 @@ public class GuiScrollableList extends GuiScreen {
      * get the data to name the buttons.
      */
     private List<PanelString> getSettings() {
-        if (card == null || !(card.getItem() instanceof IPanelAdvDataSource)) {
+        if (card == null || !(card.getItem() instanceof IPanelDataSource)) {
             return new ArrayList<>();
         }
         CardWrapperImpl helper = new CardWrapperImpl(card, cardSlot);

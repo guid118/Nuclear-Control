@@ -16,7 +16,7 @@ public class PanelSetting {
     public String title;
 
     /**
-     * Bit number in display settings. Should be in the range 0-31.
+     * A bit mask of the display setting
      */
     public int displayBit;
 
@@ -27,7 +27,7 @@ public class PanelSetting {
 
     /**
      * @param title      Name of the option
-     * @param displayBit Bit number in display settings. Should be in the range 0-31.
+     * @param displayBit A bit mask of the setting.
      * @param cardType   Identifier of the card. Should be same as {@link IPanelDataSource#getCardType()}.
      */
     public PanelSetting(String title, int displayBit, UUID cardType) {

@@ -18,6 +18,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
+import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
@@ -251,13 +252,13 @@ public class ItemCardLiquidArrayLocation extends ItemCardBase {
     @Override
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>(7);
-        result.add(new PanelSetting(LangHelper.translate("1"), DISPLAY_NAME, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("2"), DISPLAY_AMOUNT, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("3"), DISPLAY_FREE, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("4"), DISPLAY_CAPACITY, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("5"), DISPLAY_PERCENTAGE, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("6"), DISPLAY_EACH, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("7"), DISPLAY_TOTAL, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("1"), DISPLAY_NAME, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("2"), DISPLAY_AMOUNT, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("3"), DISPLAY_FREE, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("4"), DISPLAY_CAPACITY, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("5"), DISPLAY_PERCENTAGE, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("6"), DISPLAY_EACH, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("7"), DISPLAY_TOTAL, CARD_TYPE));
         return result;
     }
 

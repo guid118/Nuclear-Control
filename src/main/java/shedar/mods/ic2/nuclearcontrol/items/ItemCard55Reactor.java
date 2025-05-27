@@ -17,6 +17,7 @@ import shedar.mods.ic2.nuclearcontrol.IC2NuclearControl;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor;
+import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.crossmod.ic2.IC2Cross.ReactorInfo;
@@ -190,11 +191,11 @@ public class ItemCard55Reactor extends ItemCardEnergySensorLocation implements I
     @Override
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>(5);
-        result.add(new PanelSetting(LangHelper.translate("1"), DISPLAY_ON, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("2"), DISPLAY_OUTPUTTank, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("3"), DISPLAY_INPUTTank, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("4"), DISPLAY_HeatUnits, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("5"), DISPLAY_CoreTemp, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("1"), DISPLAY_ON, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("2"), DISPLAY_OUTPUTTank, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("3"), DISPLAY_INPUTTank, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("4"), DISPLAY_HeatUnits, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("5"), DISPLAY_CoreTemp, CARD_TYPE));
         return result;
     }
 }

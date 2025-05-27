@@ -65,7 +65,7 @@ public class ItemTimeCard extends ItemCardBase {
     @Override
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>(1);
-        result.add(new PanelSetting(LangHelper.translate("1"), MODE_24H, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("1"), MODE_24H, CARD_TYPE));
         return result;
     }
 

@@ -19,6 +19,7 @@ import shedar.mods.ic2.nuclearcontrol.api.CardHelper;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor;
+import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
@@ -205,12 +206,12 @@ public class ItemCardReactorSensorLocation extends ItemCardBase implements IRemo
     @Override
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>(6);
-        result.add(new PanelSetting(LangHelper.translate("1"), DISPLAY_ONOFF, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("2"), DISPLAY_HEAT, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("3"), DISPLAY_MAXHEAT, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("4"), DISPLAY_MELTING, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("5"), DISPLAY_OUTPUT, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("6"), DISPLAY_TIME, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("1"), DISPLAY_ONOFF, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("2"), DISPLAY_HEAT, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("3"), DISPLAY_MAXHEAT, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("4"), DISPLAY_MELTING, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("5"), DISPLAY_OUTPUT, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("6"), DISPLAY_TIME, CARD_TYPE));
         return result;
     }
 
