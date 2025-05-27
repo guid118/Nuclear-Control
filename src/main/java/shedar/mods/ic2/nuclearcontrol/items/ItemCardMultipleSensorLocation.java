@@ -34,10 +34,10 @@ import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAverageCounter;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityEnergyCounter;
 import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
+import shedar.mods.ic2.nuclearcontrol.utils.LangHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.LiquidStorageHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 import shedar.mods.ic2.nuclearcontrol.utils.TextureResolver;
-import shedar.mods.ic2.nuclearcontrol.utils.LangHelper;
 
 public class ItemCardMultipleSensorLocation extends ItemCardBase
         implements IRemoteSensor, IPanelMultiCard, IRangeTriggerable {
@@ -210,7 +210,7 @@ public class ItemCardMultipleSensorLocation extends ItemCardBase
 
     @Override
     public List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card,
-                                           boolean showLabels) {
+            boolean showLabels) {
         int damage = card.getItemStack().getItemDamage();
         switch (damage) {
             case ItemKitMultipleSensor.TYPE_COUNTER:

@@ -78,7 +78,7 @@ public class DisplaySettingHelper {
     public void writeToByteBuffer(ByteBuf buf) {
         buf.writeShort(settings.length());
         try {
-        Integer.parseInt(settings, 2);
+            Integer.parseInt(settings, 2);
         } catch (NumberFormatException e) {
             int value = Integer.parseInt(settings);
             settings = Integer.toBinaryString(value);
