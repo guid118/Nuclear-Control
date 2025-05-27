@@ -182,7 +182,7 @@ public class GuiScrollableList extends GuiScreen {
                         StatCollector.translateToLocal("tile.blockAdvancedInfoPanel.Cancel"),
                         this::onCancel));
 
-        IPanelAdvDataSource source = (IPanelAdvDataSource) card.getItem();
+        IPanelDataSource source = (IPanelDataSource) card.getItem();
         List<PanelSetting> settingsList;
         if (card.getItem() instanceof IPanelMultiCard) {
             settingsList = ((IPanelMultiCard) source).getSettingsList(new CardWrapperImpl(card, (byte) 0));

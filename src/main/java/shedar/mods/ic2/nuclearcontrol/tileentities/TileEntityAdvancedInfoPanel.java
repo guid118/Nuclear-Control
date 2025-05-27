@@ -474,7 +474,7 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
     }
 
     public DataSorter getDataSorter(byte slot) {
-        UUID uuid = ((ItemCardBase) getStackInSlot(slot).getItem()).getCardType();
+        UUID uuid = ((IPanelDataSource) getStackInSlot(slot).getItem()).getCardType();
         if (dataSorters.containsKey(slot)) {
             if (!dataSorters.get(slot).containsKey(uuid)) {
                 dataSorters.get(slot).put(uuid, new DataSorter());
@@ -488,7 +488,7 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
     }
 
     public void setDataSorter(byte slot, DataSorter sorter, boolean sendToServer) {
-        UUID uuid = ((ItemCardBase) getStackInSlot(slot).getItem()).getCardType();
+        UUID uuid = ((IPanelDataSource) getStackInSlot(slot).getItem()).getCardType();
         if (!dataSorters.containsKey(slot)) {
             Map<UUID, DataSorter> newMap = new HashMap<>();
             newMap.put(uuid, sorter);
