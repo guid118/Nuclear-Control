@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.client.FMLClientHandler;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
-import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
+import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
@@ -66,7 +66,7 @@ public class ItemTimeCard extends ItemCardBase {
     @Override
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>(1);
-        result.add(new NewPanelSetting(LangHelper.translate("1"), MODE_24H, CARD_TYPE));
+        result.add(new PanelSetting(LangHelper.translate("1"), MODE_24H, CARD_TYPE));
         return result;
     }
 

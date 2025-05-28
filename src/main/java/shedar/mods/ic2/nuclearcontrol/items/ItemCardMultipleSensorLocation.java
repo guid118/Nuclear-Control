@@ -27,7 +27,7 @@ import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelMultiCard;
 import shedar.mods.ic2.nuclearcontrol.api.IRangeTriggerable;
 import shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor;
-import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
+import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.crossmod.EnergyStorageData;
@@ -323,11 +323,11 @@ public class ItemCardMultipleSensorLocation extends ItemCardBase
 
     public List<PanelSetting> getSettingsListLiquid() {
         List<PanelSetting> result = new ArrayList<PanelSetting>(5);
-        result.add(new NewPanelSetting(LangHelper.translate("1"), DISPLAY_LIQUID_NAME, CARD_TYPE_LIQUID));
-        result.add(new NewPanelSetting(LangHelper.translate("2"), DISPLAY_LIQUID_AMOUNT, CARD_TYPE_LIQUID));
-        result.add(new NewPanelSetting(LangHelper.translate("3"), DISPLAY_LIQUID_FREE, CARD_TYPE_LIQUID));
-        result.add(new NewPanelSetting(LangHelper.translate("4"), DISPLAY_LIQUID_CAPACITY, CARD_TYPE_LIQUID));
-        result.add(new NewPanelSetting(LangHelper.translate("5"), DISPLAY_LIQUID_PERCENTAGE, CARD_TYPE_LIQUID));
+        result.add(new PanelSetting(LangHelper.translate("1"), DISPLAY_LIQUID_NAME, CARD_TYPE_LIQUID));
+        result.add(new PanelSetting(LangHelper.translate("2"), DISPLAY_LIQUID_AMOUNT, CARD_TYPE_LIQUID));
+        result.add(new PanelSetting(LangHelper.translate("3"), DISPLAY_LIQUID_FREE, CARD_TYPE_LIQUID));
+        result.add(new PanelSetting(LangHelper.translate("4"), DISPLAY_LIQUID_CAPACITY, CARD_TYPE_LIQUID));
+        result.add(new PanelSetting(LangHelper.translate("5"), DISPLAY_LIQUID_PERCENTAGE, CARD_TYPE_LIQUID));
         return result;
     }
 
