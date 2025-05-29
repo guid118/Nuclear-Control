@@ -12,6 +12,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelAdvDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
+import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
+import shedar.mods.ic2.nuclearcontrol.utils.LangHelper;
+import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
 @SideOnly(Side.CLIENT)
 public class GuiInfoPanelCheckBox extends GuiButton {
@@ -26,18 +29,19 @@ public class GuiInfoPanelCheckBox extends GuiButton {
 
     public GuiInfoPanelCheckBox(int id, int x, int y, PanelSetting setting, TileEntityInfoPanel panel, byte slot,
             FontRenderer renderer) {
-        super(id, x, y, 0, 0, String.valueOf(id));
+        super(id, x, y, 0, 0, id < 10 ? LangHelper.translate("0" + id) : LangHelper.translate(String.valueOf(id)));
         this.setting = setting;
         this.slot = slot;
         height = renderer.FONT_HEIGHT + 1;
         width = renderer.getStringWidth(setting.title) + 8;
         this.panel = panel;
+        this.checked = panel.getNewDisplaySettingsForCardInSlot(slot).getNewSetting(setting.displayBit);
+
     }
 
     @Override
     public void drawButton(Minecraft minecraft, int par2, int par3) {
         if (this.visible) {
-            checked = (panel.getDisplaySettingsForCardInSlot(slot) & setting.displayBit) > 0;
             minecraft.renderEngine.bindTexture(TEXTURE_LOCATION);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             int delta = checked ? 6 : 0;
@@ -55,11 +59,14 @@ public class GuiInfoPanelCheckBox extends GuiButton {
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
         if (super.mousePressed(minecraft, mouseX, mouseY)) {
             checked = !checked;
+            DisplaySettingHelper settings = panel.getNewDisplaySettingsForCardInSlot(slot);
             if (panel.getStackInSlot(slot).getItem() instanceof IPanelAdvDataSource) {
-                panel.getNewDisplaySettingsForCardInSlot(slot).toggleNewSetting(setting.displayBit);
+                settings.toggleNewSetting(setting.displayBit);
             } else {
-                panel.getNewDisplaySettingsForCardInSlot(slot).toggleSetting(setting.displayBit);
+                settings.toggleSetting(setting.displayBit);
             }
+            NuclearNetworkHelper.setDisplaySettings(panel, slot, settings);
+            panel.setDisplaySettings(slot, settings);
             return true;
         } else return false;
     }
