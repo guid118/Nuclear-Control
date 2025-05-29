@@ -27,7 +27,8 @@ import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelMultiCard;
 import shedar.mods.ic2.nuclearcontrol.api.IRangeTriggerable;
 import shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor;
-import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
+import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
+import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.crossmod.EnergyStorageData;
@@ -232,7 +233,7 @@ public class ItemCardMultipleSensorLocation extends ItemCardBase
         int capacity = card.getInt("capacity");
         int amount = card.getInt("amount");
 
-        if (displaySettings.getSetting(DISPLAY_LIQUID_NAME)) {
+        if (displaySettings.getNewSetting(DISPLAY_LIQUID_NAME)) {
             int liquidId = card.getInt("liquidId");
             String name;
             if (liquidId == 0) name = LangHelper.translate("msg.nc.None");
@@ -241,22 +242,22 @@ public class ItemCardMultipleSensorLocation extends ItemCardBase
             line.textLeft = StringUtils.getFormatted("msg.nc.InfoPanelLiquidName", name, showLabels);
             result.add(line);
         }
-        if (displaySettings.getSetting(DISPLAY_LIQUID_AMOUNT)) {
+        if (displaySettings.getNewSetting(DISPLAY_LIQUID_AMOUNT)) {
             line = new PanelString();
             line.textLeft = StringUtils.getFormatted("msg.nc.InfoPanelLiquidAmount", amount, showLabels);
             result.add(line);
         }
-        if (displaySettings.getSetting(DISPLAY_LIQUID_FREE)) {
+        if (displaySettings.getNewSetting(DISPLAY_LIQUID_FREE)) {
             line = new PanelString();
             line.textLeft = StringUtils.getFormatted("msg.nc.InfoPanelLiquidFree", capacity - amount, showLabels);
             result.add(line);
         }
-        if (displaySettings.getSetting(DISPLAY_LIQUID_CAPACITY)) {
+        if (displaySettings.getNewSetting(DISPLAY_LIQUID_CAPACITY)) {
             line = new PanelString();
             line.textLeft = StringUtils.getFormatted("msg.nc.InfoPanelLiquidCapacity", capacity, showLabels);
             result.add(line);
         }
-        if (displaySettings.getSetting(DISPLAY_LIQUID_PERCENTAGE)) {
+        if (displaySettings.getNewSetting(DISPLAY_LIQUID_PERCENTAGE)) {
             line = new PanelString();
             line.textLeft = StringUtils.getFormatted(
                     "msg.nc.InfoPanelLiquidPercentage",
@@ -272,7 +273,7 @@ public class ItemCardMultipleSensorLocation extends ItemCardBase
         List<PanelString> result = new LinkedList<PanelString>();
         PanelString line;
         if (card.hasField("average")) {// average counter
-            if (displaySettings.getSetting(DISPLAY_ENERGY)) {
+            if (displaySettings.getNewSetting(DISPLAY_ENERGY)) {
                 line = new PanelString();
                 String key = card.getInt("powerType") == EnergyStorageData.TARGET_TYPE_IC2 ? "msg.nc.InfoPanelOutput"
                         : "msg.nc.InfoPanelOutputMJ";
@@ -280,7 +281,7 @@ public class ItemCardMultipleSensorLocation extends ItemCardBase
                 result.add(line);
             }
         } else {// energy counter
-            if (displaySettings.getSetting(DISPLAY_ENERGY)) {
+            if (displaySettings.getNewSetting(DISPLAY_ENERGY)) {
                 double energy = card.getDouble("energy");
                 line = new PanelString();
                 String key = card.getInt("powerType") == EnergyStorageData.TARGET_TYPE_IC2
@@ -316,18 +317,18 @@ public class ItemCardMultipleSensorLocation extends ItemCardBase
     }
 
     public List<PanelSetting> getSettingsListCounter() {
-        List<PanelSetting> result = new ArrayList<PanelSetting>(1);
-        result.add(new PanelSetting(LangHelper.translate("1"), DISPLAY_ENERGY, CARD_TYPE_COUNTER));
+        List<PanelSetting> result = new ArrayList<>(1);
+        result.add(new NewPanelSetting(LangHelper.translate("1"), DISPLAY_ENERGY, CARD_TYPE_COUNTER));
         return result;
     }
 
     public List<PanelSetting> getSettingsListLiquid() {
-        List<PanelSetting> result = new ArrayList<PanelSetting>(5);
-        result.add(new PanelSetting(LangHelper.translate("1"), DISPLAY_LIQUID_NAME, CARD_TYPE_LIQUID));
-        result.add(new PanelSetting(LangHelper.translate("2"), DISPLAY_LIQUID_AMOUNT, CARD_TYPE_LIQUID));
-        result.add(new PanelSetting(LangHelper.translate("3"), DISPLAY_LIQUID_FREE, CARD_TYPE_LIQUID));
-        result.add(new PanelSetting(LangHelper.translate("4"), DISPLAY_LIQUID_CAPACITY, CARD_TYPE_LIQUID));
-        result.add(new PanelSetting(LangHelper.translate("5"), DISPLAY_LIQUID_PERCENTAGE, CARD_TYPE_LIQUID));
+        List<PanelSetting> result = new ArrayList<>(5);
+        result.add(new NewPanelSetting(LangHelper.translate("1"), DISPLAY_LIQUID_NAME, CARD_TYPE_LIQUID));
+        result.add(new NewPanelSetting(LangHelper.translate("2"), DISPLAY_LIQUID_AMOUNT, CARD_TYPE_LIQUID));
+        result.add(new NewPanelSetting(LangHelper.translate("3"), DISPLAY_LIQUID_FREE, CARD_TYPE_LIQUID));
+        result.add(new NewPanelSetting(LangHelper.translate("4"), DISPLAY_LIQUID_CAPACITY, CARD_TYPE_LIQUID));
+        result.add(new NewPanelSetting(LangHelper.translate("5"), DISPLAY_LIQUID_PERCENTAGE, CARD_TYPE_LIQUID));
         return result;
     }
 

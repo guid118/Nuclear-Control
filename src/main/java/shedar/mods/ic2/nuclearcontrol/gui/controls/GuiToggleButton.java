@@ -7,6 +7,8 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import shedar.mods.ic2.nuclearcontrol.api.IPanelAdvDataSource;
+import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
@@ -63,8 +65,12 @@ public class GuiToggleButton extends GuiButton {
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         if (!visible) return;
-        isChecked = panel.getNewDisplaySettingsForCardInSlot(slot).getSetting(setting.displayBit);
-
+        // v2.6.12 compatibility
+        if (panel.getStackInSlot(slot).getItem() instanceof IPanelAdvDataSource) {
+            isChecked = panel.getNewDisplaySettingsForCardInSlot(slot).getNewSetting(setting.displayBit);
+        } else {
+            isChecked = panel.getNewDisplaySettingsForCardInSlot(slot).getSetting(setting.displayBit);
+        }
         mc.getTextureManager().bindTexture(TEXTURE);
         GL11.glColor4f(1, 1, 1, 1);
 
@@ -89,7 +95,11 @@ public class GuiToggleButton extends GuiButton {
             if (super.mousePressed(mc, mouseX, mouseY)) {
                 toggle();
                 DisplaySettingHelper settings = panel.getNewDisplaySettingsForCardInSlot(slot);
-                settings.toggleSetting(setting.displayBit);
+                if (panel.getStackInSlot(slot).getItem() instanceof IPanelAdvDataSource) {
+                    settings.toggleNewSetting(setting.displayBit);
+                } else {
+                    settings.toggleSetting(setting.displayBit);
+                }
                 NuclearNetworkHelper.setDisplaySettings(panel, slot, settings);
                 panel.setDisplaySettings(slot, settings);
                 return true;

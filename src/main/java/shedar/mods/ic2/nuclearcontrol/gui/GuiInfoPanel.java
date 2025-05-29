@@ -184,7 +184,7 @@ public class GuiInfoPanel extends GuiContainer {
 
                     buttonList.add(
                             new GuiInfoPanelCheckBox(
-                                    0,
+                                    i,
                                     xpos,
                                     ypos,
                                     panelSetting,

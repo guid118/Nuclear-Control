@@ -87,7 +87,6 @@ public class GuiScrollableList extends GuiScreen {
 
     private GuiToggleButton draggedButton = null;
     private int originalIndex = -1;
-    private List<PanelString> panelStrings = new ArrayList<>();
     private final TileEntityAdvancedInfoPanel panel;
     private final ItemStack card;
     private final byte cardSlot;
@@ -110,27 +109,6 @@ public class GuiScrollableList extends GuiScreen {
         cardSlot = panel.getIndexOfCard(card);
     }
 
-    /**
-     * get the data to name the buttons.
-     */
-    private List<PanelString> getSettings() {
-        if (card == null || !(card.getItem() instanceof IPanelDataSource)) {
-            return new ArrayList<>();
-        }
-        CardWrapperImpl helper = new CardWrapperImpl(card, cardSlot);
-        CardState state = helper.getState();
-        List<PanelString> data;
-        if (state != CardState.OK && state != CardState.CUSTOM_ERROR) {
-            data = StringUtils.getStateMessage(state);
-        } else {
-            data = ((IPanelDataSource) card.getItem()).getStringData(Integer.MAX_VALUE, helper, panel.getShowLabels());
-        }
-        if (data == null) {
-            return new ArrayList<>();
-        }
-        return data;
-    }
-
     @Override
     public void initGui() {
         guiLeft = (width - GUI_WIDTH) / 2;
@@ -148,7 +126,7 @@ public class GuiScrollableList extends GuiScreen {
         newDataSorter = panel.getDataSorter(cardSlot);
         originalDataSorter = new DataSorter(panel.getDataSorter(cardSlot).getArray());
 
-        originalDisplaySettingHelper = panel.getNewDisplaySettingsForCardInSlot(cardSlot);
+        originalDisplaySettingHelper = new DisplaySettingHelper(panel.getNewDisplaySettingsForCardInSlot(cardSlot));
 
         this.buttonListFull.clear();
         this.buttonList.clear();
@@ -189,14 +167,13 @@ public class GuiScrollableList extends GuiScreen {
         } else {
             settingsList = source.getSettingsList();
         }
-        panelStrings = getSettings();
-        for (int i = 0; i < settingsList.size() && i < panelStrings.size(); i++) {
+        for (int i = 0; i < settingsList.size(); i++) {
             buttonListFull.add(
                     new GuiToggleButton(
                             i + 3,
                             internalLeft + 1,
                             0,
-                            panelStrings.get(i).toString(),
+                            settingsList.get(i).title,
                             settingsList.get(i),
                             panel,
                             cardSlot));

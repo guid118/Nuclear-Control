@@ -134,7 +134,7 @@ public class ItemCardAppeng extends ItemCardEnergySensorLocation {
             int itemsUsed = card.getInt("UsedItems");
 
             // Total Bytes
-            if (displaySettings.getSetting(DISPLAY_BYTES)) {
+            if (displaySettings.getNewSetting(DISPLAY_BYTES)) {
                 line = new PanelString();
                 line.textRight = String.format(
                         StatCollector.translateToLocal("msg.nc.InfoPanelAE.DisplayBytes"),
@@ -144,7 +144,7 @@ public class ItemCardAppeng extends ItemCardEnergySensorLocation {
             }
 
             // Used Items
-            if (displaySettings.getSetting(DISPLAY_ITEMS)) {
+            if (displaySettings.getNewSetting(DISPLAY_ITEMS)) {
                 line = new PanelString();
                 line.textRight = String
                         .format(StatCollector.translateToLocal("msg.nc.InfoPanelAE.DisplayItem"), itemsUsed, items);
@@ -162,14 +162,14 @@ public class ItemCardAppeng extends ItemCardEnergySensorLocation {
             }
 
             // Crafting item
-            if (displaySettings.getSetting(DISPLAY_CRAFTER)) {
+            if (displaySettings.getNewSetting(DISPLAY_CRAFTER)) {
                 line = new PanelString();
                 line.textLeft = StringUtils.getFormatted("msg.nc.InfoPanelAE.CraftItemMake", localName, showLabels);
                 result.add(line);
             }
 
             // Crafting Stacks
-            if (displaySettings.getSetting(DISPLAY_CRAFTSTACK)) {
+            if (displaySettings.getNewSetting(DISPLAY_CRAFTSTACK)) {
                 line = new PanelString();
                 line.textLeft = StringUtils.getFormatted("msg.nc.InfoPanelAE.CraftAMT", stackSize, showLabels);
                 result.add(line);

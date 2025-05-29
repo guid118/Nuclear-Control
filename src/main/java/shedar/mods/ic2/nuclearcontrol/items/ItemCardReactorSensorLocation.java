@@ -19,7 +19,8 @@ import shedar.mods.ic2.nuclearcontrol.api.CardHelper;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor;
-import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
+import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
+import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
@@ -139,23 +140,23 @@ public class ItemCardReactorSensorLocation extends ItemCardBase implements IRemo
         List<PanelString> result = new LinkedList<PanelString>();
         String text;
         PanelString line;
-        if (displaySettings.getSetting(DISPLAY_HEAT)) {
+        if (displaySettings.getNewSetting(DISPLAY_HEAT)) {
             line = new PanelString();
             line.textLeft = StringUtils.getFormatted("msg.nc.InfoPanelHeat", card.getInt("heat"), showLabels);
             result.add(line);
         }
-        if (displaySettings.getSetting(DISPLAY_MAXHEAT)) {
+        if (displaySettings.getNewSetting(DISPLAY_MAXHEAT)) {
             line = new PanelString();
             line.textLeft = StringUtils.getFormatted("msg.nc.InfoPanelMaxHeat", card.getInt("maxHeat"), showLabels);
             result.add(line);
         }
-        if (displaySettings.getSetting(DISPLAY_MELTING)) {
+        if (displaySettings.getNewSetting(DISPLAY_MELTING)) {
             line = new PanelString();
             line.textLeft = StringUtils
                     .getFormatted("msg.nc.InfoPanelMelting", card.getInt("maxHeat") * 85 / 100, showLabels);
             result.add(line);
         }
-        if (displaySettings.getSetting(DISPLAY_OUTPUT)) {
+        if (displaySettings.getNewSetting(DISPLAY_OUTPUT)) {
             line = new PanelString();
             if (card.getBoolean("isSteam")) {
                 line.textLeft = StringUtils.getFormatted(
@@ -168,7 +169,7 @@ public class ItemCardReactorSensorLocation extends ItemCardBase implements IRemo
             result.add(line);
         }
         int timeLeft = card.getInt("timeLeft");
-        if (displaySettings.getSetting(DISPLAY_TIME)) {
+        if (displaySettings.getNewSetting(DISPLAY_TIME)) {
             int hours = timeLeft / 3600;
             int minutes = (timeLeft % 3600) / 60;
             int seconds = timeLeft % 60;
@@ -180,7 +181,7 @@ public class ItemCardReactorSensorLocation extends ItemCardBase implements IRemo
         }
 
         int txtColor = 0;
-        if (displaySettings.getSetting(DISPLAY_ONOFF)) {
+        if (displaySettings.getNewSetting(DISPLAY_ONOFF)) {
             boolean reactorPowered = card.getBoolean("reactorPoweredB");
             if (reactorPowered) {
                 txtColor = 0x00ff00;
@@ -206,12 +207,12 @@ public class ItemCardReactorSensorLocation extends ItemCardBase implements IRemo
     @Override
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>(6);
-        result.add(new PanelSetting(LangHelper.translate("1"), DISPLAY_ONOFF, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("2"), DISPLAY_HEAT, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("3"), DISPLAY_MAXHEAT, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("4"), DISPLAY_MELTING, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("5"), DISPLAY_OUTPUT, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("6"), DISPLAY_TIME, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("1"), DISPLAY_ONOFF, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("2"), DISPLAY_HEAT, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("3"), DISPLAY_MAXHEAT, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("4"), DISPLAY_MELTING, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("5"), DISPLAY_OUTPUT, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("6"), DISPLAY_TIME, CARD_TYPE));
         return result;
     }
 

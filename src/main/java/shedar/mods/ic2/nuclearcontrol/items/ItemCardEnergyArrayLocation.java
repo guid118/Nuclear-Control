@@ -16,7 +16,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
-import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
+import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
+import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.crossmod.EnergyStorageData;
@@ -131,12 +132,12 @@ public class ItemCardEnergyArrayLocation extends ItemCardBase {
         PanelString line;
         double totalEnergy = 0;
         double totalStorage = 0;
-        boolean showEach = displaySettings.getSetting(DISPLAY_EACH);
-        boolean showSummary = displaySettings.getSetting(DISPLAY_TOTAL);
-        boolean showEnergy = displaySettings.getSetting(DISPLAY_ENERGY);
-        boolean showFree = displaySettings.getSetting(DISPLAY_FREE);
-        boolean showStorage = displaySettings.getSetting(DISPLAY_STORAGE);
-        boolean showPercentage = displaySettings.getSetting(DISPLAY_PERCENTAGE);
+        boolean showEach = displaySettings.getNewSetting(DISPLAY_EACH);
+        boolean showSummary = displaySettings.getNewSetting(DISPLAY_TOTAL);
+        boolean showEnergy = displaySettings.getNewSetting(DISPLAY_ENERGY);
+        boolean showFree = displaySettings.getNewSetting(DISPLAY_FREE);
+        boolean showStorage = displaySettings.getNewSetting(DISPLAY_STORAGE);
+        boolean showPercentage = displaySettings.getNewSetting(DISPLAY_PERCENTAGE);
         int cardCount = getCardCount(card);
         for (int i = 0; i < cardCount; i++) {
             int energy = card.getInt(String.format("_%denergy", i));
@@ -235,13 +236,13 @@ public class ItemCardEnergyArrayLocation extends ItemCardBase {
 
     @Override
     public List<PanelSetting> getSettingsList() {
-        List<PanelSetting> result = new ArrayList<PanelSetting>(6);
-        result.add(new PanelSetting(LangHelper.translate("1"), DISPLAY_ENERGY, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("2"), DISPLAY_STORAGE, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("3"), DISPLAY_FREE, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("4"), DISPLAY_PERCENTAGE, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("5"), DISPLAY_EACH, CARD_TYPE));
-        result.add(new PanelSetting(LangHelper.translate("6"), DISPLAY_TOTAL, CARD_TYPE));
+        List<PanelSetting> result = new ArrayList<>(6);
+        result.add(new NewPanelSetting(LangHelper.translate("1"), DISPLAY_ENERGY, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("2"), DISPLAY_STORAGE, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("3"), DISPLAY_FREE, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("4"), DISPLAY_PERCENTAGE, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("5"), DISPLAY_EACH, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("6"), DISPLAY_TOTAL, CARD_TYPE));
         return result;
     }
 

@@ -37,13 +37,26 @@ public class DisplaySettingHelper {
         this.settings = sb.toString();
     }
 
+    public DisplaySettingHelper(DisplaySettingHelper helper) {
+        this.settings = helper.settings;
+    }
+
     /**
-     * get the current state of the setting at the given index
+     * get the current state of the setting at the given bitMask
      * 
-     * @param index index of the setting
-     * @return value of the index
+     * @param bitMask bitMask of the setting
+     * @return value of the setting
      */
-    public boolean getSetting(int index) {
+    public boolean getSetting(int bitMask) {
+        return getNewSetting((int) Math.log(bitMask / Math.log(2)));
+    }
+
+    /**
+     * get the current state of the setting at the given index.
+     * @param index of the setting
+     * @return value of the setting
+     */
+    public boolean getNewSetting(int index) {
         if (index >= 0 && index < settings.length()) {
             return settings.charAt(index) == '1';
         }
@@ -99,7 +112,7 @@ public class DisplaySettingHelper {
         return settings;
     }
 
-    public void setSetting(int index, boolean value) {
+    private void setSetting(int index, boolean value) {
         StringBuilder sb = new StringBuilder(settings);
         if (settings.length() > index) {
             sb.setCharAt(index, value ? '1' : '0');
@@ -113,7 +126,11 @@ public class DisplaySettingHelper {
         settings = sb.toString();
     }
 
-    public void toggleSetting(int index) {
-        setSetting(index, !getSetting(index));
+    public void toggleSetting(int displayBit) {
+        setSetting(displayBit, !getSetting(displayBit));
+    }
+
+    public void toggleNewSetting(int index) {
+        setSetting(index, !getNewSetting(index));
     }
 }

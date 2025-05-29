@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import shedar.mods.ic2.nuclearcontrol.api.IPanelAdvDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
 
@@ -25,7 +26,7 @@ public class GuiInfoPanelCheckBox extends GuiButton {
 
     public GuiInfoPanelCheckBox(int id, int x, int y, PanelSetting setting, TileEntityInfoPanel panel, byte slot,
             FontRenderer renderer) {
-        super(id, x, y, 0, 0, setting.title);
+        super(id, x, y, 0, 0, String.valueOf(id));
         this.setting = setting;
         this.slot = slot;
         height = renderer.FONT_HEIGHT + 1;
@@ -54,7 +55,11 @@ public class GuiInfoPanelCheckBox extends GuiButton {
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
         if (super.mousePressed(minecraft, mouseX, mouseY)) {
             checked = !checked;
-            panel.getNewDisplaySettingsForCardInSlot(slot).setSetting(setting.displayBit, checked);
+            if (panel.getStackInSlot(slot).getItem() instanceof IPanelAdvDataSource) {
+                panel.getNewDisplaySettingsForCardInSlot(slot).toggleNewSetting(setting.displayBit);
+            } else {
+                panel.getNewDisplaySettingsForCardInSlot(slot).toggleSetting(setting.displayBit);
+            }
             return true;
         } else return false;
     }
