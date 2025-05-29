@@ -257,11 +257,11 @@ public class ItemVanillaMachineCard extends ItemCardBase {
     @Override
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>();
-        result.add(new NewPanelSetting(LangHelper.translate("1"), DISPLAY_BREWING, getCardType()));
-        result.add(new NewPanelSetting(LangHelper.translate("2"), DISPLAY_TIME, getCardType()));
-        result.add(new NewPanelSetting(StringUtils.getFormattedKey("3", 1), DISPLAY_SLOT_1, getCardType()));
-        result.add(new NewPanelSetting(StringUtils.getFormattedKey("4", 2), DISPLAY_SLOT_2, getCardType()));
-        result.add(new NewPanelSetting(StringUtils.getFormattedKey("5", 3), DISPLAY_SLOT_3, getCardType()));
+        result.add(new NewPanelSetting(StatCollector.translateToLocal("msg.nc.Vanilla.setting.activityStatus"), DISPLAY_BREWING, getCardType()));
+        result.add(new NewPanelSetting(StatCollector.translateToLocal("msg.nc.Vanilla.setting.activeTime"), DISPLAY_TIME, getCardType()));
+        result.add(new NewPanelSetting(StatCollector.translateToLocal("msg.nc.Vanilla.setting.slot1Contents"), DISPLAY_SLOT_1, getCardType()));
+        result.add(new NewPanelSetting(StatCollector.translateToLocal("msg.nc.Vanilla.setting.slot2Contents"), DISPLAY_SLOT_2, getCardType()));
+        result.add(new NewPanelSetting(StatCollector.translateToLocal("msg.nc.Vanilla.setting.slot3Contents"), DISPLAY_SLOT_3, getCardType()));
         return result;
     }
 }

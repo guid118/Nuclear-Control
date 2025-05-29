@@ -253,13 +253,13 @@ public class ItemCardLiquidArrayLocation extends ItemCardBase {
     @Override
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>(7);
-        result.add(new NewPanelSetting(LangHelper.translate("1"), DISPLAY_NAME, CARD_TYPE));
-        result.add(new NewPanelSetting(LangHelper.translate("2"), DISPLAY_AMOUNT, CARD_TYPE));
-        result.add(new NewPanelSetting(LangHelper.translate("3"), DISPLAY_FREE, CARD_TYPE));
-        result.add(new NewPanelSetting(LangHelper.translate("4"), DISPLAY_CAPACITY, CARD_TYPE));
-        result.add(new NewPanelSetting(LangHelper.translate("5"), DISPLAY_PERCENTAGE, CARD_TYPE));
-        result.add(new NewPanelSetting(LangHelper.translate("6"), DISPLAY_EACH, CARD_TYPE));
-        result.add(new NewPanelSetting(LangHelper.translate("7"), DISPLAY_TOTAL, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidName"), DISPLAY_NAME, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidAmount"), DISPLAY_AMOUNT, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidFree"), DISPLAY_FREE, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidCapacity"), DISPLAY_CAPACITY, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidPercentage"), DISPLAY_PERCENTAGE, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidEach"), DISPLAY_EACH, CARD_TYPE));
+        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidTotal"), DISPLAY_TOTAL, CARD_TYPE));
         return result;
     }
 

@@ -250,8 +250,10 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
                 settingsList = source.getSettingsList();
             }
             if (settingsList != null) {
-                buttonList.add(
-                        new IconButton(ID_LINES, guiLeft + 32, guiTop + 80, 32, 16, TEXTURE_LOCATION, 192 - 16, 111));
+                if (((IPanelDataSource) card.getItem()).getSettingsList() != null) {
+                    buttonList.add(
+                            new IconButton(ID_LINES, guiLeft + 32, guiTop + 80, 32, 16, TEXTURE_LOCATION, 192 - 16, 111));
+                }
             }
             if (!modified) {
                 textboxTitle = new GuiTextField(fontRendererObj, 7, 16, 162, 18);
@@ -369,12 +371,14 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
             }
             case ID_LINES -> {
                 ItemStack card = getActiveCard();
-                GuiScrollableList listGui = new GuiScrollableList(
-                        this,
-                        (TileEntityAdvancedInfoPanel) container.panel,
-                        card);
-                willReturn = true;
-                mc.displayGuiScreen(listGui);
+                if (((IPanelDataSource) card.getItem()).getSettingsList() != null) {
+                    GuiScrollableList listGui = new GuiScrollableList(
+                            this,
+                            (TileEntityAdvancedInfoPanel) container.panel,
+                            card);
+                    willReturn = true;
+                    mc.displayGuiScreen(listGui);
+                }
             }
         }
     }
