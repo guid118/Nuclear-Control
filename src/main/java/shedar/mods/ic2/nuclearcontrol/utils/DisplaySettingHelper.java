@@ -133,4 +133,12 @@ public class DisplaySettingHelper {
     public void toggleNewSetting(int index) {
         setSetting(index, !getNewSetting(index));
     }
+
+    public static int indexToBitMask(int value) {
+        return 1 << value;
+    }
+
+    public static int bitMaskToIndex(int value) {
+        return Integer.numberOfTrailingZeros(value);
+    }
 }

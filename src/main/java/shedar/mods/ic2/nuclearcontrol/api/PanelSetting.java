@@ -1,6 +1,7 @@
 package shedar.mods.ic2.nuclearcontrol.api;
 
 import gtPlusPlus.api.objects.Logger;
+import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
 
 import java.util.UUID;
 
@@ -36,11 +37,7 @@ public class PanelSetting {
      */
     public PanelSetting(String title, int displayBit, UUID cardType) {
         this.title = title;
-        if (displayBit == 0 || displayBit == 1) {
-            this.displayBit = displayBit;
-        } else {
-            this.displayBit = (int) (Math.log(displayBit) / Math.log(2));
-        }
+        this.displayBit = DisplaySettingHelper.bitMaskToIndex(displayBit);
         this.cardType = cardType;
     }
 }
