@@ -48,7 +48,7 @@ public class DisplaySettingHelper {
      * @return value of the setting
      */
     public boolean getSetting(int bitMask) {
-        return getNewSetting((int) Math.log(bitMask / Math.log(2)));
+        return getNewSetting(bitMaskToIndex(bitMask));
     }
 
     /**
