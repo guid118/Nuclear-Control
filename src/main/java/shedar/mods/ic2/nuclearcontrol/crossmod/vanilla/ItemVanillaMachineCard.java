@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 
 import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
+import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.items.ItemCardBase;
@@ -256,11 +257,11 @@ public class ItemVanillaMachineCard extends ItemCardBase {
     @Override
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>();
-        result.add(new PanelSetting(LangHelper.translate("1"), DISPLAY_BREWING, getCardType()));
-        result.add(new PanelSetting(LangHelper.translate("2"), DISPLAY_TIME, getCardType()));
-        result.add(new PanelSetting(StringUtils.getFormattedKey("3", 1), DISPLAY_SLOT_1, getCardType()));
-        result.add(new PanelSetting(StringUtils.getFormattedKey("4", 2), DISPLAY_SLOT_2, getCardType()));
-        result.add(new PanelSetting(StringUtils.getFormattedKey("5", 3), DISPLAY_SLOT_3, getCardType()));
+        result.add(new NewPanelSetting(LangHelper.translate("1"), DISPLAY_BREWING, getCardType()));
+        result.add(new NewPanelSetting(LangHelper.translate("2"), DISPLAY_TIME, getCardType()));
+        result.add(new NewPanelSetting(StringUtils.getFormattedKey("3", 1), DISPLAY_SLOT_1, getCardType()));
+        result.add(new NewPanelSetting(StringUtils.getFormattedKey("4", 2), DISPLAY_SLOT_2, getCardType()));
+        result.add(new NewPanelSetting(StringUtils.getFormattedKey("5", 3), DISPLAY_SLOT_3, getCardType()));
         return result;
     }
 }
