@@ -6,7 +6,13 @@ public class DisplaySettingHelper {
 
     private String settings = "0";
 
+    private boolean all_true = false;
+
     public DisplaySettingHelper() {
+    }
+
+    public DisplaySettingHelper(boolean all_true) {
+        this.all_true = all_true;
     }
 
     public DisplaySettingHelper(String settings) {
@@ -61,6 +67,7 @@ public class DisplaySettingHelper {
      * @return value of the setting
      */
     public boolean getNewSetting(int index) {
+        if (all_true) return true;
         if (index >= 0 && index < settings.length()) {
             return settings.charAt(index) == '1';
         }
@@ -83,6 +90,7 @@ public class DisplaySettingHelper {
      * @deprecated do not use.
      */
     public int getAsInteger() {
+        if (all_true) return Integer.MAX_VALUE;
         String s = new StringBuilder(settings.substring(0, Math.min(31, settings.length()))).reverse().toString();
         return Integer.parseInt(s, 2);
     }

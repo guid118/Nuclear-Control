@@ -439,15 +439,25 @@ public class TileEntityAdvancedInfoPanel extends TileEntityInfoPanel {
      */
     public List<PanelString> getSortedCardData(DisplaySettingHelper settings, ItemStack cardStack,
             CardWrapperImpl helper) {
-        List<PanelString> data = new ArrayList<>(this.getCardData(settings, cardStack, helper));
+        List<PanelString> all_data = new ArrayList<>(this.getCardData(new DisplaySettingHelper(true), cardStack, helper));
         if (!Objects.equals(helper.getTitle(), "")) {
-            PanelString title = data.remove(0);
-            getDataSorter(getIndexOfCard(cardStack)).sortList(data);
-            data.add(0, title);
+            PanelString title = all_data.remove(0);
+            getDataSorter(getIndexOfCard(cardStack)).sortList(all_data);
+            all_data.add(0, title);
         } else {
-            getDataSorter(getIndexOfCard(cardStack)).sortList(data);
+            getDataSorter(getIndexOfCard(cardStack)).sortList(all_data);
         }
-        return data;
+
+        //put all data that is enabled into a new list. since we iterate over the sorted data,
+        // this should return a sorted list with only enabled strings
+        List<PanelString> data = new ArrayList<>(this.getCardData(settings, cardStack, helper));
+        List<PanelString> returndata = new ArrayList<>(data.size());
+        for (PanelString allDatum : all_data) {
+            if (data.contains(allDatum)) {
+                returndata.add(allDatum);
+            }
+        }
+        return returndata;
     }
 
     // </editor-fold>
