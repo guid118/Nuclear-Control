@@ -28,7 +28,6 @@ import shedar.mods.ic2.nuclearcontrol.api.IPanelMultiCard;
 import shedar.mods.ic2.nuclearcontrol.api.IRangeTriggerable;
 import shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor;
 import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
-import shedar.mods.ic2.nuclearcontrol.api.NewPanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.crossmod.EnergyStorageData;
@@ -318,17 +317,41 @@ public class ItemCardMultipleSensorLocation extends ItemCardBase
 
     public List<PanelSetting> getSettingsListCounter() {
         List<PanelSetting> result = new ArrayList<>(1);
-        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.cbInfoPanelEnergyCurrent"), DISPLAY_ENERGY, CARD_TYPE_COUNTER));
+        result.add(
+                new NewPanelSetting(
+                        LangHelper.translate("msg.nc.cbInfoPanelEnergyCurrent"),
+                        DISPLAY_ENERGY,
+                        CARD_TYPE_COUNTER));
         return result;
     }
 
     public List<PanelSetting> getSettingsListLiquid() {
         List<PanelSetting> result = new ArrayList<>(5);
-        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidName"), DISPLAY_LIQUID_NAME, CARD_TYPE_LIQUID));
-        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidAmount"), DISPLAY_LIQUID_AMOUNT, CARD_TYPE_LIQUID));
-        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidFree"), DISPLAY_LIQUID_FREE, CARD_TYPE_LIQUID));
-        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidCapacity"), DISPLAY_LIQUID_CAPACITY, CARD_TYPE_LIQUID));
-        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.cbInfoPanelLiquidPercentage"), DISPLAY_LIQUID_PERCENTAGE, CARD_TYPE_LIQUID));
+        result.add(
+                new NewPanelSetting(
+                        LangHelper.translate("msg.nc.cbInfoPanelLiquidName"),
+                        DISPLAY_LIQUID_NAME,
+                        CARD_TYPE_LIQUID));
+        result.add(
+                new NewPanelSetting(
+                        LangHelper.translate("msg.nc.cbInfoPanelLiquidAmount"),
+                        DISPLAY_LIQUID_AMOUNT,
+                        CARD_TYPE_LIQUID));
+        result.add(
+                new NewPanelSetting(
+                        LangHelper.translate("msg.nc.cbInfoPanelLiquidFree"),
+                        DISPLAY_LIQUID_FREE,
+                        CARD_TYPE_LIQUID));
+        result.add(
+                new NewPanelSetting(
+                        LangHelper.translate("msg.nc.cbInfoPanelLiquidCapacity"),
+                        DISPLAY_LIQUID_CAPACITY,
+                        CARD_TYPE_LIQUID));
+        result.add(
+                new NewPanelSetting(
+                        LangHelper.translate("msg.nc.cbInfoPanelLiquidPercentage"),
+                        DISPLAY_LIQUID_PERCENTAGE,
+                        CARD_TYPE_LIQUID));
         return result;
     }
 

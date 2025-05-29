@@ -192,10 +192,19 @@ public class ItemCard55Reactor extends ItemCardEnergySensorLocation implements I
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>(5);
         result.add(new NewPanelSetting(LangHelper.translate("msg.nc.cbInfoPanelOnOff"), DISPLAY_ON, CARD_TYPE));
-        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.InfoPanel55.BufferOut"), DISPLAY_OUTPUTTank, CARD_TYPE));
-        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.InfoPanel55.BufferIn"), DISPLAY_INPUTTank, CARD_TYPE));
+        result.add(
+                new NewPanelSetting(
+                        LangHelper.translate("msg.nc.InfoPanel55.BufferOut"),
+                        DISPLAY_OUTPUTTank,
+                        CARD_TYPE));
+        result.add(
+                new NewPanelSetting(LangHelper.translate("msg.nc.InfoPanel55.BufferIn"), DISPLAY_INPUTTank, CARD_TYPE));
         result.add(new NewPanelSetting(LangHelper.translate("msg.nc.InfoPanel55.Out"), DISPLAY_HeatUnits, CARD_TYPE));
-        result.add(new NewPanelSetting(LangHelper.translate("msg.nc.InfoPanelRF.TempPROPER"), DISPLAY_CoreTemp, CARD_TYPE));
+        result.add(
+                new NewPanelSetting(
+                        LangHelper.translate("msg.nc.InfoPanelRF.TempPROPER"),
+                        DISPLAY_CoreTemp,
+                        CARD_TYPE));
         return result;
     }
 }

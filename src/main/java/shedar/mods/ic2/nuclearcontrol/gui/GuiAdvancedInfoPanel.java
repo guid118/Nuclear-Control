@@ -252,7 +252,15 @@ public class GuiAdvancedInfoPanel extends GuiInfoPanel {
             if (settingsList != null) {
                 if (((IPanelDataSource) card.getItem()).getSettingsList() != null) {
                     buttonList.add(
-                            new IconButton(ID_LINES, guiLeft + 32, guiTop + 80, 32, 16, TEXTURE_LOCATION, 192 - 16, 111));
+                            new IconButton(
+                                    ID_LINES,
+                                    guiLeft + 32,
+                                    guiTop + 80,
+                                    32,
+                                    16,
+                                    TEXTURE_LOCATION,
+                                    192 - 16,
+                                    111));
                 }
             }
             if (!modified) {

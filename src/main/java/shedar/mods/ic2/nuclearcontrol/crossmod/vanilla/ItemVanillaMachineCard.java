@@ -24,7 +24,6 @@ import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.items.ItemCardBase;
 import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
-import shedar.mods.ic2.nuclearcontrol.utils.LangHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 
 public class ItemVanillaMachineCard extends ItemCardBase {
@@ -125,7 +124,7 @@ public class ItemVanillaMachineCard extends ItemCardBase {
 
     @Override
     public List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card,
-                                           boolean showLabels) {
+            boolean showLabels) {
         List<PanelString> result = new LinkedList<PanelString>();
         PanelString line;
 
@@ -288,11 +287,31 @@ public class ItemVanillaMachineCard extends ItemCardBase {
     @Override
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>();
-        result.add(new NewPanelSetting(StatCollector.translateToLocal("msg.nc.Vanilla.setting.activityStatus"), DISPLAY_BREWING, getCardType()));
-        result.add(new NewPanelSetting(StatCollector.translateToLocal("msg.nc.Vanilla.setting.activeTime"), DISPLAY_TIME, getCardType()));
-        result.add(new NewPanelSetting(StatCollector.translateToLocal("msg.nc.Vanilla.setting.slot1Contents"), DISPLAY_SLOT_1, getCardType()));
-        result.add(new NewPanelSetting(StatCollector.translateToLocal("msg.nc.Vanilla.setting.slot2Contents"), DISPLAY_SLOT_2, getCardType()));
-        result.add(new NewPanelSetting(StatCollector.translateToLocal("msg.nc.Vanilla.setting.slot3Contents"), DISPLAY_SLOT_3, getCardType()));
+        result.add(
+                new NewPanelSetting(
+                        StatCollector.translateToLocal("msg.nc.Vanilla.setting.activityStatus"),
+                        DISPLAY_BREWING,
+                        getCardType()));
+        result.add(
+                new NewPanelSetting(
+                        StatCollector.translateToLocal("msg.nc.Vanilla.setting.activeTime"),
+                        DISPLAY_TIME,
+                        getCardType()));
+        result.add(
+                new NewPanelSetting(
+                        StatCollector.translateToLocal("msg.nc.Vanilla.setting.slot1Contents"),
+                        DISPLAY_SLOT_1,
+                        getCardType()));
+        result.add(
+                new NewPanelSetting(
+                        StatCollector.translateToLocal("msg.nc.Vanilla.setting.slot2Contents"),
+                        DISPLAY_SLOT_2,
+                        getCardType()));
+        result.add(
+                new NewPanelSetting(
+                        StatCollector.translateToLocal("msg.nc.Vanilla.setting.slot3Contents"),
+                        DISPLAY_SLOT_3,
+                        getCardType()));
         return result;
     }
 }

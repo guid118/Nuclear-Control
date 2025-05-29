@@ -18,7 +18,6 @@ import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 import shedar.mods.ic2.nuclearcontrol.items.ItemCardBase;
 import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
-import shedar.mods.ic2.nuclearcontrol.utils.LangHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.StringUtils;
 
 public class ItemCardInventoryScanner extends ItemCardBase {
@@ -88,8 +87,16 @@ public class ItemCardInventoryScanner extends ItemCardBase {
     @Override
     public List<PanelSetting> getSettingsList() {
         List<PanelSetting> result = new ArrayList<PanelSetting>();
-        result.add(new NewPanelSetting(StatCollector.translateToLocal("msg.nc.Vanilla.Name"), DISPLAY_NAME, getCardType()));
-        result.add(new NewPanelSetting(StatCollector.translateToLocal("msg.nc.Vanilla.StorageLVL"), DISPLAY_TOTAL, getCardType()));
+        result.add(
+                new NewPanelSetting(
+                        StatCollector.translateToLocal("msg.nc.Vanilla.Name"),
+                        DISPLAY_NAME,
+                        getCardType()));
+        result.add(
+                new NewPanelSetting(
+                        StatCollector.translateToLocal("msg.nc.Vanilla.StorageLVL"),
+                        DISPLAY_TOTAL,
+                        getCardType()));
         return result;
     }
 }

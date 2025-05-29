@@ -53,6 +53,7 @@ public class DisplaySettingHelper {
 
     /**
      * get the current state of the setting at the given index.
+     * 
      * @param index of the setting
      * @return value of the setting
      */
