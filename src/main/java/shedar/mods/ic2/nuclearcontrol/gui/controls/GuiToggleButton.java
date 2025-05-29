@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelAdvDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
-import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
+import shedar.mods.ic2.nuclearcontrol.api.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
 public class GuiToggleButton extends GuiButton {
@@ -27,7 +27,7 @@ public class GuiToggleButton extends GuiButton {
     private String fullTitle;
 
     public GuiToggleButton(int id, int x, int y, String title, PanelSetting setting, TileEntityAdvancedInfoPanel panel,
-            byte slot) {
+                           byte slot) {
         super(id, x, y, GuiScrollableList.BUTTON_WIDTH, GuiScrollableList.BUTTON_HEIGHT, title);
         this.setting = setting;
         this.panel = panel;
@@ -64,12 +64,7 @@ public class GuiToggleButton extends GuiButton {
     @Override
     public void drawButton(Minecraft mc, int mouseX, int mouseY) {
         if (!visible) return;
-        // v2.6.12 compatibility
-        if (panel.getStackInSlot(slot).getItem() instanceof IPanelAdvDataSource) {
-            isChecked = panel.getNewDisplaySettingsForCardInSlot(slot).getNewSetting(setting.displayBit);
-        } else {
-            isChecked = panel.getNewDisplaySettingsForCardInSlot(slot).getSetting(setting.displayBit);
-        }
+        isChecked = panel.getNewDisplaySettingsForCardInSlot(slot).getNewSetting(setting.displayBit);
         mc.getTextureManager().bindTexture(TEXTURE);
         GL11.glColor4f(1, 1, 1, 1);
 
@@ -94,11 +89,7 @@ public class GuiToggleButton extends GuiButton {
             if (super.mousePressed(mc, mouseX, mouseY)) {
                 toggle();
                 DisplaySettingHelper settings = panel.getNewDisplaySettingsForCardInSlot(slot);
-                if (panel.getStackInSlot(slot).getItem() instanceof IPanelAdvDataSource) {
-                    settings.toggleNewSetting(setting.displayBit);
-                } else {
-                    settings.toggleSetting(setting.displayBit);
-                }
+                settings.toggleSetting(setting.displayBit);
                 NuclearNetworkHelper.setDisplaySettings(panel, slot, settings);
                 panel.setDisplaySettings(slot, settings);
                 return true;

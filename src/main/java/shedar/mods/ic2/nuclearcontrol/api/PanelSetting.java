@@ -2,8 +2,6 @@ package shedar.mods.ic2.nuclearcontrol.api;
 
 import java.util.UUID;
 
-import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
-
 /**
  * Object of PanelSetting class defines one checkbox in the card's settings.
  * 

@@ -2,8 +2,6 @@ package shedar.mods.ic2.nuclearcontrol.api;
 
 import java.util.List;
 
-import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
-
 /**
  * This class is mostly a placeholder to give mods that depend on this API the time to adjust, without breaking
  * instantly. Functionality will be pulled down to {@link IPanelAdvDataSource} at some point.

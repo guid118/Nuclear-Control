@@ -3,8 +3,10 @@ package shedar.mods.ic2.nuclearcontrol.utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
@@ -75,28 +77,31 @@ public class DataSorter {
      * @param <T>  any type
      */
     public <T> void sortList(List<T> data) {
-        if (customOrder.isEmpty()) {
-            resetOrder(data.size()); // Initialize default order if none exists
-        }
-
-        if (customOrder.size() > data.size()) {
-            return; // Prevent sorting if the stored order is bigger than the given data list
+        if (this.customOrder.isEmpty()) {
+            this.resetOrder(data.size());
         }
 
         List<T> reordered = new ArrayList<>(data.size());
+        Set<Integer> addedIndices = new HashSet<>();
 
-        for (int index : customOrder) {
-            reordered.add(data.get(index));
+        for (int index : this.customOrder) {
+            if (index >= 0 && index < data.size()) {
+                reordered.add(data.get(index));
+                addedIndices.add(index);
+            }
         }
 
-        for (int i = customOrder.size(); i < data.size(); i++) {
-            reordered.add(data.get(i));
+        // Add the remaining items that weren't in the custom order
+        for (int i = 0; i < data.size(); ++i) {
+            if (!addedIndices.contains(i)) {
+                reordered.add(data.get(i));
+            }
         }
 
-        // Replace the original list with the sorted version
         data.clear();
         data.addAll(reordered);
     }
+
 
     /**
      * Computes the order needed to sort listB into the order of listA. Both lists must contain the same elements in a

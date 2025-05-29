@@ -12,7 +12,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
-import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
+import shedar.mods.ic2.nuclearcontrol.api.DisplaySettingHelper;
 
 public class PacketDispSettingsAll implements IMessage, IMessageHandler<PacketDispSettingsAll, IMessage> {
 
@@ -23,37 +23,12 @@ public class PacketDispSettingsAll implements IMessage, IMessageHandler<PacketDi
 
     public PacketDispSettingsAll() {}
 
-    /**
-     * @deprecated use {@link #newConstructor(int, int, int, Map)} unfortunately, due to the nested map, there is no way
-     *             to make a normal overloaded constructor
-     */
-    public PacketDispSettingsAll(int x, int y, int z, Map<Byte, Map<UUID, Integer>> settings) {
+    public PacketDispSettingsAll(int x, int y, int z,
+            Map<Byte, Map<UUID, DisplaySettingHelper>> settings) {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.settings = new HashMap<>();
-
-        for (Map.Entry<Byte, Map<UUID, Integer>> outerEntry : settings.entrySet()) {
-            Map<UUID, DisplaySettingHelper> innerMap = new HashMap<>();
-
-            for (Map.Entry<UUID, Integer> innerEntry : outerEntry.getValue().entrySet()) {
-                int value = innerEntry.getValue();
-                String binaryString = String.format("%8s", Integer.toBinaryString(value & 0xFF)).replace(' ', '0');
-                innerMap.put(innerEntry.getKey(), new DisplaySettingHelper(binaryString));
-            }
-
-            this.settings.put(outerEntry.getKey(), innerMap);
-        }
-    }
-
-    public static PacketDispSettingsAll newConstructor(int x, int y, int z,
-            Map<Byte, Map<UUID, DisplaySettingHelper>> settings) {
-        PacketDispSettingsAll packet = new PacketDispSettingsAll();
-        packet.x = x;
-        packet.y = y;
-        packet.z = z;
-        packet.settings = settings;
-        return packet;
+        this.settings = settings;
     }
 
     @Override

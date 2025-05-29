@@ -12,7 +12,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelAdvDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
-import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
+import shedar.mods.ic2.nuclearcontrol.api.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.LangHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
@@ -28,7 +28,7 @@ public class GuiInfoPanelCheckBox extends GuiButton {
     private byte slot;
 
     public GuiInfoPanelCheckBox(int id, int x, int y, PanelSetting setting, TileEntityInfoPanel panel, byte slot,
-            FontRenderer renderer) {
+                                FontRenderer renderer) {
         super(id, x, y, 0, 0, id < 10 ? LangHelper.translate("0" + id) : LangHelper.translate(String.valueOf(id)));
         this.setting = setting;
         this.slot = slot;
@@ -60,11 +60,7 @@ public class GuiInfoPanelCheckBox extends GuiButton {
         if (super.mousePressed(minecraft, mouseX, mouseY)) {
             checked = !checked;
             DisplaySettingHelper settings = panel.getNewDisplaySettingsForCardInSlot(slot);
-            if (panel.getStackInSlot(slot).getItem() instanceof IPanelAdvDataSource) {
-                settings.toggleNewSetting(setting.displayBit);
-            } else {
-                settings.toggleSetting(setting.displayBit);
-            }
+            settings.toggleSetting(setting.displayBit);
             NuclearNetworkHelper.setDisplaySettings(panel, slot, settings);
             panel.setDisplaySettings(slot, settings);
             return true;

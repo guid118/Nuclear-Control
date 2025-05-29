@@ -2,8 +2,6 @@ package shedar.mods.ic2.nuclearcontrol.api;
 
 import java.util.UUID;
 
-import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
-
 public class NewPanelSetting extends PanelSetting {
 
     /**

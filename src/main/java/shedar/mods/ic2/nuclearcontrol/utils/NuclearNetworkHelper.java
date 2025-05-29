@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import shedar.mods.ic2.nuclearcontrol.api.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.network.ChannelHandler;
 import shedar.mods.ic2.nuclearcontrol.network.message.PacketAcounter;
 import shedar.mods.ic2.nuclearcontrol.network.message.PacketChat;
@@ -169,7 +170,7 @@ public class NuclearNetworkHelper {
         if (!(tileEntity instanceof TileEntityInfoPanel)) return;
         Map<Byte, Map<UUID, DisplaySettingHelper>> settings = ((TileEntityInfoPanel) tileEntity).getDisplaySettings();
         if (settings == null) return;
-        ChannelHandler.network.sendTo(PacketDispSettingsAll.newConstructor(x, y, z, settings), player);
+        ChannelHandler.network.sendTo(new PacketDispSettingsAll(x, y, z, settings), player);
     }
 
     // server

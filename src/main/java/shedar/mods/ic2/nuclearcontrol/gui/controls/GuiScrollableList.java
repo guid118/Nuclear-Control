@@ -20,7 +20,7 @@ import shedar.mods.ic2.nuclearcontrol.gui.GuiAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.DataSorter;
-import shedar.mods.ic2.nuclearcontrol.utils.DisplaySettingHelper;
+import shedar.mods.ic2.nuclearcontrol.api.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
 public class GuiScrollableList extends GuiScreen {
@@ -46,7 +46,7 @@ public class GuiScrollableList extends GuiScreen {
     static final int FUNCTION_BUTTON_HEIGHT = 15;
     static final int FUNCTION_BUTTON_WIDTH = 49;
     static final int FUNCTION_BUTTON_PADDING = 7;
-    private static final int VISIBLE_BUTTONS = (GUI_HEIGHT - PADDING_TOP - PADDING_BOTTOM) / BUTTON_HEIGHT;
+    private static final int VISIBLE_BUTTONS = (GUI_HEIGHT - PADDING_TOP - PADDING_BOTTOM - FUNCTION_BUTTON_HEIGHT - 5) / BUTTON_HEIGHT;
     private static final int LIST_HEIGHT = VISIBLE_BUTTONS * BUTTON_HEIGHT;
     static final int TOGGLE_BUTTON_WIDTH = 20;
 
@@ -188,7 +188,7 @@ public class GuiScrollableList extends GuiScreen {
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, GUI_WIDTH, GUI_HEIGHT);
 
         // the scrollbar should be directly to the right of the background texture
-        drawTexturedModalRect(scrollbarLeft + 1, thumbLocation, GUI_WIDTH, 0, THUMB_WIDTH, THUMB_HEIGHT);
+        drawTexturedModalRect(scrollbarLeft, thumbLocation, GUI_WIDTH, 0, THUMB_WIDTH, THUMB_HEIGHT);
 
         mc.getTextureManager().bindTexture(BUTTON_TEXTURE);
 
