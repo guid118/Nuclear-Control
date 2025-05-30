@@ -28,7 +28,7 @@ public class GuiScrollableList extends GuiScreen {
     // WARNING: These values are only meant to be edited when the texture is edited as well, you can find the texture
     // location at the TEXTURE variable further below.
     // General dimensions and paddings
-    static final int GUI_WIDTH = 174;
+    static final int GUI_WIDTH = 173;
     static final int GUI_HEIGHT = 233;
     private static final int PADDING_LEFT = 6;
     private static final int PADDING_TOP = 6;
@@ -46,8 +46,9 @@ public class GuiScrollableList extends GuiScreen {
     static final int FUNCTION_BUTTON_HEIGHT = 15;
     static final int FUNCTION_BUTTON_WIDTH = 49;
     static final int FUNCTION_BUTTON_PADDING = 7;
-    private static final int VISIBLE_BUTTONS = (GUI_HEIGHT - PADDING_TOP - PADDING_BOTTOM - FUNCTION_BUTTON_HEIGHT - 5) / BUTTON_HEIGHT;
-    private static final int LIST_HEIGHT = VISIBLE_BUTTONS * BUTTON_HEIGHT;
+    private static final int LIST_HEIGHT = GUI_HEIGHT - PADDING_TOP - PADDING_BOTTOM - FUNCTION_BUTTON_HEIGHT - PADDING_BOTTOM - 1;
+    private static final int VISIBLE_BUTTONS = LIST_HEIGHT / BUTTON_HEIGHT + 1;
+
     static final int TOGGLE_BUTTON_WIDTH = 20;
 
     private static final int SCROLL_SPEED = 1;
