@@ -8,8 +8,7 @@ public class DisplaySettingHelper {
 
     private boolean all_true = false;
 
-    public DisplaySettingHelper() {
-    }
+    public DisplaySettingHelper() {}
 
     public DisplaySettingHelper(boolean all_true) {
         this.all_true = all_true;

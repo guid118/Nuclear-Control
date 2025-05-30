@@ -9,10 +9,9 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import shedar.mods.ic2.nuclearcontrol.api.IPanelAdvDataSource;
+import shedar.mods.ic2.nuclearcontrol.api.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityInfoPanel;
-import shedar.mods.ic2.nuclearcontrol.api.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.LangHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
@@ -28,7 +27,7 @@ public class GuiInfoPanelCheckBox extends GuiButton {
     private byte slot;
 
     public GuiInfoPanelCheckBox(int id, int x, int y, PanelSetting setting, TileEntityInfoPanel panel, byte slot,
-                                FontRenderer renderer) {
+            FontRenderer renderer) {
         super(id, x, y, 0, 0, id < 10 ? LangHelper.translate("0" + id) : LangHelper.translate(String.valueOf(id)));
         this.setting = setting;
         this.slot = slot;

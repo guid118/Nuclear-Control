@@ -13,6 +13,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import shedar.mods.ic2.nuclearcontrol.api.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelMultiCard;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
@@ -20,7 +21,6 @@ import shedar.mods.ic2.nuclearcontrol.gui.GuiAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.panel.CardWrapperImpl;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
 import shedar.mods.ic2.nuclearcontrol.utils.DataSorter;
-import shedar.mods.ic2.nuclearcontrol.api.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
 public class GuiScrollableList extends GuiScreen {
@@ -46,7 +46,11 @@ public class GuiScrollableList extends GuiScreen {
     static final int FUNCTION_BUTTON_HEIGHT = 15;
     static final int FUNCTION_BUTTON_WIDTH = 49;
     static final int FUNCTION_BUTTON_PADDING = 7;
-    private static final int LIST_HEIGHT = GUI_HEIGHT - PADDING_TOP - PADDING_BOTTOM - FUNCTION_BUTTON_HEIGHT - PADDING_BOTTOM - 1;
+    private static final int LIST_HEIGHT = GUI_HEIGHT - PADDING_TOP
+            - PADDING_BOTTOM
+            - FUNCTION_BUTTON_HEIGHT
+            - PADDING_BOTTOM
+            - 1;
     private static final int VISIBLE_BUTTONS = LIST_HEIGHT / BUTTON_HEIGHT + 1;
 
     static final int TOGGLE_BUTTON_WIDTH = 20;

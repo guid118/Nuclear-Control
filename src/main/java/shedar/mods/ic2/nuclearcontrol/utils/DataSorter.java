@@ -1,5 +1,6 @@
 package shedar.mods.ic2.nuclearcontrol.utils;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,6 +12,8 @@ import java.util.stream.Collectors;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 
 public class DataSorter {
 
@@ -102,6 +105,40 @@ public class DataSorter {
         data.addAll(reordered);
     }
 
+    /**
+     * Sort a list based on the custom order using prefix matching. The elements must have a prefix (before ':') that
+     * exists in the original list.
+     */
+    public void sortListByPrefix(List<PanelString> data, List<PanelString> originalList) {
+        if (this.customOrder.isEmpty()) {
+            this.resetOrder(originalList.size());
+        }
+
+        // Build prefix → order map
+        Map<String, Integer> prefixOrderMap = new HashMap<>();
+        for (int i = 0; i < customOrder.size(); i++) {
+            int index = customOrder.get(i);
+            if (index >= 0 && index < originalList.size()) {
+                PanelString item = originalList.get(index);
+                String prefix = getPrefix(item.toString());
+                prefixOrderMap.put(prefix, i);
+            }
+        }
+
+        // Sort based on prefix order
+        data.sort((a, b) -> {
+            int aIndex = prefixOrderMap.getOrDefault(getPrefix(a.toString()), Integer.MAX_VALUE);
+            int bIndex = prefixOrderMap.getOrDefault(getPrefix(b.toString()), Integer.MAX_VALUE);
+            return Integer.compare(aIndex, bIndex);
+        });
+
+    }
+
+    // Helper to extract prefix
+    private String getPrefix(String s) {
+        int colonIndex = s.indexOf(':');
+        return colonIndex == -1 ? s : s.substring(0, colonIndex);
+    }
 
     /**
      * Computes the order needed to sort listB into the order of listA. Both lists must contain the same elements in a

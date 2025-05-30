@@ -44,12 +44,4 @@ public class PanelString {
         String rv = textLeft + textCenter + textRight;
         return rv.replace("null", "");
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof PanelString p) {
-            return p.toString().equals(toString());
-        }
-        return false;
-    }
 }

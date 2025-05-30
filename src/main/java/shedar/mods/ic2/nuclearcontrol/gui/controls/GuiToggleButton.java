@@ -7,10 +7,9 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import shedar.mods.ic2.nuclearcontrol.api.IPanelAdvDataSource;
+import shedar.mods.ic2.nuclearcontrol.api.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.api.PanelSetting;
 import shedar.mods.ic2.nuclearcontrol.tileentities.TileEntityAdvancedInfoPanel;
-import shedar.mods.ic2.nuclearcontrol.api.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.utils.NuclearNetworkHelper;
 
 public class GuiToggleButton extends GuiButton {
@@ -27,7 +26,7 @@ public class GuiToggleButton extends GuiButton {
     private String fullTitle;
 
     public GuiToggleButton(int id, int x, int y, String title, PanelSetting setting, TileEntityAdvancedInfoPanel panel,
-                           byte slot) {
+            byte slot) {
         super(id, x, y, GuiScrollableList.BUTTON_WIDTH, GuiScrollableList.BUTTON_HEIGHT, title);
         this.setting = setting;
         this.panel = panel;
