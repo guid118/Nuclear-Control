@@ -47,6 +47,7 @@ public class DisplaySettingHelper {
 
     public DisplaySettingHelper(DisplaySettingHelper helper) {
         this.settings = helper.settings;
+        this.all_true = helper.all_true;
     }
 
     /**
