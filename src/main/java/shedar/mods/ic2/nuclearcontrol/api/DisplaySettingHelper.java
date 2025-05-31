@@ -173,7 +173,7 @@ public class DisplaySettingHelper {
             }
             return sb.reverse().toString();
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid settings string (not binary or decimal): " + input, e);
+            return "0";
         }
     }
 }
