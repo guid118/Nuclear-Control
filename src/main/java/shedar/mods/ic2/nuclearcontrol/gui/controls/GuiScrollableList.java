@@ -179,18 +179,6 @@ public class GuiScrollableList extends GuiScreen {
                             panel,
                             cardSlot));
         }
-        //TODO remove debug code
-        while (buttonListFull.size() < 25) {
-            buttonListFull.add(new GuiToggleButton(
-                    buttonListFull.size() + 3,
-                    internalLeft + 1,
-                    0,
-                    settingsList.get(buttonListFull.size() % 3).title,
-                    settingsList.get(buttonListFull.size() % 3),
-                    panel,
-                    cardSlot
-            ));
-        }
         originalButtonList = new ArrayList<>(buttonListFull);
         panel.getDataSorter(cardSlot).sortList(buttonListFull);
         updateVisibleButtons();
