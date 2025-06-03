@@ -286,7 +286,7 @@ public class GuiScrollableList extends GuiScreen {
      * @param height height
      */
     private void setScissor(int x, int y, int width, int height) {
-        int scaleFactor = 2;
+        int scaleFactor = mc.gameSettings.guiScale;
         GL11.glScissor(
                 x * scaleFactor,
                 (mc.displayHeight - (y + height) * scaleFactor),
