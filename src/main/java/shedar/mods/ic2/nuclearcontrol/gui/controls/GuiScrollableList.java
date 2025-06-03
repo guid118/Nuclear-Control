@@ -386,7 +386,8 @@ public class GuiScrollableList extends GuiScreen {
         } else if (adjustedY > internalBottom - THUMB_HEIGHT - PADDING_BOTTOM - FUNCTION_BUTTON_HEIGHT) {
             thumbLocation = internalBottom - THUMB_HEIGHT - PADDING_BOTTOM - FUNCTION_BUTTON_HEIGHT;
         }
-        double offsetRatio = (double) (thumbLocation - internalTop) / (internalBottom - internalTop - THUMB_HEIGHT - PADDING_BOTTOM - FUNCTION_BUTTON_HEIGHT);
+        double offsetRatio = (double) (thumbLocation - internalTop)
+                / (internalBottom - internalTop - THUMB_HEIGHT - PADDING_BOTTOM - FUNCTION_BUTTON_HEIGHT);
         int newScrollOffset = (int) (offsetRatio * (buttonListFull.size() - VISIBLE_BUTTONS));
         scrollOffset = Math.max(0, Math.min(newScrollOffset, buttonListFull.size() - VISIBLE_BUTTONS));
         updateVisibleButtons();
