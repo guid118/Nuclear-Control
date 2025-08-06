@@ -72,7 +72,7 @@ public interface IPanelDataSource {
 
     /**
      * Method should return identifier of the card. It used to save card's display settings. GUID can be generated at
-     * http://guidgen.com/ site. You shouldn't use non random uid, like UUID(0, 4). Non random uids used in Nuclear
+     * http://guidgen.com/ site. You shouldn't use non-random uid, like UUID(0, 4). Non-random uuids used in Nuclear
      * Control cards for backward compatibility.
      */
     UUID getCardType();
