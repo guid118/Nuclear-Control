@@ -4,6 +4,12 @@ import java.util.BitSet;
 
 import io.netty.buffer.ByteBuf;
 
+/**
+ * Helper class for display settings. This used to be done by an integer bitmask, but that was limited to 32 settings.
+ * This features an unlimited* amount of settings (within reason of course).
+ *
+ * @author Guid118
+ */
 public class DisplaySettingHelper {
 
     private final BitSet bits;
