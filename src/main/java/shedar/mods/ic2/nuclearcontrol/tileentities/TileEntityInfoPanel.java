@@ -34,7 +34,6 @@ import shedar.mods.ic2.nuclearcontrol.api.CardState;
 import shedar.mods.ic2.nuclearcontrol.api.DisplaySettingHelper;
 import shedar.mods.ic2.nuclearcontrol.api.ICardWrapper;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
-import shedar.mods.ic2.nuclearcontrol.api.IPanelDataSource;
 import shedar.mods.ic2.nuclearcontrol.api.IPanelMultiCard;
 import shedar.mods.ic2.nuclearcontrol.api.IRemoteSensor;
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
@@ -380,8 +379,7 @@ public class TileEntityInfoPanel extends TileEntity
         resetCardData();
         List<PanelString> data = cardData.get(slot);
         if (data == null) {
-            if (card != null)
-                data = card.getStringData(settings, helper, getShowLabels());
+            if (card != null) data = card.getStringData(settings, helper, getShowLabels());
             String title = helper.getTitle();
             if (data != null && title != null && !title.isEmpty()) {
                 PanelString titleString = new PanelString();

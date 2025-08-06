@@ -1,8 +1,8 @@
 package shedar.mods.ic2.nuclearcontrol.api;
 
-import io.netty.buffer.ByteBuf;
-
 import java.util.BitSet;
+
+import io.netty.buffer.ByteBuf;
 
 public class DisplaySettingHelper {
 
@@ -45,6 +45,7 @@ public class DisplaySettingHelper {
 
     /**
      * Constructor for reading from the ByteBuf used in packets.
+     * 
      * @param buf packet's ByteBuf
      */
     public DisplaySettingHelper(ByteBuf buf) {
@@ -65,6 +66,7 @@ public class DisplaySettingHelper {
 
     /**
      * Deep copy constructor
+     * 
      * @param origin original instance to deep copy
      */
     public DisplaySettingHelper(DisplaySettingHelper origin) {
@@ -75,6 +77,7 @@ public class DisplaySettingHelper {
 
     /**
      * get a setting's value from the index.
+     * 
      * @param index index
      * @return value
      */
@@ -85,6 +88,7 @@ public class DisplaySettingHelper {
 
     /**
      * add a value to the end of the settings, without giving an index.
+     * 
      * @param value to set
      */
     public void addSetting(boolean value) {
@@ -94,6 +98,7 @@ public class DisplaySettingHelper {
 
     /**
      * Get the first 32 bits of the settings.
+     * 
      * @deprecated Don't use an integer to store or send settings. Will be removed in 3.0.0
      * @return integer representation of the first 32 bits.
      */
@@ -113,6 +118,7 @@ public class DisplaySettingHelper {
 
     /**
      * toggle the setting at the given index
+     * 
      * @param index index of the to be toggled setting
      */
     public void toggleSetting(int index) {
@@ -121,6 +127,7 @@ public class DisplaySettingHelper {
 
     /**
      * convert an index to a bitmask
+     * 
      * @param index index to set the bitmask to
      * @return bitmask with a 1 at the given index
      */
@@ -130,6 +137,7 @@ public class DisplaySettingHelper {
 
     /**
      * get the index of the right-most 1 in a bitmask
+     * 
      * @param value bitmask
      * @return index of the right-most 1
      */
@@ -139,6 +147,7 @@ public class DisplaySettingHelper {
 
     /**
      * get the value at the given index.
+     * 
      * @param index the index of the value to be retrieved, throws IndexOutOfBoundsException when index < 0
      * @return value at the given index
      */
@@ -148,6 +157,7 @@ public class DisplaySettingHelper {
 
     /**
      * set the value of the given index to the given value.
+     * 
      * @param index index to be used, should be non-negative
      * @param value value the index should be set to.
      */
@@ -160,6 +170,7 @@ public class DisplaySettingHelper {
 
     /**
      * get the size of the list of settings.
+     * 
      * @return the last bit ever set. includes trailing zeros.
      */
     public int size() {
@@ -168,6 +179,7 @@ public class DisplaySettingHelper {
 
     /**
      * write to the given ByteBuf.
+     * 
      * @param buf ByteBuf to write to
      */
     public void writeToByteBuffer(ByteBuf buf) {
@@ -189,6 +201,7 @@ public class DisplaySettingHelper {
 
     /**
      * write to a string, for NBT storage purposes
+     * 
      * @return string representation
      */
     public String toBitString() {

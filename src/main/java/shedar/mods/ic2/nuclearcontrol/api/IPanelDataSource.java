@@ -44,8 +44,8 @@ public interface IPanelDataSource {
      * @param showLabels      Information Panel option. This parameter is true if labels should be shown.
      * @return list of string to display.
      * @see PanelString
-     * @deprecated please implement {@link IPanelDataSource#getStringData(DisplaySettingHelper, ICardWrapper, boolean)} instead.
-     *  Will be removed in 3.0.0
+     * @deprecated please implement {@link IPanelDataSource#getStringData(DisplaySettingHelper, ICardWrapper, boolean)}
+     *             instead. Will be removed in 3.0.0
      */
     List<PanelString> getStringData(int displaySettings, ICardWrapper card, boolean showLabels);
 
@@ -59,7 +59,8 @@ public interface IPanelDataSource {
      * @return list of string to display.
      * @see PanelString
      */
-    default List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card, boolean showLabels) {
+    default List<PanelString> getStringData(DisplaySettingHelper displaySettings, ICardWrapper card,
+            boolean showLabels) {
         return getStringData(displaySettings.getAsInteger(), card, showLabels);
     }
 
