@@ -132,6 +132,7 @@ public class GuiScrollableList extends GuiScreen {
         this.buttonListFull.clear();
         this.buttonList.clear();
         this.visibleButtonList.clear();
+        this.functionButtons.clear();
 
         functionButtons.add(
                 new SmallGuiButton(
