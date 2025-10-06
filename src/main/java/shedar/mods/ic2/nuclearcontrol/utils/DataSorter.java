@@ -9,9 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
 import shedar.mods.ic2.nuclearcontrol.api.PanelString;
 
 public class DataSorter {
